@@ -1,10 +1,9 @@
-package com.example.bot.spring.service;
+package com.g.miss.accountant.service;
 
-import com.example.bot.spring.bean.Record;
-import com.example.bot.spring.dao.AccountInfoDao;
-import com.example.bot.spring.dao.RecordDao;
-import com.example.bot.spring.util.DateUtils;
-import com.example.bot.spring.util.StringUtils;
+import com.g.miss.accountant.bean.Record;
+import com.g.miss.accountant.dao.AccountInfoDao;
+import com.g.miss.accountant.dao.RecordDao;
+import com.g.miss.accountant.util.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;

@@ -1,4 +1,4 @@
-package com.example.bot.spring.enums;
+package com.g.miss.accountant.enums;
 
 import lombok.Getter;
 

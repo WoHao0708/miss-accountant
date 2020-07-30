@@ -1,4 +1,4 @@
-package com.example.bot.spring.util;
+package com.g.miss.accountant.util;
 
 import org.springframework.util.CollectionUtils;
 

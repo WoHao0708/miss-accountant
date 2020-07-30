@@ -14,17 +14,17 @@
  * under the License.
  */
 
-package com.example.bot.spring.controller;
+package com.g.miss.accountant.controller;
 
 import static java.util.Collections.singletonList;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-import com.example.bot.spring.constants.Constants;
-import com.example.bot.spring.service.AccountService;
-import com.example.bot.spring.service.RecordService;
-import com.example.bot.spring.util.StringUtils;
+import com.g.miss.accountant.constants.Constants;
+import com.g.miss.accountant.service.AccountService;
+import com.g.miss.accountant.service.RecordService;
+import com.g.miss.accountant.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.linecorp.bot.client.LineMessagingClient;

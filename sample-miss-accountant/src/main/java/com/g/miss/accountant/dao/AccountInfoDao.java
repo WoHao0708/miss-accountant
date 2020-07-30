@@ -1,6 +1,6 @@
-package com.example.bot.spring.dao;
+package com.g.miss.accountant.dao;
 
-import com.example.bot.spring.bean.AccountInfo;
+import com.g.miss.accountant.bean.AccountInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

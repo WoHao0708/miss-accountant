@@ -1,4 +1,4 @@
-package com.example.bot.spring.constants;
+package com.g.miss.accountant.constants;
 
 public class Constants {
 

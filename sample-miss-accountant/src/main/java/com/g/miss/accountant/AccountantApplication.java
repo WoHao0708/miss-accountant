@@ -14,7 +14,7 @@
  * under the License.
  */
 
-package com.example.bot.spring;
+package com.g.miss.accountant;
 
 import java.io.IOException;
 import java.nio.file.Files;

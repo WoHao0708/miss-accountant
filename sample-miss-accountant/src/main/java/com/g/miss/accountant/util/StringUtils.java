@@ -1,4 +1,4 @@
-package com.example.bot.spring.util;
+package com.g.miss.accountant.util;
 
 import java.lang.reflect.Array;
 import java.security.MessageDigest;

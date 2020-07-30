@@ -14,7 +14,6 @@
  * under the License.
  */
 
-import com.github.spotbugs.snom.SpotBugsTask
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
 // ./gradlew clean && ./gradlew uploadArchives -Prelease
@@ -33,7 +32,6 @@ buildscript {
     dependencies {
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.27.0'
         classpath 'com.puppycrawl.tools:checkstyle:8.34'
-        classpath 'gradle.plugin.com.github.spotbugs.snom:spotbugs-gradle-plugin:4.4.4'
         classpath 'io.franzbecker:gradle-lombok:4.0.0'
         classpath 'io.spring.gradle:dependency-management-plugin:1.0.9.RELEASE'
         classpath "org.springframework.boot:spring-boot-gradle-plugin:$spring_boot_version"
@@ -74,7 +72,6 @@ tasks.withType(JavaCompile) {
 }
 
 subprojects {
-    apply plugin: 'com.github.spotbugs'
     apply plugin: 'java-library'
     apply plugin: 'checkstyle'
     apply plugin: 'io.franzbecker.gradle-lombok'
@@ -198,18 +195,6 @@ subprojects {
     checkstyle {
         configProperties = [projectDir: rootProject.projectDir]
         toolVersion = '8.23'
-    }
-
-    tasks.withType(SpotBugsTask) {
-        reports {
-            xml {
-                enabled = false
-            }
-            html {
-                enabled = false
-            }
-        }
-        excludeFilter = file("$rootProject.projectDir/config/findbugs/excludeFilter.xml")
     }
 
     compileJava {

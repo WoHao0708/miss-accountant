@@ -1,4 +1,4 @@
-package com.example.bot.spring.bean;
+package com.g.miss.accountant.bean;
 
 import lombok.Getter;
 import lombok.Setter;

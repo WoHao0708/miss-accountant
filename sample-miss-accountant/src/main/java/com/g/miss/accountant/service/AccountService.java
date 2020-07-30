@@ -1,9 +1,9 @@
-package com.example.bot.spring.service;
+package com.g.miss.accountant.service;
 
-import com.example.bot.spring.bean.AccountInfo;
-import com.example.bot.spring.constants.Constants;
-import com.example.bot.spring.dao.AccountInfoDao;
-import com.example.bot.spring.enums.TypeEnum;
+import com.g.miss.accountant.bean.AccountInfo;
+import com.g.miss.accountant.constants.Constants;
+import com.g.miss.accountant.dao.AccountInfoDao;
+import com.g.miss.accountant.enums.TypeEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

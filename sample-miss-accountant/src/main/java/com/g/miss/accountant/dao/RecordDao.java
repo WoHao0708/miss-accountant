@@ -1,7 +1,6 @@
-package com.example.bot.spring.dao;
+package com.g.miss.accountant.dao;
 
-import com.example.bot.spring.bean.Record;
-import org.springframework.data.domain.Page;
+import com.g.miss.accountant.bean.Record;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.domain.Pageable;

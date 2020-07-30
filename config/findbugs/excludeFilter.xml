@@ -13,4 +13,8 @@
     <Class name="com.linecorp.bot.client.IntegrationTestSettings" />
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE" />
   </Match>
+
+  <Match>
+    <Class name="~.*\.*java" />
+  </Match>
 </FindBugsFilter>
