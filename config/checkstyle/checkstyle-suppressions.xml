@@ -11,5 +11,5 @@
 
   <!-- Suppress all checks in generated sources -->
   <suppress checks=".*" files="[\\/]gen-src[\\/]" />
-  <suppress files="[\\/]sample-miss-accountant[\\/]" checks=".*"/>
+  <suppress files="[\\/]miss-accountant[\\/]" checks=".*"/>
 </suppressions>
