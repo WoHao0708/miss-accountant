@@ -24,6 +24,7 @@ import java.util.concurrent.ExecutionException;
 import com.g.miss.accountant.Template.MenuTemplate;
 import com.g.miss.accountant.constants.Constants;
 import com.g.miss.accountant.service.AccountService;
+import com.g.miss.accountant.service.PublicFundService;
 import com.g.miss.accountant.service.RecordService;
 import com.g.miss.accountant.util.StringUtils;
 import com.linecorp.bot.model.event.PostbackEvent;
@@ -51,6 +52,8 @@ public class WebHookController {
     private LineMessagingClient lineMessagingClient;
     @Autowired
     private AccountService accountInfoService;
+    @Autowired
+    private PublicFundService publicFundService;
     @Autowired
     private RecordService recordService;
 
@@ -123,8 +126,13 @@ public class WebHookController {
 
         if ("/".equals(prefix)) switchAdvance(replyToken, event, infix, suffix);
 
+        if ("!".equals(prefix)) switchPublicFund(replyToken, event, infix, suffix);
+
         if ("會計小姐".equals(text) || "會計".equals(text) || "鄭家純".equals(text))
-            this.reply(replyToken, new MenuTemplate().get());
+        {
+            final String groupId = ((GroupSource) event.getSource()).getGroupId();
+            this.reply(replyToken, new MenuTemplate().get(publicFundService.addOrUpdatePublicFund(groupId, 0)));
+        }
 
         if ("婆".equals(text) || "老婆".equals(text))
             this.replyText(replyToken, "噁男");
@@ -149,9 +157,6 @@ public class WebHookController {
                     });
                 } else
                     this.replyText(replyToken, "Bot can't use profile API without user ID");
-                break;
-            case "h":
-                this.replyText(replyToken, Constants.HELP_MESSAGE);
                 break;
         }
     }
@@ -216,10 +221,28 @@ public class WebHookController {
                 });
                 break;
             case "a": // r Set group all user isadvance.
-                lineMessagingClient.getGroupMemberProfile(groupId, userId).whenComplete((profile, throwable) -> {
-                    String result = accountInfoService.setAllUserIsAdvance(groupId, suffix);
-                    this.replyText(replyToken, result);
-                });
+                this.replyText(replyToken, accountInfoService.setAllUserIsAdvance(groupId, suffix));
+                break;
+            case "d": // r Set group all user isadvance.
+                this.reply(replyToken, accountInfoService.checkGroupAdvance(groupId, suffix));
+                break;
+        }
+    }
+
+    private void switchPublicFund(String replyToken, Event event, String infix, String suffixStr) {
+
+        final String userId = event.getSource().getUserId();
+        final String groupId = ((GroupSource) event.getSource()).getGroupId();
+        final int suffix;
+        if (StringUtils.isEmpty(suffixStr) || !StringUtils.isNumeric(suffixStr)) suffix = 0;
+        else suffix = Integer.parseInt(suffixStr);
+
+        switch (infix) {
+            case "+": // +
+                this.replyText(replyToken, publicFundService.addOrUpdatePublicFund(groupId, suffix));
+                break;
+            case "-": // -
+                this.replyText(replyToken, publicFundService.addOrUpdatePublicFund(groupId, -suffix));
                 break;
         }
     }

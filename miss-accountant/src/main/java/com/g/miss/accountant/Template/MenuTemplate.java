@@ -16,6 +16,7 @@
 
 package com.g.miss.accountant.Template;
 
+import com.g.miss.accountant.constants.Constants;
 import com.linecorp.bot.model.action.PostbackAction;
 import com.linecorp.bot.model.message.FlexMessage;
 import com.linecorp.bot.model.message.flex.component.*;
@@ -24,6 +25,8 @@ import com.linecorp.bot.model.message.flex.component.Button.ButtonHeight;
 import com.linecorp.bot.model.message.flex.component.Button.ButtonStyle;
 import com.linecorp.bot.model.message.flex.container.Bubble;
 import com.linecorp.bot.model.message.flex.container.Carousel;
+import com.linecorp.bot.model.message.flex.unit.FlexAlign;
+import com.linecorp.bot.model.message.flex.unit.FlexFontSize;
 import com.linecorp.bot.model.message.flex.unit.FlexLayout;
 import com.linecorp.bot.model.message.flex.unit.FlexMarginSize;
 
@@ -32,7 +35,7 @@ import java.util.function.Supplier;
 import static java.util.Arrays.asList;
 
 public class MenuTemplate {
-    public FlexMessage get() {
+    public FlexMessage get(String publicFund) {
         final Bubble account = Bubble.builder()
                 .size(Bubble.BubbleSize.NANO)
                 .body(createAccountMenu())
@@ -43,7 +46,7 @@ public class MenuTemplate {
                 .build();
         final Bubble other = Bubble.builder()
                 .size(Bubble.BubbleSize.NANO)
-                .body(createOtherMenu())
+                .body(createOtherMenu(publicFund))
                 .build();
         Carousel carousel = Carousel.builder()
                 .contents(asList(account, advance, other))
@@ -89,22 +92,29 @@ public class MenuTemplate {
                 .build();
     }
 
-    private Box createOtherMenu() {
-        final Button callAction = Button.builder()
+    private Box createOtherMenu(String publicFund) {
+
+        final Text text = Text.builder()
+                .text(publicFund)
+                .align(FlexAlign.CENTER)
+                .size(FlexFontSize.Md)
+                .weight(Text.TextWeight.BOLD)
+                .build();
+        final Box box = Box.builder()
+                .layout(FlexLayout.VERTICAL)
+                .height("44px")
+                .paddingTop("10px")
+                .contents(text)
+                .build();
+        final Button button = Button.builder()
                 .style(ButtonStyle.SECONDARY)
                 .height(ButtonHeight.SMALL)
                 .action(new PostbackAction("說明", "help"))
                 .build();
-        final Button websiteAction = Button.builder()
-                .style(ButtonStyle.SECONDARY)
-                .height(ButtonHeight.SMALL)
-                .action(new PostbackAction("特殊功能", "other"))
-                .build();
         return Box.builder()
                 .layout(FlexLayout.VERTICAL)
                 .paddingAll("3px")
-                .spacing(FlexMarginSize.SM)
-                .contents(asList(callAction, websiteAction))
+                .contents(asList(box, button))
                 .build();
     }
 }

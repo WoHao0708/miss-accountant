@@ -87,11 +87,18 @@ public class AccountService {
         return new AccountantTemplate().get(list);
     }
 
+
     public Message checkGroupAdvance(String groupId) {
+        return checkGroupAdvance(groupId, null);
+    }
+
+    public Message checkGroupAdvance(String groupId, Integer number) { // number 外人分帳
 
         List<AccountInfo> list = accountInfoDao.findAccountInfoByGroupIdAndIsAdvance(groupId, 1);
 
-        if (list.size() > 0) return new AdvanceTemplate().get(list);
+        if (number == null) number = list.size();
+
+        if (list.size() > 0) return new AdvanceTemplate().get(list, number);
         else return new TextMessage(Constants.ADVANCE_ERROR_MESSAGE);
     }
 

@@ -36,16 +36,16 @@ import static java.util.Arrays.asList;
 
 public class AdvanceTemplate {
 
-    public FlexMessage get(List<AccountInfo> accountInfoList) {
+    public FlexMessage get(List<AccountInfo> accountInfoList, Integer number) {
         final Bubble receipt = Bubble.builder()
-                .body(createBody(accountInfoList))
+                .body(createBody(accountInfoList, number))
                 .size(Bubble.BubbleSize.KILO)
                 .build();
         return new FlexMessage("<3", receipt);
     }
 
 
-    private Box createBody(List<AccountInfo> accountInfoList) {
+    private Box createBody(List<AccountInfo> accountInfoList, Integer number) {
         final Text title = Text.builder()
                 .text("分帳檢查結果")
                 .weight(Text.TextWeight.BOLD)
@@ -53,7 +53,7 @@ public class AdvanceTemplate {
                 .color(Constants.COLOR_GREEN)
                 .build();
         final Separator separator = Separator.builder().build();
-        final Box receipt = createReceiptBox(accountInfoList);
+        final Box receipt = createReceiptBox(accountInfoList, number);
 
         return Box.builder()
                 .layout(FlexLayout.VERTICAL)
@@ -62,7 +62,7 @@ public class AdvanceTemplate {
                 .build();
     }
 
-    private Box createReceiptBox(List<AccountInfo> accountInfoList) {
+    private Box createReceiptBox(List<AccountInfo> accountInfoList, Integer number) {
         List<FlexComponent> list = new ArrayList<>();
         int total = 0;
         int money = 0;
@@ -87,7 +87,7 @@ public class AdvanceTemplate {
             list.add(box);
         }
 
-        money = total / accountInfoList.size();
+        money = total / number;
 
         final Separator separator = Separator.builder().build();
         final Separator separatorWhite = Separator.builder().margin(FlexMarginSize.XXL).color(Constants.COLOR_WHITE).build();
@@ -115,7 +115,7 @@ public class AdvanceTemplate {
                 .color(Constants.COLOR_BLACK)
                 .build();
         final Text text2 = Text.builder()
-                .text("" + accountInfoList.size())
+                .text("" + number)
                 .size(FlexFontSize.SM)
                 .color(Constants.COLOR_BLACK)
                 .align(FlexAlign.END)
