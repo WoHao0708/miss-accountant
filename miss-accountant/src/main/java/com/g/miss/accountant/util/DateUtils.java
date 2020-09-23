@@ -20,6 +20,8 @@ public final class DateUtils {
 	public static final String DATE_FORMAT_YYYY_MM_T_DD_HH_MM_SS = "yyyy-MM-dd'T'HH:mm:ss";
     /** 日期格式化：yyyy-MM-dd HH:mm:ss */
     public static final String DATE_FORMAT_YYYY_MM_DD_HH_MM = "yyyy-MM-dd HH:mm";
+    /** 日期格式化：MM/dd HH:mm */
+    public static final String DATE_FORMAT_MM_DD_HH_MM = "MM/dd HH:mm";
 
 	/**
 	 * format.

@@ -4,6 +4,8 @@ import com.g.miss.accountant.bean.AccountInfo;
 import com.g.miss.accountant.constants.Constants;
 import com.g.miss.accountant.dao.AccountInfoDao;
 import com.g.miss.accountant.enums.TypeEnum;
+import com.g.miss.accountant.Template.AccountantTemplate;
+import com.linecorp.bot.model.message.FlexMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -75,19 +77,11 @@ public class AccountService {
         accountInfoDao.save(accountInfo);
     }
 
-    public String checkGroupAmount(String groupId) {
+    public FlexMessage checkGroupAmount(String groupId) {
 
         List<AccountInfo> list = accountInfoDao.findAccountInfoByGroupId(groupId);
-        StringBuilder result = new StringBuilder();
-        int total = 0;
 
-        for (AccountInfo item : list) {
-            result.append(item.getName()).append(": ").append(item.getAmount()).append("\n");
-            total += item.getAmount();
-        }
-        result.append("總計: ").append(total);
-
-        return result.toString();
+        return new AccountantTemplate().get(list);
     }
 
     public String checkGroupAdvance(String groupId) {
@@ -117,25 +111,17 @@ public class AccountService {
         return result.toString().substring(0, result.length() - 1);
     }
 
-    public String setIsAdvance(String userId, String groupId, String name, int suffix) {
+    public String switchIsAdvance(String userId, String groupId, String name) {
 
         AccountInfo accountInfo = accountInfoDao.findAccountInfoByUserIdAndGroupId(userId, groupId);
-        StringBuilder result = new StringBuilder();
 
-        if (suffix < 2) {
-            if (accountInfo == null) accountInfo = new AccountInfo(userId, groupId);
+        if (accountInfo == null) accountInfo = new AccountInfo(userId, groupId);
 
-            accountInfo.setIsAdvance(suffix);
-            accountInfo.updateInfo(name);
-            accountInfoDao.save(accountInfo);
+        String result = accountInfo.switchIsAdvance();
+        accountInfo.updateInfo(name);
+        accountInfoDao.save(accountInfo);
 
-            result.append(name);
-            if (suffix == 0) result.append("設定為不分帳");
-            if (suffix == 1) result.append("設定為要分帳");
-        } else
-            result.append("設定失敗");
-
-        return result.toString();
+        return name + result;
     }
 
     public String setAllUserIsAdvance(String groupId, int suffix) {

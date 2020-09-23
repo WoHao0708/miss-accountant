@@ -24,7 +24,7 @@ public class AccountInfo {
     private int amount;
     private int advance;
     @Column(name = "is_advance")
-    private int isAdvance;
+    private Integer isAdvance;
     @Column(name = "update_time")
     private Date updateTime;
     @Column(name = "created_time")
@@ -52,5 +52,15 @@ public class AccountInfo {
     public void updateInfo(String name) {
         this.name = name;
         this.updateTime = new Date();
+    }
+
+    public String switchIsAdvance() {
+        if (isAdvance == null || isAdvance == 0) {
+            this.isAdvance = 1;
+            return "設定為要分帳";
+        } else {
+            this.isAdvance = 0;
+            return "設定為不分帳";
+        }
     }
 }

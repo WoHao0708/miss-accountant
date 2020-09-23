@@ -21,10 +21,12 @@ import static java.util.Collections.singletonList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import com.g.miss.accountant.Template.MenuTemplate;
 import com.g.miss.accountant.constants.Constants;
 import com.g.miss.accountant.service.AccountService;
 import com.g.miss.accountant.service.RecordService;
 import com.g.miss.accountant.util.StringUtils;
+import com.linecorp.bot.model.event.PostbackEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.linecorp.bot.client.LineMessagingClient;
@@ -44,7 +46,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @LineMessageHandler
-public class AccountantController {
+public class WebHookController {
     @Autowired
     private LineMessagingClient lineMessagingClient;
     @Autowired
@@ -59,10 +61,42 @@ public class AccountantController {
     }
 
     @EventMapping
+    public void handlePostBackEvent(PostbackEvent event) {
+        handlePostBack(event);
+    }
+
+    @EventMapping
     public void handleOtherEvent(Event event) {
         log.info("Received message(Ignored): {}", event);
     }
 
+    private void handlePostBack(PostbackEvent event) {
+        final String userId = event.getSource().getUserId();
+        final String groupId = ((GroupSource) event.getSource()).getGroupId();
+        String action = event.getPostbackContent().getData();
+
+        switch (action) {
+            case "help":
+                this.replyText(event.getReplyToken(), Constants.HELP_MESSAGE);
+                break;
+            case "other":
+                this.replyText(event.getReplyToken(), Constants.OTHER_MESSAGE);
+                break;
+            case "advanceSwitch":
+                lineMessagingClient.getGroupMemberProfile(groupId, userId).whenComplete((profile, throwable) -> {
+                    String name = profile.getDisplayName();
+                    String result = accountInfoService.switchIsAdvance(userId, groupId, name);
+                    this.replyText(event.getReplyToken(), result);
+                });
+                break;
+            case "accountCheck":
+                this.reply(event.getReplyToken(), accountInfoService.checkGroupAmount(groupId));
+                break;
+            case "accountRecord":
+                this.reply(event.getReplyToken(), recordService.getRecordBy(userId, groupId, 10));
+                break;
+        }
+    }
 
     private void handleTextContent(String replyToken, Event event, TextMessageContent content) throws Exception {
         final String text = content.getText();
@@ -85,6 +119,12 @@ public class AccountantController {
         if ("$".equals(prefix)) switchAccount(replyToken, event, infix, suffix);
 
         if ("/".equals(prefix)) switchAdvance(replyToken, event, infix, suffix);
+
+        if ("會計小姐".equals(text) || "會計".equals(text) || "鄭家純".equals(text))
+            this.reply(replyToken, new MenuTemplate().get());
+
+        if ("婆".equals(text) || "老婆".equals(text))
+            this.replyText(replyToken, "噁男");
     }
 
     private void switchCommand(String replyToken, Event event, String infix, String suffix) {
@@ -108,18 +148,8 @@ public class AccountantController {
                     this.replyText(replyToken, "Bot can't use profile API without user ID");
                 break;
             case "h":
-                lineMessagingClient.getGroupMemberProfile(groupId, userId).whenComplete((profile, throwable) -> {
-                    this.replyText(replyToken, Constants.helpMessage);
-                });
+                this.replyText(replyToken, Constants.HELP_MESSAGE);
                 break;
-            case "1":
-                if ("23".equals(suffix))
-                    lineMessagingClient.getGroupMemberProfile(groupId, userId).whenComplete((profile, throwable) -> {
-                        this.replyText(replyToken, Constants.helloMessage);
-                    });
-                break;
-
-
         }
     }
 
@@ -153,17 +183,8 @@ public class AccountantController {
                     this.replyText(replyToken, name + ": 0");
                 });
                 break;
-            case "c": // c Check group amount.
-                lineMessagingClient.getGroupMemberProfile(groupId, userId).whenComplete((profile, throwable) -> {
-                    String result = accountInfoService.checkGroupAmount(groupId);
-                    this.replyText(replyToken, result);
-                });
-                break;
             case "r": // r Get record.
-                lineMessagingClient.getGroupMemberProfile(groupId, userId).whenComplete((profile, throwable) -> {
-                    String result = recordService.getRecordBy(userId, groupId, suffix);
-                    this.replyText(replyToken, result);
-                });
+                this.reply(replyToken, recordService.getRecordBy(userId, groupId, suffix));
                 break;
         }
     }
@@ -194,13 +215,6 @@ public class AccountantController {
             case "c": // c Check group advance.
                 lineMessagingClient.getGroupMemberProfile(groupId, userId).whenComplete((profile, throwable) -> {
                     String result = accountInfoService.checkGroupAdvance(groupId);
-                    this.replyText(replyToken, result);
-                });
-                break;
-            case "s": // r Set group user own isadvance.
-                lineMessagingClient.getGroupMemberProfile(groupId, userId).whenComplete((profile, throwable) -> {
-                    String name = profile.getDisplayName();
-                    String result = accountInfoService.setIsAdvance(userId, groupId, name, suffix);
                     this.replyText(replyToken, result);
                 });
                 break;

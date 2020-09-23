@@ -1,9 +1,13 @@
 package com.g.miss.accountant.service;
 
+import com.g.miss.accountant.Template.AccountantTemplate;
+import com.g.miss.accountant.Template.AdvanceTemplate;
+import com.g.miss.accountant.bean.AccountInfo;
 import com.g.miss.accountant.bean.Record;
 import com.g.miss.accountant.dao.AccountInfoDao;
 import com.g.miss.accountant.dao.RecordDao;
 import com.g.miss.accountant.util.DateUtils;
+import com.linecorp.bot.model.message.FlexMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,26 +24,17 @@ public class RecordService {
     @Autowired
     RecordDao recordDao;
 
+
     public void addRecord(String userId, String groupId, int amount) {
         Record record = new Record(userId, groupId, amount);
         recordDao.save(record);
     }
 
-    public String getRecordBy(String userId, String groupId, int count) {
-        if (count == 0) count = 10;
-
+    public FlexMessage getRecordBy(String userId, String groupId, int count) {
         Pageable top = PageRequest.of(0, count);
         List<Record> list = recordDao.findByUserIdAndGroupIdOrderByIdDesc(userId, groupId, top);
-        StringBuilder result = new StringBuilder();
+        String name = accountInfoDao.findAccountInfoByUserIdAndGroupId(userId, groupId).getName();
 
-        for (Record item : list) {
-            String str;
-            if (item.getAmount() == 0) str = "=0";
-            else if (item.getAmount() > 0) str = "+" + item.getAmount();
-            else str = "" + item.getAmount();
-            result.append(DateUtils.format(item.getCreatedTime())).append(" ").append(str).append("\n");
-        }
-
-        return result.toString().substring(0, result.length() - 1);
+        return new AdvanceTemplate().get(list, name);
     }
 }

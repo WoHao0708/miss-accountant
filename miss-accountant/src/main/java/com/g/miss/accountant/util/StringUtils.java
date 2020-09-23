@@ -1,10 +1,14 @@
 package com.g.miss.accountant.util;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Array;
+import java.net.URLDecoder;
 import java.security.MessageDigest;
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -91,6 +95,7 @@ import java.util.regex.Pattern;
  * The symbol {@code *} is used to indicate any input including {@code null}.</p>
  *
  * <p>#ThreadSafe#</p>
+ *
  * @see String
  * @since 1.0
  */
@@ -121,6 +126,7 @@ public class StringUtils {
 
     /**
      * The empty String {@code ""}.
+     *
      * @since 2.0
      */
     public static final String EMPTY = "";
@@ -129,7 +135,7 @@ public class StringUtils {
      * A String for linefeed LF ("\n").
      *
      * @see <a href="http://docs.oracle.com/javase/specs/jls/se7/html/jls-3.html#jls-3.10.6">JLF: Escape Sequences
-     *      for Character and String Literals</a>
+     * for Character and String Literals</a>
      * @since 3.2
      */
     public static final String LF = "\n";
@@ -138,13 +144,14 @@ public class StringUtils {
      * A String for carriage return CR ("\r").
      *
      * @see <a href="http://docs.oracle.com/javase/specs/jls/se7/html/jls-3.html#jls-3.10.6">JLF: Escape Sequences
-     *      for Character and String Literals</a>
+     * for Character and String Literals</a>
      * @since 3.2
      */
     public static final String CR = "\r";
 
     /**
      * Represents a failed index search.
+     *
      * @since 2.1
      */
     public static final int INDEX_NOT_FOUND = -1;
@@ -163,6 +170,7 @@ public class StringUtils {
 
     // Empty checks
     //-----------------------------------------------------------------------
+
     /**
      * <p>Checks if a CharSequence is empty ("") or null.</p>
      *
@@ -178,7 +186,7 @@ public class StringUtils {
      * It no longer trims the CharSequence.
      * That functionality is available in isBlank().</p>
      *
-     * @param cs  the CharSequence to check, may be null
+     * @param cs the CharSequence to check, may be null
      * @return {@code true} if the CharSequence is empty or null
      * @since 3.0 Changed signature from isEmpty(String) to isEmpty(CharSequence)
      */
@@ -197,7 +205,7 @@ public class StringUtils {
      * StringUtils.isNotEmpty("  bob  ") = true
      * </pre>
      *
-     * @param cs  the CharSequence to check, may be null
+     * @param cs the CharSequence to check, may be null
      * @return {@code true} if the CharSequence is not empty and not null
      * @since 3.0 Changed signature from isNotEmpty(String) to isNotEmpty(CharSequence)
      */
@@ -218,7 +226,7 @@ public class StringUtils {
      * StringUtils.isBlank("  bob  ") = false
      * </pre>
      *
-     * @param cs  the CharSequence to check, may be null
+     * @param cs the CharSequence to check, may be null
      * @return {@code true} if the CharSequence is null, empty or whitespace only
      * @since 2.0
      * @since 3.0 Changed signature from isBlank(String) to isBlank(CharSequence)
@@ -249,9 +257,9 @@ public class StringUtils {
      * StringUtils.isNotBlank("  bob  ") = true
      * </pre>
      *
-     * @param cs  the CharSequence to check, may be null
+     * @param cs the CharSequence to check, may be null
      * @return {@code true} if the CharSequence is
-     *  not empty and not null and not whitespace only
+     * not empty and not null and not whitespace only
      * @since 2.0
      * @since 3.0 Changed signature from isNotBlank(String) to isNotBlank(CharSequence)
      */
@@ -276,7 +284,7 @@ public class StringUtils {
      * StringUtils.isAllBlank(new String[] {})  = true
      * </pre>
      *
-     * @param css  the CharSequences to check, may be null or empty
+     * @param css the CharSequences to check, may be null or empty
      * @return {@code true} if all of the CharSequences are empty or null or whitespace only
      * @since 3.6
      */
@@ -286,14 +294,14 @@ public class StringUtils {
         }
         for (final CharSequence cs : css) {
             if (isNotBlank(cs)) {
-               return false;
+                return false;
             }
         }
         return true;
     }
 
     public static boolean isEmpty(final Object[] array) {
-    	return getLength(array) == 0;
+        return getLength(array) == 0;
     }
 
     public static int getLength(final Object array) {
@@ -305,6 +313,7 @@ public class StringUtils {
 
     // Trim
     //-----------------------------------------------------------------------
+
     /**
      * <p>Removes control characters (char &lt;= 32) from both
      * ends of this String, handling {@code null} by returning
@@ -325,7 +334,7 @@ public class StringUtils {
      * StringUtils.trim("    abc    ") = "abc"
      * </pre>
      *
-     * @param str  the String to be trimmed, may be null
+     * @param str the String to be trimmed, may be null
      * @return the trimmed string, {@code null} if null String input
      */
     public static String trim(final String str) {
@@ -349,9 +358,9 @@ public class StringUtils {
      * StringUtils.trimToNull("    abc    ") = "abc"
      * </pre>
      *
-     * @param str  the String to be trimmed, may be null
+     * @param str the String to be trimmed, may be null
      * @return the trimmed String,
-     *  {@code null} if only chars &lt;= 32, empty or null String input
+     * {@code null} if only chars &lt;= 32, empty or null String input
      * @since 2.0
      */
     public static String trimToNull(final String str) {
@@ -376,7 +385,7 @@ public class StringUtils {
      * StringUtils.trimToEmpty("    abc    ") = "abc"
      * </pre>
      *
-     * @param str  the String to be trimmed, may be null
+     * @param str the String to be trimmed, may be null
      * @return the trimmed String, or an empty String if {@code null} input
      * @since 2.0
      */
@@ -410,8 +419,8 @@ public class StringUtils {
      * StringUtils.truncate("abcdefg", -1) = throws an IllegalArgumentException
      * </pre>
      *
-     * @param str  the String to truncate, may be null
-     * @param maxWidth  maximum length of result String, must be positive
+     * @param str      the String to truncate, may be null
+     * @param maxWidth maximum length of result String, must be positive
      * @return truncated String, {@code null} if null String input
      * @since 3.5
      */
@@ -472,9 +481,9 @@ public class StringUtils {
      * StringUtils.truncate("abcdefghij", -2, 4) = throws an IllegalArgumentException
      * </pre>
      *
-     * @param str  the String to check, may be null
-     * @param offset  left edge of source String
-     * @param maxWidth  maximum length of result String, must be positive
+     * @param str      the String to check, may be null
+     * @param offset   left edge of source String
+     * @param maxWidth maximum length of result String, must be positive
      * @return truncated String, {@code null} if null String input
      * @since 3.5
      */
@@ -500,6 +509,7 @@ public class StringUtils {
 
     // Stripping
     //-----------------------------------------------------------------------
+
     /**
      * <p>Strips whitespace from the start and end of a String.</p>
      *
@@ -519,7 +529,7 @@ public class StringUtils {
      * StringUtils.strip(" ab c ") = "ab c"
      * </pre>
      *
-     * @param str  the String to remove whitespace from, may be null
+     * @param str the String to remove whitespace from, may be null
      * @return the stripped String, {@code null} if null String input
      */
     public static String strip(final String str) {
@@ -544,9 +554,9 @@ public class StringUtils {
      * StringUtils.stripToNull(" ab c ") = "ab c"
      * </pre>
      *
-     * @param str  the String to be stripped, may be null
+     * @param str the String to be stripped, may be null
      * @return the stripped String,
-     *  {@code null} if whitespace, empty or null String input
+     * {@code null} if whitespace, empty or null String input
      * @since 2.0
      */
     public static String stripToNull(String str) {
@@ -575,7 +585,7 @@ public class StringUtils {
      * StringUtils.stripToEmpty(" ab c ") = "ab c"
      * </pre>
      *
-     * @param str  the String to be stripped, may be null
+     * @param str the String to be stripped, may be null
      * @return the trimmed String, or an empty String if {@code null} input
      * @since 2.0
      */
@@ -605,8 +615,8 @@ public class StringUtils {
      * StringUtils.strip("  abcyx", "xyz") = "  abc"
      * </pre>
      *
-     * @param str  the String to remove characters from, may be null
-     * @param stripChars  the characters to remove, null treated as whitespace
+     * @param str        the String to remove characters from, may be null
+     * @param stripChars the characters to remove, null treated as whitespace
      * @return the stripped String, {@code null} if null String input
      */
     public static String strip(String str, final String stripChars) {
@@ -637,8 +647,8 @@ public class StringUtils {
      * StringUtils.stripStart("yxabc  ", "xyz") = "abc  "
      * </pre>
      *
-     * @param str  the String to remove characters from, may be null
-     * @param stripChars  the characters to remove, null treated as whitespace
+     * @param str        the String to remove characters from, may be null
+     * @param stripChars the characters to remove, null treated as whitespace
      * @return the stripped String, {@code null} if null String input
      */
     public static String stripStart(final String str, final String stripChars) {
@@ -682,8 +692,8 @@ public class StringUtils {
      * StringUtils.stripEnd("120.00", ".0")   = "12"
      * </pre>
      *
-     * @param str  the String to remove characters from, may be null
-     * @param stripChars  the set of characters to remove, null treated as whitespace
+     * @param str        the String to remove characters from, may be null
+     * @param stripChars the set of characters to remove, null treated as whitespace
      * @return the stripped String, {@code null} if null String input
      */
     public static String stripEnd(final String str, final String stripChars) {
@@ -708,6 +718,7 @@ public class StringUtils {
 
     // StripAll
     //-----------------------------------------------------------------------
+
     /**
      * <p>Strips whitespace from the start and end of every String in an array.
      * Whitespace is defined by {@link Character#isWhitespace(char)}.</p>
@@ -724,7 +735,7 @@ public class StringUtils {
      * StringUtils.stripAll(["abc  ", null])  = ["abc", null]
      * </pre>
      *
-     * @param strs  the array to remove whitespace from, may be null
+     * @param strs the array to remove whitespace from, may be null
      * @return the stripped Strings, {@code null} if null array input
      */
     public static String[] stripAll(final String... strs) {
@@ -752,8 +763,8 @@ public class StringUtils {
      * StringUtils.stripAll(["yabcz", null], "yz")  = ["abc", null]
      * </pre>
      *
-     * @param strs  the array to remove characters from, may be null
-     * @param stripChars  the characters to remove, null treated as whitespace
+     * @param strs       the array to remove characters from, may be null
+     * @param stripChars the characters to remove, null treated as whitespace
      * @return the stripped Strings, {@code null} if null array input
      */
     public static String[] stripAll(final String[] strs, final String stripChars) {
@@ -770,6 +781,7 @@ public class StringUtils {
 
     // Substring
     //-----------------------------------------------------------------------
+
     /**
      * <p>Gets a substring from the specified String avoiding exceptions.</p>
      *
@@ -789,9 +801,9 @@ public class StringUtils {
      * StringUtils.substring("abc", -4) = "abc"
      * </pre>
      *
-     * @param str  the String to get the substring from, may be null
-     * @param start  the position to start from, negative means
-     *  count back from the end of the String by this many characters
+     * @param str   the String to get the substring from, may be null
+     * @param start the position to start from, negative means
+     *              count back from the end of the String by this many characters
      * @return substring from start position, {@code null} if null String input
      */
     public static String substring(final String str, int start) {
@@ -841,13 +853,13 @@ public class StringUtils {
      * StringUtils.substring("abc", -4, 2)  = "ab"
      * </pre>
      *
-     * @param str  the String to get the substring from, may be null
-     * @param start  the position to start from, negative means
-     *  count back from the end of the String by this many characters
-     * @param end  the position to end at (exclusive), negative means
-     *  count back from the end of the String by this many characters
+     * @param str   the String to get the substring from, may be null
+     * @param start the position to start from, negative means
+     *              count back from the end of the String by this many characters
+     * @param end   the position to end at (exclusive), negative means
+     *              count back from the end of the String by this many characters
      * @return substring from start position to end position,
-     *  {@code null} if null String input
+     * {@code null} if null String input
      */
     public static String substring(final String str, int start, int end) {
         if (str == null) {
@@ -884,6 +896,7 @@ public class StringUtils {
 
     // Left/Right/Mid
     //-----------------------------------------------------------------------
+
     /**
      * <p>Gets the leftmost {@code len} characters of a String.</p>
      *
@@ -900,8 +913,8 @@ public class StringUtils {
      * StringUtils.left("abc", 4)   = "abc"
      * </pre>
      *
-     * @param str  the String to get the leftmost characters from, may be null
-     * @param len  the length of the required String
+     * @param str the String to get the leftmost characters from, may be null
+     * @param len the length of the required String
      * @return the leftmost characters, {@code null} if null String input
      */
     public static String left(final String str, final int len) {
@@ -933,8 +946,8 @@ public class StringUtils {
      * StringUtils.right("abc", 4)   = "abc"
      * </pre>
      *
-     * @param str  the String to get the rightmost characters from, may be null
-     * @param len  the length of the required String
+     * @param str the String to get the rightmost characters from, may be null
+     * @param len the length of the required String
      * @return the rightmost characters, {@code null} if null String input
      */
     public static String right(final String str, final int len) {
@@ -970,9 +983,9 @@ public class StringUtils {
      * StringUtils.mid("abc", -2, 2)  = "ab"
      * </pre>
      *
-     * @param str  the String to get the characters from, may be null
-     * @param pos  the position to start from, negative treated as zero
-     * @param len  the length of the required String
+     * @param str the String to get the characters from, may be null
+     * @param pos the position to start from, negative treated as zero
+     * @param len the length of the required String
      * @return the middle characters, {@code null} if null String input
      */
     public static String mid(final String str, int pos, final int len) {
@@ -993,6 +1006,7 @@ public class StringUtils {
 
     // SubStringAfter/SubStringBefore
     //-----------------------------------------------------------------------
+
     /**
      * <p>Gets the substring before the first occurrence of a separator.
      * The separator is not returned.</p>
@@ -1014,10 +1028,10 @@ public class StringUtils {
      * StringUtils.substringBefore("abc", null)  = "abc"
      * </pre>
      *
-     * @param str  the String to get a substring from, may be null
-     * @param separator  the String to search for, may be null
+     * @param str       the String to get a substring from, may be null
+     * @param separator the String to search for, may be null
      * @return the substring before the first occurrence of the separator,
-     *  {@code null} if null String input
+     * {@code null} if null String input
      * @since 2.0
      */
     public static String substringBefore(final String str, final String separator) {
@@ -1056,10 +1070,10 @@ public class StringUtils {
      * StringUtils.substringAfter("abc", "")    = "abc"
      * </pre>
      *
-     * @param str  the String to get a substring from, may be null
-     * @param separator  the String to search for, may be null
+     * @param str       the String to get a substring from, may be null
+     * @param separator the String to search for, may be null
      * @return the substring after the first occurrence of the separator,
-     *  {@code null} if null String input
+     * {@code null} if null String input
      * @since 2.0
      */
     public static String substringAfter(final String str, final String separator) {
@@ -1097,10 +1111,10 @@ public class StringUtils {
      * StringUtils.substringBeforeLast("a", "")      = "a"
      * </pre>
      *
-     * @param str  the String to get a substring from, may be null
-     * @param separator  the String to search for, may be null
+     * @param str       the String to get a substring from, may be null
+     * @param separator the String to search for, may be null
      * @return the substring before the last occurrence of the separator,
-     *  {@code null} if null String input
+     * {@code null} if null String input
      * @since 2.0
      */
     public static String substringBeforeLast(final String str, final String separator) {
@@ -1137,10 +1151,10 @@ public class StringUtils {
      * StringUtils.substringAfterLast("a", "z")     = ""
      * </pre>
      *
-     * @param str  the String to get a substring from, may be null
-     * @param separator  the String to search for, may be null
+     * @param str       the String to get a substring from, may be null
+     * @param separator the String to search for, may be null
      * @return the substring after the last occurrence of the separator,
-     *  {@code null} if null String input
+     * {@code null} if null String input
      * @since 2.0
      */
     public static String substringAfterLast(final String str, final String separator) {
@@ -1159,6 +1173,7 @@ public class StringUtils {
 
     // Substring between
     //-----------------------------------------------------------------------
+
     /**
      * <p>Gets the String that is nested in between two instances of the
      * same String.</p>
@@ -1175,8 +1190,8 @@ public class StringUtils {
      * StringUtils.substringBetween("tagabctag", "tag") = "abc"
      * </pre>
      *
-     * @param str  the String containing the substring, may be null
-     * @param tag  the String before and after the substring, may be null
+     * @param str the String containing the substring, may be null
+     * @param tag the String before and after the substring, may be null
      * @return the substring, {@code null} if no match
      * @since 2.0
      */
@@ -1205,9 +1220,9 @@ public class StringUtils {
      * StringUtils.substringBetween("yabczyabcz", "y", "z")   = "abc"
      * </pre>
      *
-     * @param str  the String containing the substring, may be null
+     * @param str   the String containing the substring, may be null
      * @param open  the String before the substring, may be null
-     * @param close  the String after the substring, may be null
+     * @param close the String after the substring, may be null
      * @return the substring, {@code null} if no match
      * @since 2.0
      */
@@ -1244,7 +1259,7 @@ public class StringUtils {
      * StringUtils.split(" abc ")    = ["abc"]
      * </pre>
      *
-     * @param str  the String to parse, may be null
+     * @param str the String to parse, may be null
      * @return an array of parsed Strings, {@code null} if null String input
      */
     public static String[] split(final String str) {
@@ -1270,8 +1285,8 @@ public class StringUtils {
      * StringUtils.split("a b c", ' ')    = ["a", "b", "c"]
      * </pre>
      *
-     * @param str  the String to parse, may be null
-     * @param separatorChar  the character used as the delimiter
+     * @param str           the String to parse, may be null
+     * @param separatorChar the character used as the delimiter
      * @return an array of parsed Strings, {@code null} if null String input
      * @since 2.0
      */
@@ -1284,11 +1299,11 @@ public class StringUtils {
      * {@code splitPreserveAllTokens} methods that do not return a
      * maximum array length.
      *
-     * @param str  the String to parse, may be {@code null}
-     * @param separatorChar the separate character
+     * @param str               the String to parse, may be {@code null}
+     * @param separatorChar     the separate character
      * @param preserveAllTokens if {@code true}, adjacent separators are
-     * treated as empty token separators; if {@code false}, adjacent
-     * separators are treated as one separator.
+     *                          treated as empty token separators; if {@code false}, adjacent
+     *                          separators are treated as one separator.
      * @return an array of parsed Strings, {@code null} if null String input
      */
     private static String[] splitWorker(final String str, final char separatorChar, final boolean preserveAllTokens) {
@@ -1345,9 +1360,9 @@ public class StringUtils {
      * StringUtils.split("ab:cd:ef", ":") = ["ab", "cd", "ef"]
      * </pre>
      *
-     * @param str  the String to parse, may be null
-     * @param separatorChars  the characters used as the delimiters,
-     *  {@code null} splits on whitespace
+     * @param str            the String to parse, may be null
+     * @param separatorChars the characters used as the delimiters,
+     *                       {@code null} splits on whitespace
      * @return an array of parsed Strings, {@code null} if null String input
      */
     public static String[] split(final String str, final String separatorChars) {
@@ -1377,11 +1392,11 @@ public class StringUtils {
      * StringUtils.split("ab:cd:ef", ":", 2)    = ["ab", "cd:ef"]
      * </pre>
      *
-     * @param str  the String to parse, may be null
-     * @param separatorChars  the characters used as the delimiters,
-     *  {@code null} splits on whitespace
-     * @param max  the maximum number of elements to include in the
-     *  array. A zero or negative value implies no limit
+     * @param str            the String to parse, may be null
+     * @param separatorChars the characters used as the delimiters,
+     *                       {@code null} splits on whitespace
+     * @param max            the maximum number of elements to include in the
+     *                       array. A zero or negative value implies no limit
      * @return an array of parsed Strings, {@code null} if null String input
      */
     public static String[] split(final String str, final String separatorChars, final int max) {
@@ -1393,13 +1408,13 @@ public class StringUtils {
      * {@code splitPreserveAllTokens} methods that return a maximum array
      * length.
      *
-     * @param str  the String to parse, may be {@code null}
-     * @param separatorChars the separate character
-     * @param max  the maximum number of elements to include in the
-     *  array. A zero or negative value implies no limit.
+     * @param str               the String to parse, may be {@code null}
+     * @param separatorChars    the separate character
+     * @param max               the maximum number of elements to include in the
+     *                          array. A zero or negative value implies no limit.
      * @param preserveAllTokens if {@code true}, adjacent separators are
-     * treated as empty token separators; if {@code false}, adjacent
-     * separators are treated as one separator.
+     *                          treated as empty token separators; if {@code false}, adjacent
+     *                          separators are treated as one separator.
      * @return an array of parsed Strings, {@code null} if null String input
      */
     private static String[] splitWorker(final String str, final String separatorChars, final int max, final boolean preserveAllTokens) {
@@ -1503,12 +1518,12 @@ public class StringUtils {
      * StringUtils.replaceOnce("aba", "a", "z")   = "zba"
      * </pre>
      *
-     * @see #replace(String text, String searchString, String replacement, int max)
-     * @param text  text to search and replace in, may be null
-     * @param searchString  the String to search for, may be null
+     * @param text         text to search and replace in, may be null
+     * @param searchString the String to search for, may be null
      * @param replacement  the String to replace with, may be null
      * @return the text with any replacements processed,
-     *  {@code null} if null String input
+     * {@code null} if null String input
+     * @see #replace(String text, String searchString, String replacement, int max)
      */
     public static String replaceOnce(final String text, final String searchString, final String replacement) {
         return replace(text, searchString, replacement, 1);
@@ -1530,12 +1545,12 @@ public class StringUtils {
      * StringUtils.replace("aba", "a", "z")   = "zbz"
      * </pre>
      *
-     * @see #replace(String text, String searchString, String replacement, int max)
-     * @param text  text to search and replace in, may be null
-     * @param searchString  the String to search for, may be null
+     * @param text         text to search and replace in, may be null
+     * @param searchString the String to search for, may be null
      * @param replacement  the String to replace it with, may be null
      * @return the text with any replacements processed,
-     *  {@code null} if null String input
+     * {@code null} if null String input
+     * @see #replace(String text, String searchString, String replacement, int max)
      */
     public static String replace(final String text, final String searchString, final String replacement) {
         return replace(text, searchString, replacement, -1);
@@ -1562,12 +1577,12 @@ public class StringUtils {
      * StringUtils.replace("abaa", "a", "z", -1)  = "zbzz"
      * </pre>
      *
-     * @param text  text to search and replace in, may be null
-     * @param searchString  the String to search for, may be null
+     * @param text         text to search and replace in, may be null
+     * @param searchString the String to search for, may be null
      * @param replacement  the String to replace it with, may be null
-     * @param max  maximum number of values to replace, or {@code -1} if no maximum
+     * @param max          maximum number of values to replace, or {@code -1} if no maximum
      * @return the text with any replacements processed,
-     *  {@code null} if null String input
+     * {@code null} if null String input
      */
     public static String replace(final String text, final String searchString, final String replacement, final int max) {
         return replace(text, searchString, replacement, max, false);
@@ -1596,49 +1611,50 @@ public class StringUtils {
      * StringUtils.replace("abAa", "a", "z", -1, true)  = "zbzz"
      * </pre>
      *
-     * @param text  text to search and replace in, may be null
-     * @param searchString  the String to search for (case insensitive), may be null
+     * @param text         text to search and replace in, may be null
+     * @param searchString the String to search for (case insensitive), may be null
      * @param replacement  the String to replace it with, may be null
-     * @param max  maximum number of values to replace, or {@code -1} if no maximum
-     * @param ignoreCase if true replace is case insensitive, otherwise case sensitive
+     * @param max          maximum number of values to replace, or {@code -1} if no maximum
+     * @param ignoreCase   if true replace is case insensitive, otherwise case sensitive
      * @return the text with any replacements processed,
-     *  {@code null} if null String input
+     * {@code null} if null String input
      */
-     private static String replace(final String text, String searchString, final String replacement, int max, final boolean ignoreCase) {
-         if (isEmpty(text) || isEmpty(searchString) || replacement == null || max == 0) {
-             return text;
-         }
-         String searchText = text;
-         if (ignoreCase) {
-             searchText = text.toLowerCase();
-             searchString = searchString.toLowerCase();
-         }
-         int start = 0;
-         int end = searchText.indexOf(searchString, start);
-         if (end == INDEX_NOT_FOUND) {
-             return text;
-         }
-         final int replLength = searchString.length();
-         int increase = replacement.length() - replLength;
-         increase = increase < 0 ? 0 : increase;
-         increase *= max < 0 ? 16 : max > 64 ? 64 : max;
-         final StringBuilder buf = new StringBuilder(text.length() + increase);
-         while (end != INDEX_NOT_FOUND) {
-             buf.append(text.substring(start, end)).append(replacement);
-             start = end + replLength;
-             if (--max == 0) {
-                 break;
-             }
-             end = searchText.indexOf(searchString, start);
-         }
-         buf.append(text.substring(start));
-         return buf.toString();
-     }
+    private static String replace(final String text, String searchString, final String replacement, int max, final boolean ignoreCase) {
+        if (isEmpty(text) || isEmpty(searchString) || replacement == null || max == 0) {
+            return text;
+        }
+        String searchText = text;
+        if (ignoreCase) {
+            searchText = text.toLowerCase();
+            searchString = searchString.toLowerCase();
+        }
+        int start = 0;
+        int end = searchText.indexOf(searchString, start);
+        if (end == INDEX_NOT_FOUND) {
+            return text;
+        }
+        final int replLength = searchString.length();
+        int increase = replacement.length() - replLength;
+        increase = increase < 0 ? 0 : increase;
+        increase *= max < 0 ? 16 : max > 64 ? 64 : max;
+        final StringBuilder buf = new StringBuilder(text.length() + increase);
+        while (end != INDEX_NOT_FOUND) {
+            buf.append(text.substring(start, end)).append(replacement);
+            start = end + replLength;
+            if (--max == 0) {
+                break;
+            }
+            end = searchText.indexOf(searchString, start);
+        }
+        buf.append(text.substring(start));
+        return buf.toString();
+    }
 
     /**
      * 去掉指定字符串的开头的指定字符
+     *
      * @param stream 原始字符串
-     * @param trim 要删除的字符串
+     * @param trim   要删除的字符串
      * @return
      */
     public static String getStartTrim(String stream, String trim) {
@@ -1729,12 +1745,9 @@ public class StringUtils {
     /**
      * 左补齐
      *
-     * @param target
-     *            目标字符串
-     * @param fix
-     *            补齐字符
-     * @param length
-     *            目标长度
+     * @param target 目标字符串
+     * @param fix    补齐字符
+     * @param length 目标长度
      * @return
      */
     public static String lPad(String target, String fix, int length) {
@@ -1751,12 +1764,9 @@ public class StringUtils {
     /**
      * 右补齐
      *
-     * @param target
-     *            目标字符串
-     * @param fix
-     *            补齐字符
-     * @param length
-     *            目标长度
+     * @param target 目标字符串
+     * @param fix    补齐字符
+     * @param length 目标长度
      * @return
      */
     public static String rPad(String target, String fix, int length) {
@@ -1818,19 +1828,19 @@ public class StringUtils {
         return dest;
     }
 
-    public static String getSha1(String str){
-        if(str==null||str.length()==0){
+    public static String getSha1(String str) {
+        if (str == null || str.length() == 0) {
             return null;
         }
-        char hexDigits[] = {'0','1','2','3','4','5','6','7','8','9',
-                'a','b','c','d','e','f'};
+        char hexDigits[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+                'a', 'b', 'c', 'd', 'e', 'f'};
         try {
             MessageDigest mdTemp = MessageDigest.getInstance("SHA1");
             mdTemp.update(str.getBytes("UTF-8"));
 
             byte[] md = mdTemp.digest();
             int j = md.length;
-            char buf[] = new char[j*2];
+            char buf[] = new char[j * 2];
             int k = 0;
             for (int i = 0; i < j; i++) {
                 byte byte0 = md[i];
@@ -1843,9 +1853,9 @@ public class StringUtils {
         }
     }
 
-    public static boolean isNumeric(String str){
-        for (int i = str.length(); --i>=0;){
-            if (!Character.isDigit(str.charAt(i))){
+    public static boolean isNumeric(String str) {
+        for (int i = str.length(); --i >= 0; ) {
+            if (!Character.isDigit(str.charAt(i))) {
                 return false;
             }
         }
@@ -1866,5 +1876,20 @@ public class StringUtils {
         }
     }
 
+    /**
+     * parse query string
+     */
+    public static Map<String, String> splitQuery(String query) {
+        Map<String, String> params = new LinkedHashMap<String, String>();
+        try {
+            String[] pairs = query.split("&");
+            for (String pair : pairs) {
+                int idx = pair.indexOf("=");
+                params.put(URLDecoder.decode(pair.substring(0, idx), "UTF-8"), URLDecoder.decode(pair.substring(idx + 1), "UTF-8"));
+            }
+        } catch (Exception ignored) {
+        }
+        return params;
+    }
 }
 
