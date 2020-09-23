@@ -1,12 +1,9 @@
 package com.g.miss.accountant.service;
 
-import com.g.miss.accountant.Template.AccountantTemplate;
-import com.g.miss.accountant.Template.AdvanceTemplate;
-import com.g.miss.accountant.bean.AccountInfo;
+import com.g.miss.accountant.Template.RecordTemplate;
 import com.g.miss.accountant.bean.Record;
 import com.g.miss.accountant.dao.AccountInfoDao;
 import com.g.miss.accountant.dao.RecordDao;
-import com.g.miss.accountant.util.DateUtils;
 import com.linecorp.bot.model.message.FlexMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -35,6 +32,6 @@ public class RecordService {
         List<Record> list = recordDao.findByUserIdAndGroupIdOrderByIdDesc(userId, groupId, top);
         String name = accountInfoDao.findAccountInfoByUserIdAndGroupId(userId, groupId).getName();
 
-        return new AdvanceTemplate().get(list, name);
+        return new RecordTemplate().get(list, name);
     }
 }

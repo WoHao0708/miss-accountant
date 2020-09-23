@@ -16,10 +16,14 @@
 
 package com.g.miss.accountant.Template;
 
-import com.g.miss.accountant.bean.AccountInfo;
+import com.g.miss.accountant.bean.Record;
 import com.g.miss.accountant.constants.Constants;
+import com.g.miss.accountant.util.DateUtils;
 import com.linecorp.bot.model.message.FlexMessage;
-import com.linecorp.bot.model.message.flex.component.*;
+import com.linecorp.bot.model.message.flex.component.Box;
+import com.linecorp.bot.model.message.flex.component.FlexComponent;
+import com.linecorp.bot.model.message.flex.component.Separator;
+import com.linecorp.bot.model.message.flex.component.Text;
 import com.linecorp.bot.model.message.flex.container.Bubble;
 import com.linecorp.bot.model.message.flex.unit.FlexAlign;
 import com.linecorp.bot.model.message.flex.unit.FlexFontSize;
@@ -27,32 +31,30 @@ import com.linecorp.bot.model.message.flex.unit.FlexLayout;
 import com.linecorp.bot.model.message.flex.unit.FlexMarginSize;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import static java.util.Arrays.asList;
 
-public class AccountantTemplate {
+public class RecordTemplate {
 
-    public FlexMessage get(List<AccountInfo> accountInfoList) {
+    public FlexMessage get(List<Record> recordList, String name) {
         final Bubble receipt = Bubble.builder()
-                .body(createBody(accountInfoList))
+                .body(createBody(recordList, name))
                 .size(Bubble.BubbleSize.KILO)
                 .build();
         return new FlexMessage("<3", receipt);
     }
 
 
-    private Box createBody(List<AccountInfo> accountInfoList) {
+    private Box createBody(List<Record> recordList, String name) {
         final Text title = Text.builder()
-                .text("記帳檢查結果")
+                .text(name + "的記帳紀錄")
                 .weight(Text.TextWeight.BOLD)
                 .size(FlexFontSize.SM)
                 .color(Constants.COLOR_GREEN)
                 .build();
         final Separator separator = Separator.builder().build();
-        final Box receipt = createReceiptBox(accountInfoList);
+        final Box receipt = createReceiptBox(recordList);
 
         return Box.builder()
                 .layout(FlexLayout.VERTICAL)
@@ -61,50 +63,32 @@ public class AccountantTemplate {
                 .build();
     }
 
-    private Box createReceiptBox(List<AccountInfo> accountInfoList) {
+    private Box createReceiptBox(List<Record> recordList) {
         List<FlexComponent> list = new ArrayList<>();
-        int total = 0;
 
-        for (AccountInfo account : accountInfoList) {
+        for (Record record : recordList) {
+            String amount;
+            if (record.getAmount() < 0) amount = "" + record.getAmount();
+            else if (record.getAmount() == 0) amount = "=0";
+            else amount = "+" + record.getAmount();
+
             final Text name = Text.builder()
-                    .text(account.getName())
+                    .text(DateUtils.format(record.getCreatedTime(), DateUtils.DATE_FORMAT_MM_DD_HH_MM))
                     .size(FlexFontSize.SM)
                     .color(Constants.COLOR_BLACK)
                     .build();
-            final Text amount = Text.builder()
-                    .text("$" + account.getAmount())
+            final Text amountText = Text.builder()
+                    .text(amount)
                     .size(FlexFontSize.SM)
                     .color(Constants.COLOR_BLACK)
                     .align(FlexAlign.END)
                     .build();
             final Box box = Box.builder()
                     .layout(FlexLayout.HORIZONTAL)
-                    .contents(asList(name, amount))
+                    .contents(asList(name, amountText))
                     .build();
-            total += account.getAmount();
             list.add(box);
         }
-
-        final Separator separator = Separator.builder().build();
-
-        final Text title = Text.builder()
-                .text("總計")
-                .size(FlexFontSize.SM)
-                .color(Constants.COLOR_BLACK)
-                .build();
-        final Text text = Text.builder()
-                .text("$" + total)
-                .size(FlexFontSize.SM)
-                .color(Constants.COLOR_BLACK)
-                .align(FlexAlign.END)
-                .build();
-        final Box box = Box.builder()
-                .layout(FlexLayout.HORIZONTAL)
-                .margin(FlexMarginSize.XXL)
-                .contents(asList(title, text))
-                .build();
-        list.add(separator);
-        list.add(box);
 
         return Box.builder()
                 .layout(FlexLayout.VERTICAL)

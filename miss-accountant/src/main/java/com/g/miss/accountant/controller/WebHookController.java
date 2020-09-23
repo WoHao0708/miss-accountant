@@ -82,6 +82,9 @@ public class WebHookController {
             case "other":
                 this.replyText(event.getReplyToken(), Constants.OTHER_MESSAGE);
                 break;
+            case "advanceCheck":
+                this.reply(event.getReplyToken(), accountInfoService.checkGroupAdvance(groupId));
+                break;
             case "advanceSwitch":
                 lineMessagingClient.getGroupMemberProfile(groupId, userId).whenComplete((profile, throwable) -> {
                     String name = profile.getDisplayName();
@@ -210,12 +213,6 @@ public class WebHookController {
                     String name = profile.getDisplayName();
                     accountInfoService.setAdvanceToZero(userId, groupId, name);
                     this.replyText(replyToken, name + "預支: 0");
-                });
-                break;
-            case "c": // c Check group advance.
-                lineMessagingClient.getGroupMemberProfile(groupId, userId).whenComplete((profile, throwable) -> {
-                    String result = accountInfoService.checkGroupAdvance(groupId);
-                    this.replyText(replyToken, result);
                 });
                 break;
             case "a": // r Set group all user isadvance.

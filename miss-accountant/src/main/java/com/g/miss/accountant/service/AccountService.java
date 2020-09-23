@@ -1,11 +1,14 @@
 package com.g.miss.accountant.service;
 
+import com.g.miss.accountant.Template.AdvanceTemplate;
 import com.g.miss.accountant.bean.AccountInfo;
 import com.g.miss.accountant.constants.Constants;
 import com.g.miss.accountant.dao.AccountInfoDao;
 import com.g.miss.accountant.enums.TypeEnum;
 import com.g.miss.accountant.Template.AccountantTemplate;
 import com.linecorp.bot.model.message.FlexMessage;
+import com.linecorp.bot.model.message.Message;
+import com.linecorp.bot.model.message.TextMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -84,31 +87,12 @@ public class AccountService {
         return new AccountantTemplate().get(list);
     }
 
-    public String checkGroupAdvance(String groupId) {
+    public Message checkGroupAdvance(String groupId) {
 
         List<AccountInfo> list = accountInfoDao.findAccountInfoByGroupIdAndIsAdvance(groupId, 1);
-        StringBuilder result = new StringBuilder();
-        int total = 0;
-        int each = 0;
 
-        if (list.size() > 0) {
-            for (AccountInfo item : list) {
-                result.append(item.getName()).append("預支: ").append(item.getAdvance()).append("\n");
-                total += item.getAdvance();
-            }
-
-            each = total / list.size();
-
-            result.append("總預支: ").append(total).append(", 人數: ").append(list.size()).append("\n");
-            result.append(each).append("/人\n\n");
-
-            for (AccountInfo item : list)
-                result.append(item.getName()).append(": ").append(item.getAdvance() - each).append("\n");
-
-        } else
-            result.append(Constants.errorMessage);
-
-        return result.toString().substring(0, result.length() - 1);
+        if (list.size() > 0) return new AdvanceTemplate().get(list);
+        else return new TextMessage(Constants.ADVANCE_ERROR_MESSAGE);
     }
 
     public String switchIsAdvance(String userId, String groupId, String name) {
