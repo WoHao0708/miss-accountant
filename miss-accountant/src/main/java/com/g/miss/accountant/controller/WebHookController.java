@@ -24,7 +24,6 @@ import java.util.concurrent.ExecutionException;
 import com.g.miss.accountant.Template.MenuTemplate;
 import com.g.miss.accountant.constants.Constants;
 import com.g.miss.accountant.service.AccountService;
-import com.g.miss.accountant.service.CommandService;
 import com.g.miss.accountant.service.PublicFundService;
 import com.g.miss.accountant.service.RecordService;
 import com.g.miss.accountant.util.StringUtils;
@@ -58,8 +57,6 @@ public class WebHookController {
     private PublicFundService publicFundService;
     @Autowired
     private RecordService recordService;
-    @Autowired
-    private CommandService commandService;
 
     @EventMapping
     public void handleTextMessageEvent(MessageEvent<TextMessageContent> event) throws Exception {
