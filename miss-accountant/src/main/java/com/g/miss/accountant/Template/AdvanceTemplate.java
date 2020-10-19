@@ -18,11 +18,9 @@ package com.g.miss.accountant.Template;
 
 import com.g.miss.accountant.bean.AccountInfo;
 import com.g.miss.accountant.constants.Constants;
+import com.linecorp.bot.model.action.PostbackAction;
 import com.linecorp.bot.model.message.FlexMessage;
-import com.linecorp.bot.model.message.flex.component.Box;
-import com.linecorp.bot.model.message.flex.component.FlexComponent;
-import com.linecorp.bot.model.message.flex.component.Separator;
-import com.linecorp.bot.model.message.flex.component.Text;
+import com.linecorp.bot.model.message.flex.component.*;
 import com.linecorp.bot.model.message.flex.container.Bubble;
 import com.linecorp.bot.model.message.flex.unit.FlexAlign;
 import com.linecorp.bot.model.message.flex.unit.FlexFontSize;
@@ -39,6 +37,7 @@ public class AdvanceTemplate {
     public FlexMessage get(List<AccountInfo> accountInfoList, Integer number) {
         final Bubble receipt = Bubble.builder()
                 .body(createBody(accountInfoList, number))
+                .footer(createButton())
                 .size(Bubble.BubbleSize.KILO)
                 .build();
         return new FlexMessage("<3", receipt);
@@ -59,6 +58,26 @@ public class AdvanceTemplate {
                 .layout(FlexLayout.VERTICAL)
                 .paddingAll("15px")
                 .contents(asList(title, separator, receipt))
+                .build();
+    }
+
+    private Box createButton() {
+        final Button callAction = Button.builder()
+                .style(Button.ButtonStyle.PRIMARY)
+                .height(Button.ButtonHeight.SMALL)
+                .action(new PostbackAction("分帳檢查", "advanceCheck"))
+                .build();
+        final Button websiteAction = Button.builder()
+                .style(Button.ButtonStyle.SECONDARY)
+                .height(Button.ButtonHeight.SMALL)
+                .action(new PostbackAction("重置", "advanceReset"))
+                .build();
+        return Box.builder()
+                .layout(FlexLayout.HORIZONTAL)
+                .paddingAll("3px")
+                .spacing(FlexMarginSize.SM)
+                .height("40px")
+                .contents(asList(callAction, websiteAction))
                 .build();
     }
 

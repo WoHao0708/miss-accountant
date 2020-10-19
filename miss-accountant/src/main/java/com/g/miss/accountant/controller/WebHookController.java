@@ -96,6 +96,9 @@ public class WebHookController {
                     this.replyText(event.getReplyToken(), result);
                 });
                 break;
+            case "advanceReset":
+                this.reply(event.getReplyToken(), accountInfoService.setGroupAdvanceToZero(groupId));
+                break;
             case "accountCheck":
                 this.reply(event.getReplyToken(), accountInfoService.checkGroupAmount(groupId));
                 break;
@@ -144,7 +147,7 @@ public class WebHookController {
                 lineMessagingClient.getGroupMemberProfile(groupId, userId).whenComplete((profile, throwable) -> {
                     String name = profile.getDisplayName();
                     accountInfoService.setAdvanceToZero(userId, groupId, name);
-                    this.replyText(event.getReplyToken(), name + "預支: 0");
+                    this.replyText(event.getReplyToken(), name + "設定預支為零");
                 });
             }
         }
