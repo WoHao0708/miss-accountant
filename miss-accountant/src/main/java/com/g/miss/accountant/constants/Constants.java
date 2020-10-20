@@ -16,6 +16,8 @@ public class Constants {
 
     public static String ADVANCE_ERROR_MESSAGE = "沒人分 是要分三小";
 
+    public static String ADVANCE_SUCCESS = "已重置";
+
     public static String COLOR_GREEN = "#1DB446";
     public static String COLOR_BLACK = "#555555";
     public static String COLOR_WHITE = "#FFFFFF";

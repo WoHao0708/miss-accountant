@@ -81,19 +81,19 @@ public class AccountService {
     }
 
     public Message setGroupAdvanceToZero(String groupId) {
+        this.setAllUserIsAdvance(groupId, 0);
 
         List<AccountInfo> accountList = accountInfoDao.findAccountInfoByGroupId(groupId);
         StringBuilder result = new StringBuilder();
 
-        for (AccountInfo account: accountList)
-        {
+        for (AccountInfo account : accountList) {
             account.setAdvance(0);
             account.updateInfo(account.getName());
             accountInfoDao.save(account);
 
             result.append(account.getName()).append(", ");
         }
-        if (accountList.size() > 0) result.append("設定預支為零");
+        if (accountList.size() > 0) result.append(Constants.ADVANCE_SUCCESS);
         return new TextMessage(result.toString());
     }
 
