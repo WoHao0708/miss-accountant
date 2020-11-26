@@ -24,7 +24,7 @@ public class AccountInfo {
     private int amount;
     private int advance;
     @Column(name = "is_advance")
-    private Integer isAdvance;
+    private Integer isAdvance = 0;
     @Column(name = "update_time")
     private Date updateTime;
     @Column(name = "created_time")

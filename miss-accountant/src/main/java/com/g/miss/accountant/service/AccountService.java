@@ -43,10 +43,13 @@ public class AccountService {
 
         AccountInfo accountInfo = accountInfoDao.findAccountInfoByUserIdAndGroupId(userId, groupId);
 
-        if (accountInfo != null)
+        if (accountInfo != null) {
             accountInfo.setAdvance(accountInfo.getAdvance() + advance);
-        else
+            accountInfo.setIsAdvance(1);
+        } else {
             accountInfo = new AccountInfo(userId, groupId, advance, TypeEnum.Advance.getId());
+        }
+
 
         accountInfo.updateInfo(name);
         accountInfoDao.save(accountInfo);
