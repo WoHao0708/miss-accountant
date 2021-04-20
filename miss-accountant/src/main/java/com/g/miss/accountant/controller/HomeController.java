@@ -16,14 +16,17 @@
 
 package com.g.miss.accountant.controller;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+@Controller
 public class HomeController {
 
+    /**
+     * Home page
+     */
     @GetMapping("/")
     public String index() {
-        return "Home";
+        return "/index";
     }
 }

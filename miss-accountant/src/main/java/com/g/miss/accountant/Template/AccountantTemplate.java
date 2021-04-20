@@ -16,7 +16,7 @@
 
 package com.g.miss.accountant.Template;
 
-import com.g.miss.accountant.bean.AccountInfo;
+import com.g.miss.accountant.bean.Account;
 import com.g.miss.accountant.constants.Constants;
 import com.linecorp.bot.model.message.FlexMessage;
 import com.linecorp.bot.model.message.flex.component.*;
@@ -27,24 +27,22 @@ import com.linecorp.bot.model.message.flex.unit.FlexLayout;
 import com.linecorp.bot.model.message.flex.unit.FlexMarginSize;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import static java.util.Arrays.asList;
 
 public class AccountantTemplate {
 
-    public FlexMessage get(List<AccountInfo> accountInfoList) {
+    public FlexMessage get(List<Account> accountList) {
         final Bubble receipt = Bubble.builder()
-                .body(createBody(accountInfoList))
+                .body(createBody(accountList))
                 .size(Bubble.BubbleSize.KILO)
                 .build();
         return new FlexMessage("<3", receipt);
     }
 
 
-    private Box createBody(List<AccountInfo> accountInfoList) {
+    private Box createBody(List<Account> accountList) {
         final Text title = Text.builder()
                 .text("記帳檢查結果")
                 .weight(Text.TextWeight.BOLD)
@@ -52,7 +50,7 @@ public class AccountantTemplate {
                 .color(Constants.COLOR_GREEN)
                 .build();
         final Separator separator = Separator.builder().build();
-        final Box receipt = createReceiptBox(accountInfoList);
+        final Box receipt = createReceiptBox(accountList);
 
         return Box.builder()
                 .layout(FlexLayout.VERTICAL)
@@ -61,11 +59,11 @@ public class AccountantTemplate {
                 .build();
     }
 
-    private Box createReceiptBox(List<AccountInfo> accountInfoList) {
+    private Box createReceiptBox(List<Account> accountList) {
         List<FlexComponent> list = new ArrayList<>();
         int total = 0;
 
-        for (AccountInfo account : accountInfoList) {
+        for (Account account : accountList) {
             final Text name = Text.builder()
                     .text(account.getName())
                     .size(FlexFontSize.SM)

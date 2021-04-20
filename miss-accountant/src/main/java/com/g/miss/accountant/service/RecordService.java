@@ -2,7 +2,7 @@ package com.g.miss.accountant.service;
 
 import com.g.miss.accountant.Template.RecordTemplate;
 import com.g.miss.accountant.bean.Record;
-import com.g.miss.accountant.dao.AccountInfoDao;
+import com.g.miss.accountant.dao.AccountDao;
 import com.g.miss.accountant.dao.RecordDao;
 import com.linecorp.bot.model.message.FlexMessage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ import java.util.List;
 public class RecordService {
 
     @Autowired
-    AccountInfoDao accountInfoDao;
+    AccountDao accountDao;
     @Autowired
     RecordDao recordDao;
 
@@ -30,7 +30,7 @@ public class RecordService {
     public FlexMessage getRecordBy(String userId, String groupId, int count) {
         Pageable top = PageRequest.of(0, count);
         List<Record> list = recordDao.findByUserIdAndGroupIdOrderByIdDesc(userId, groupId, top);
-        String name = accountInfoDao.findAccountInfoByUserIdAndGroupId(userId, groupId).getName();
+        String name = accountDao.findAccountInfoByUserIdAndGroupId(userId, groupId).getName();
 
         return new RecordTemplate().get(list, name);
     }

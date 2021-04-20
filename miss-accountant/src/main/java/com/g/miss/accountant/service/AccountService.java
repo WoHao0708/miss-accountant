@@ -1,9 +1,9 @@
 package com.g.miss.accountant.service;
 
 import com.g.miss.accountant.Template.AdvanceTemplate;
-import com.g.miss.accountant.bean.AccountInfo;
+import com.g.miss.accountant.bean.Account;
 import com.g.miss.accountant.constants.Constants;
-import com.g.miss.accountant.dao.AccountInfoDao;
+import com.g.miss.accountant.dao.AccountDao;
 import com.g.miss.accountant.enums.TypeEnum;
 import com.g.miss.accountant.Template.AccountantTemplate;
 import com.linecorp.bot.model.message.FlexMessage;
@@ -18,81 +18,81 @@ import java.util.List;
 public class AccountService {
 
     @Autowired
-    AccountInfoDao accountInfoDao;
+    AccountDao accountDao;
     @Autowired
     RecordService recordService;
 
     public int AddOrUpdateAmount(String userId, String groupId, String name, int amount) {
 
-        AccountInfo accountInfo = accountInfoDao.findAccountInfoByUserIdAndGroupId(userId, groupId);
+        Account account = accountDao.findAccountInfoByUserIdAndGroupId(userId, groupId);
 
-        if (accountInfo != null)
-            accountInfo.setAmount(accountInfo.getAmount() + amount);
+        if (account != null)
+            account.setAmount(account.getAmount() + amount);
         else
-            accountInfo = new AccountInfo(userId, groupId, amount, TypeEnum.Amount.getId());
+            account = new Account(userId, groupId, amount, TypeEnum.Amount.getId());
 
-        accountInfo.updateInfo(name);
-        accountInfoDao.save(accountInfo);
+        account.updateInfo(name);
+        accountDao.save(account);
 
         if (amount != 0) recordService.addRecord(userId, groupId, amount); // 金額 +-0 不做紀錄
 
-        return accountInfo.getAmount();
+        return account.getAmount();
     }
 
     public int AddOrUpdateAdvance(String userId, String groupId, String name, int advance) {
 
-        AccountInfo accountInfo = accountInfoDao.findAccountInfoByUserIdAndGroupId(userId, groupId);
+        Account account = accountDao.findAccountInfoByUserIdAndGroupId(userId, groupId);
 
-        if (accountInfo != null) {
-            accountInfo.setAdvance(accountInfo.getAdvance() + advance);
-            accountInfo.setIsAdvance(1);
+        if (account != null) {
+            account.setAdvance(account.getAdvance() + advance);
+            account.setIsAdvance(1);
         } else {
-            accountInfo = new AccountInfo(userId, groupId, advance, TypeEnum.Advance.getId());
+            account = new Account(userId, groupId, advance, TypeEnum.Advance.getId());
         }
 
 
-        accountInfo.updateInfo(name);
-        accountInfoDao.save(accountInfo);
+        account.updateInfo(name);
+        accountDao.save(account);
 
-        return accountInfo.getAdvance();
+        return account.getAdvance();
     }
 
     public void setAmountToZero(String userId, String groupId, String name) {
 
-        AccountInfo accountInfo = accountInfoDao.findAccountInfoByUserIdAndGroupId(userId, groupId);
+        Account account = accountDao.findAccountInfoByUserIdAndGroupId(userId, groupId);
 
-        if (accountInfo == null)
-            accountInfo = new AccountInfo(userId, groupId, 0, TypeEnum.Amount.getId());
+        if (account == null)
+            account = new Account(userId, groupId, 0, TypeEnum.Amount.getId());
 
-        accountInfo.setAmount(0);
-        accountInfo.updateInfo(name);
-        accountInfoDao.save(accountInfo);
+        account.setAmount(0);
+        account.updateInfo(name);
+        accountDao.save(account);
 
         recordService.addRecord(userId, groupId, 0);
     }
 
     public void setAdvanceToZero(String userId, String groupId, String name) {
 
-        AccountInfo accountInfo = accountInfoDao.findAccountInfoByUserIdAndGroupId(userId, groupId);
+        Account account = accountDao.findAccountInfoByUserIdAndGroupId(userId, groupId);
 
-        if (accountInfo == null)
-            accountInfo = new AccountInfo(userId, groupId, 0, TypeEnum.Advance.getId());
+        if (account == null)
+            account = new Account(userId, groupId, 0, TypeEnum.Advance.getId());
 
-        accountInfo.setAdvance(0);
-        accountInfo.updateInfo(name);
-        accountInfoDao.save(accountInfo);
+        account.setAdvance(0);
+        account.updateInfo(name);
+        accountDao.save(account);
     }
 
     public Message setGroupAdvanceToZero(String groupId) {
         this.setAllUserIsAdvance(groupId, 0);
 
-        List<AccountInfo> accountList = accountInfoDao.findAccountInfoByGroupId(groupId);
+        List<Account> accountList = accountDao.findAccountInfoByGroupId(groupId);
         StringBuilder result = new StringBuilder();
 
-        for (AccountInfo account : accountList) {
+        for (Account account : accountList) {
             account.setAdvance(0);
             account.updateInfo(account.getName());
-            accountInfoDao.save(account);
+            accountDao.save(account);
 
             result.append(account.getName()).append(", ");
         }
@@ -102,11 +102,10 @@ public class AccountService {
 
     public FlexMessage checkGroupAmount(String groupId) {
 
-        List<AccountInfo> list = accountInfoDao.findAccountInfoByGroupId(groupId);
+        List<Account> list = accountDao.findAccountInfoByGroupId(groupId);
 
         return new AccountantTemplate().get(list);
     }
-
 
     public Message checkGroupAdvance(String groupId) {
         return checkGroupAdvance(groupId, null);
@@ -114,7 +113,7 @@ public class AccountService {
 
     public Message checkGroupAdvance(String groupId, Integer number) { // number 外人分帳
 
-        List<AccountInfo> list = accountInfoDao.findAccountInfoByGroupIdAndIsAdvance(groupId, 1);
+        List<Account> list = accountDao.findAccountInfoByGroupIdAndIsAdvance(groupId, 1);
 
         if (number == null) number = list.size();
 
@@ -124,26 +123,26 @@ public class AccountService {
 
     public String switchIsAdvance(String userId, String groupId, String name) {
 
-        AccountInfo accountInfo = accountInfoDao.findAccountInfoByUserIdAndGroupId(userId, groupId);
+        Account account = accountDao.findAccountInfoByUserIdAndGroupId(userId, groupId);
 
-        if (accountInfo == null) accountInfo = new AccountInfo(userId, groupId);
+        if (account == null) account = new Account(userId, groupId);
 
-        String result = accountInfo.switchIsAdvance();
-        accountInfo.updateInfo(name);
-        accountInfoDao.save(accountInfo);
+        String result = account.switchIsAdvance();
+        account.updateInfo(name);
+        accountDao.save(account);
 
         return name + result;
     }
 
     public String setAllUserIsAdvance(String groupId, int suffix) {
 
-        List<AccountInfo> list = accountInfoDao.findAccountInfoByGroupId(groupId);
+        List<Account> list = accountDao.findAccountInfoByGroupId(groupId);
         StringBuilder result = new StringBuilder();
 
         if (suffix < 2 && list.size() > 0) {
-            for (AccountInfo item : list) {
+            for (Account item : list) {
                 item.setIsAdvance(suffix);
-                accountInfoDao.save(item);
+                accountDao.save(item);
                 result.append(item.getName()).append(", ");
             }
             if (suffix == 0) result.append("設定為不分帳");
@@ -152,5 +151,13 @@ public class AccountService {
             result.append("設定失敗");
 
         return result.toString();
+    }
+
+    public List<Account> getGroupUser(String groupId, String userId) {
+        if (groupId.isEmpty() || userId.isEmpty()) return null;
+
+        List<Account> accountList = accountDao.findAccountInfoByGroupIdAndUserIdIsNot(groupId, userId);
+
+        return accountList;
     }
 }

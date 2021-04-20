@@ -1,0 +1,26 @@
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LIFF init</title>
+</head>
+
+<body>
+<form id="account" action="/debt" method="post">
+    <input type="hidden" id="userId" name="userId" value="">
+    <input type="hidden" id="groupId" name="groupId" value="">
+    <button type="submit">submit</button>
+</form>
+<script src="https://d.line-scdn.net/liff/1.0/sdk.js"></script>
+
+<script type="text/javascript">
+    var event = new Event('input');
+    document.getElementById("groupId").addEventListener('input', function () {
+        document.getElementById("account").submit()
+    });
+
+    liff.init(function (data) {
+        document.getElementById('userId').value = data.context.userId;
+        document.getElementById('groupId').value = data.context.groupId;
+        document.getElementById('groupId').dispatchEvent(event);
+    });
+</script>
+</body>

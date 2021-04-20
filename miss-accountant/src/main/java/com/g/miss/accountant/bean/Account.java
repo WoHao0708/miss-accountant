@@ -11,7 +11,7 @@ import java.util.Date;
 @Setter
 @Entity
 @Table(name = "account_info")
-public class AccountInfo {
+public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,7 +30,7 @@ public class AccountInfo {
     @Column(name = "created_time")
     private Date createdTime;
 
-    public AccountInfo(String userId, String groupId, int amount, int type) {
+    public Account(String userId, String groupId, int amount, int type) {
         this.userId = userId;
         this.groupId = groupId;
         if (type == 1)
@@ -40,13 +40,13 @@ public class AccountInfo {
         this.createdTime = new Date();
     }
 
-    public AccountInfo(String userId, String groupId) {
+    public Account(String userId, String groupId) {
         this.userId = userId;
         this.groupId = groupId;
         this.createdTime = new Date();
     }
 
-    public AccountInfo() {
+    public Account() {
     }
 
     public void updateInfo(String name) {

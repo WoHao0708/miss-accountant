@@ -18,6 +18,7 @@ package com.g.miss.accountant.Template;
 
 import com.g.miss.accountant.constants.Constants;
 import com.linecorp.bot.model.action.PostbackAction;
+import com.linecorp.bot.model.action.URIAction;
 import com.linecorp.bot.model.message.FlexMessage;
 import com.linecorp.bot.model.message.flex.component.*;
 import com.linecorp.bot.model.message.flex.component.Box;
@@ -29,13 +30,16 @@ import com.linecorp.bot.model.message.flex.unit.FlexAlign;
 import com.linecorp.bot.model.message.flex.unit.FlexFontSize;
 import com.linecorp.bot.model.message.flex.unit.FlexLayout;
 import com.linecorp.bot.model.message.flex.unit.FlexMarginSize;
+import org.apache.tomcat.websocket.server.UriTemplate;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.function.Supplier;
 
 import static java.util.Arrays.asList;
 
 public class MenuTemplate {
-    public FlexMessage get(String publicFund) {
+    public FlexMessage get(String publicFund)  {
         final Bubble account = Bubble.builder()
                 .size(Bubble.BubbleSize.NANO)
                 .body(createAccountMenu())
@@ -93,6 +97,12 @@ public class MenuTemplate {
     }
 
     private Box createOtherMenu(String publicFund) {
+        URI uri = null;
+        try {
+            uri = new URI("https://liff.line.me/1655817867-5ylLjNv4");
+        } catch (Exception ignored){
+
+        }
 
         final Text text = Text.builder()
                 .text(publicFund)
@@ -109,7 +119,8 @@ public class MenuTemplate {
         final Button button = Button.builder()
                 .style(ButtonStyle.SECONDARY)
                 .height(ButtonHeight.SMALL)
-                .action(new PostbackAction("說明", "help"))
+//                .action(new PostbackAction("說明", "help"))
+                .action(new URIAction("link", uri, null))
                 .build();
         return Box.builder()
                 .layout(FlexLayout.VERTICAL)

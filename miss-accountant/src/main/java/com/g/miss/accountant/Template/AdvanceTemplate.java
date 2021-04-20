@@ -16,7 +16,7 @@
 
 package com.g.miss.accountant.Template;
 
-import com.g.miss.accountant.bean.AccountInfo;
+import com.g.miss.accountant.bean.Account;
 import com.g.miss.accountant.constants.Constants;
 import com.linecorp.bot.model.action.PostbackAction;
 import com.linecorp.bot.model.message.FlexMessage;
@@ -34,9 +34,9 @@ import static java.util.Arrays.asList;
 
 public class AdvanceTemplate {
 
-    public FlexMessage get(List<AccountInfo> accountInfoList, Integer number) {
+    public FlexMessage get(List<Account> accountList, Integer number) {
         final Bubble receipt = Bubble.builder()
-                .body(createBody(accountInfoList, number))
+                .body(createBody(accountList, number))
                 .footer(createButton())
                 .size(Bubble.BubbleSize.KILO)
                 .build();
@@ -44,7 +44,7 @@ public class AdvanceTemplate {
     }
 
 
-    private Box createBody(List<AccountInfo> accountInfoList, Integer number) {
+    private Box createBody(List<Account> accountList, Integer number) {
         final Text title = Text.builder()
                 .text("分帳檢查結果")
                 .weight(Text.TextWeight.BOLD)
@@ -52,7 +52,7 @@ public class AdvanceTemplate {
                 .color(Constants.COLOR_GREEN)
                 .build();
         final Separator separator = Separator.builder().build();
-        final Box receipt = createReceiptBox(accountInfoList, number);
+        final Box receipt = createReceiptBox(accountList, number);
 
         return Box.builder()
                 .layout(FlexLayout.VERTICAL)
@@ -81,12 +81,12 @@ public class AdvanceTemplate {
                 .build();
     }
 
-    private Box createReceiptBox(List<AccountInfo> accountInfoList, Integer number) {
+    private Box createReceiptBox(List<Account> accountList, Integer number) {
         List<FlexComponent> list = new ArrayList<>();
         int total = 0;
         int money = 0;
 
-        for (AccountInfo account : accountInfoList) {
+        for (Account account : accountList) {
             final Text name = Text.builder()
                     .text(account.getName() + "預支")
                     .size(FlexFontSize.SM)
@@ -167,7 +167,7 @@ public class AdvanceTemplate {
         list.add(separator);
         list.add(separatorWhite);
 
-        for (AccountInfo account : accountInfoList) {
+        for (Account account : accountList) {
             final Text name = Text.builder()
                     .text(account.getName())
                     .size(FlexFontSize.SM)
