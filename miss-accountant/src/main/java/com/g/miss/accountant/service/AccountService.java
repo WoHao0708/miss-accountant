@@ -6,6 +6,7 @@ import com.g.miss.accountant.constants.Constants;
 import com.g.miss.accountant.dao.AccountDao;
 import com.g.miss.accountant.enums.TypeEnum;
 import com.g.miss.accountant.Template.AccountantTemplate;
+import com.g.miss.accountant.util.JsonUtils;
 import com.linecorp.bot.model.message.FlexMessage;
 import com.linecorp.bot.model.message.Message;
 import com.linecorp.bot.model.message.TextMessage;
@@ -21,23 +22,6 @@ public class AccountService {
     AccountDao accountDao;
     @Autowired
     RecordService recordService;
-
-    public int AddOrUpdateAmount(String userId, String groupId, String name, int amount) {
-
-        Account account = accountDao.findAccountInfoByUserIdAndGroupId(userId, groupId);
-
-        if (account != null)
-            account.setAmount(account.getAmount() + amount);
-        else
-            account = new Account(userId, groupId, amount, TypeEnum.Amount.getId());
-
-        account.updateInfo(name);
-        accountDao.save(account);
-
-        if (amount != 0) recordService.addRecord(userId, groupId, amount); // 金額 +-0 不做紀錄
-
-        return account.getAmount();
-    }
 
     public int AddOrUpdateAdvance(String userId, String groupId, String name, int advance) {
 
@@ -55,20 +39,6 @@ public class AccountService {
         accountDao.save(account);
 
         return account.getAdvance();
-    }
-
-    public void setAmountToZero(String userId, String groupId, String name) {
-
-        Account account = accountDao.findAccountInfoByUserIdAndGroupId(userId, groupId);
-
-        if (account == null)
-            account = new Account(userId, groupId, 0, TypeEnum.Amount.getId());
-
-        account.setAmount(0);
-        account.updateInfo(name);
-        accountDao.save(account);
-
-        recordService.addRecord(userId, groupId, 0);
     }
 
     public void setAdvanceToZero(String userId, String groupId, String name) {
@@ -153,11 +123,11 @@ public class AccountService {
         return result.toString();
     }
 
-    public List<Account> getGroupUser(String groupId, String userId) {
+    public String getGroupUser(String groupId, String userId) {
         if (groupId.isEmpty() || userId.isEmpty()) return null;
 
         List<Account> accountList = accountDao.findAccountInfoByGroupIdAndUserIdIsNot(groupId, userId);
 
-        return accountList;
+        return JsonUtils.toJson(accountList);
     }
 }

@@ -135,13 +135,13 @@ public class WebHookController {
             final String userId = event.getSource().getUserId();
             final String groupId = ((GroupSource) event.getSource()).getGroupId();
 
-            if ("$$".equals(text)) {
-                lineMessagingClient.getGroupMemberProfile(groupId, userId).whenComplete((profile, throwable) -> {
-                    String name = profile.getDisplayName();
-                    accountInfoService.setAmountToZero(userId, groupId, name);
-                    this.replyText(event.getReplyToken(), name + ": 0");
-                });
-            }
+//            if ("$$".equals(text)) {
+//                lineMessagingClient.getGroupMemberProfile(groupId, userId).whenComplete((profile, throwable) -> {
+//                    String name = profile.getDisplayName();
+//                    accountInfoService.setAmountToZero(userId, groupId, name);
+//                    this.replyText(event.getReplyToken(), name + ": 0");
+//                });
+//            }
 
             if ("//".equals(text)) {
                 lineMessagingClient.getGroupMemberProfile(groupId, userId).whenComplete((profile, throwable) -> {
@@ -168,18 +168,18 @@ public class WebHookController {
         final String groupId = ((GroupSource) event.getSource()).getGroupId();
 
         switch (infix) {
-            case "+": // +
-                lineMessagingClient.getGroupMemberProfile(groupId, userId).whenComplete((profile, throwable) -> {
-                    String name = profile.getDisplayName();
-                    this.replyText(event.getReplyToken(), name + ": " + accountInfoService.AddOrUpdateAmount(userId, groupId, name, suffix));
-                });
-                break;
-            case "-": // -
-                lineMessagingClient.getGroupMemberProfile(groupId, userId).whenComplete((profile, throwable) -> {
-                    String name = profile.getDisplayName();
-                    this.replyText(event.getReplyToken(), name + ": " + accountInfoService.AddOrUpdateAmount(userId, groupId, name, -suffix));
-                });
-                break;
+//            case "+": // +
+//                lineMessagingClient.getGroupMemberProfile(groupId, userId).whenComplete((profile, throwable) -> {
+//                    String name = profile.getDisplayName();
+//                    this.replyText(event.getReplyToken(), name + ": " + accountInfoService.AddOrUpdateAmount(userId, groupId, name, suffix));
+//                });
+//                break;
+//            case "-": // -
+//                lineMessagingClient.getGroupMemberProfile(groupId, userId).whenComplete((profile, throwable) -> {
+//                    String name = profile.getDisplayName();
+//                    this.replyText(event.getReplyToken(), name + ": " + accountInfoService.AddOrUpdateAmount(userId, groupId, name, -suffix));
+//                });
+//                break;
             case "r": // r Get record.
                 this.reply(event.getReplyToken(), recordService.getRecordBy(userId, groupId, suffix));
                 break;

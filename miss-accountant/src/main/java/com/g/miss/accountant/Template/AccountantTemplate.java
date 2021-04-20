@@ -63,25 +63,25 @@ public class AccountantTemplate {
         List<FlexComponent> list = new ArrayList<>();
         int total = 0;
 
-        for (Account account : accountList) {
-            final Text name = Text.builder()
-                    .text(account.getName())
-                    .size(FlexFontSize.SM)
-                    .color(Constants.COLOR_BLACK)
-                    .build();
-            final Text amount = Text.builder()
-                    .text("$" + account.getAmount())
-                    .size(FlexFontSize.SM)
-                    .color(Constants.COLOR_BLACK)
-                    .align(FlexAlign.END)
-                    .build();
-            final Box box = Box.builder()
-                    .layout(FlexLayout.HORIZONTAL)
-                    .contents(asList(name, amount))
-                    .build();
-            total += account.getAmount();
-            list.add(box);
-        }
+//        for (Account account : accountList) {
+//            final Text name = Text.builder()
+//                    .text(account.getName())
+//                    .size(FlexFontSize.SM)
+//                    .color(Constants.COLOR_BLACK)
+//                    .build();
+//            final Text amount = Text.builder()
+//                    .text("$" + account.getAmount())
+//                    .size(FlexFontSize.SM)
+//                    .color(Constants.COLOR_BLACK)
+//                    .align(FlexAlign.END)
+//                    .build();
+//            final Box box = Box.builder()
+//                    .layout(FlexLayout.HORIZONTAL)
+//                    .contents(asList(name, amount))
+//                    .build();
+//            total += account.getAmount();
+//            list.add(box);
+//        }
 
         final Separator separator = Separator.builder().build();
 

@@ -21,7 +21,6 @@ public class Account {
     @Column(name = "group_id")
     private String groupId;
     private String name;
-    private int amount;
     private int advance;
     @Column(name = "is_advance")
     private Integer isAdvance = 0;
@@ -33,9 +32,7 @@ public class Account {
     public Account(String userId, String groupId, int amount, int type) {
         this.userId = userId;
         this.groupId = groupId;
-        if (type == 1)
-            this.amount = amount;
-        else
+        if (type != 1)
             this.advance = amount;
         this.createdTime = new Date();
     }

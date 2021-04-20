@@ -167,25 +167,25 @@ public class AdvanceTemplate {
         list.add(separator);
         list.add(separatorWhite);
 
-        for (Account account : accountList) {
-            final Text name = Text.builder()
-                    .text(account.getName())
-                    .size(FlexFontSize.SM)
-                    .color(Constants.COLOR_BLACK)
-                    .build();
-            final Text amount = Text.builder()
-                    .text("$" + (account.getAdvance() - money))
-                    .size(FlexFontSize.SM)
-                    .color(Constants.COLOR_BLACK)
-                    .align(FlexAlign.END)
-                    .build();
-            final Box box = Box.builder()
-                    .layout(FlexLayout.HORIZONTAL)
-                    .contents(asList(name, amount))
-                    .build();
-            total += account.getAmount();
-            list.add(box);
-        }
+//        for (Account account : accountList) {
+//            final Text name = Text.builder()
+//                    .text(account.getName())
+//                    .size(FlexFontSize.SM)
+//                    .color(Constants.COLOR_BLACK)
+//                    .build();
+//            final Text amount = Text.builder()
+//                    .text("$" + (account.getAdvance() - money))
+//                    .size(FlexFontSize.SM)
+//                    .color(Constants.COLOR_BLACK)
+//                    .align(FlexAlign.END)
+//                    .build();
+//            final Box box = Box.builder()
+//                    .layout(FlexLayout.HORIZONTAL)
+//                    .contents(asList(name, amount))
+//                    .build();
+//            total += account.getAmount();
+//            list.add(box);
+//        }
 
         return Box.builder()
                 .layout(FlexLayout.VERTICAL)
