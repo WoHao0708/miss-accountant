@@ -20,7 +20,6 @@ import com.g.miss.accountant.service.AccountService;
 import com.g.miss.accountant.service.DebtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -44,14 +43,18 @@ public class DebtController {
     /**
      * 個人明細頁
      */
+    @GetMapping("/debt/list")
+    public String list() {
+        return "/debt/list";
+    }
 
     /**
      * 取得群組內的user
      */
     @ResponseBody
     @PostMapping("/debt/getAccount")
-    public String getAccount(@RequestParam String userId, @RequestParam String groupId) {
-        return accountService.getGroupUser(groupId, userId);
+    public String getAccount(@RequestParam String userId, @RequestParam String groupId, @RequestParam String name) {
+        return accountService.getGroupUserExcept(groupId, userId, name);
     }
 
     /**
@@ -61,5 +64,14 @@ public class DebtController {
     @PostMapping("/debt/add")
     public String addDebt(String[] userIds, @RequestParam int amount, @RequestParam String userId, @RequestParam String groupId, String note) {
         return debtService.addDebt(userIds, userId, groupId, amount, note);
+    }
+
+    /**
+     * Get debt list
+     */
+    @ResponseBody
+    @PostMapping("/debt/getList")
+    public String getList( @RequestParam String userId, @RequestParam String groupId){
+        return debtService.getDebt(groupId, userId);
     }
 }

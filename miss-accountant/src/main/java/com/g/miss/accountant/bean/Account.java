@@ -1,23 +1,21 @@
 package com.g.miss.accountant.bean;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Date;
 
-// todo 雙主鍵
-@Getter
-@Setter
+@Data
 @Entity
 @Table(name = "account_info")
+@IdClass(AccountId.class)
 public class Account {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
     @Column(name = "user_id")
     private String userId;
+    @Id
     @Column(name = "group_id")
     private String groupId;
     private String name;

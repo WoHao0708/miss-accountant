@@ -39,7 +39,7 @@ import java.util.function.Supplier;
 import static java.util.Arrays.asList;
 
 public class MenuTemplate {
-    public FlexMessage get(String publicFund)  {
+    public FlexMessage get(String publicFund) {
         final Bubble account = Bubble.builder()
                 .size(Bubble.BubbleSize.NANO)
                 .body(createAccountMenu())
@@ -59,15 +59,23 @@ public class MenuTemplate {
     }
 
     private Box createAccountMenu() {
+        URI debtUri = null;
+        URI debtRecordUri = null;
+        try {
+            debtUri = new URI("https://liff.line.me/1655817867-5ylLjNv4");
+            debtRecordUri = new URI("https://liff.line.me/1655817867-XmmoMNpY");
+        } catch (Exception ignored) {
+        }
+
         final Button callAction = Button.builder()
                 .style(ButtonStyle.PRIMARY)
                 .height(ButtonHeight.SMALL)
-                .action(new PostbackAction("記帳檢查", "accountCheck"))
+                .action(new URIAction("記帳", debtUri, null))
                 .build();
         final Button websiteAction = Button.builder()
                 .style(ButtonStyle.SECONDARY)
                 .height(ButtonHeight.SMALL)
-                .action(new PostbackAction("記帳紀錄", "accountRecord"))
+                .action(new URIAction("紀錄", debtRecordUri, null))
                 .build();
         return Box.builder()
                 .layout(FlexLayout.VERTICAL)
@@ -100,7 +108,7 @@ public class MenuTemplate {
         URI uri = null;
         try {
             uri = new URI("https://liff.line.me/1655817867-5ylLjNv4");
-        } catch (Exception ignored){
+        } catch (Exception ignored) {
 
         }
 
@@ -119,7 +127,6 @@ public class MenuTemplate {
         final Button button = Button.builder()
                 .style(ButtonStyle.SECONDARY)
                 .height(ButtonHeight.SMALL)
-//                .action(new PostbackAction("說明", "help"))
                 .action(new URIAction("link", uri, null))
                 .build();
         return Box.builder()

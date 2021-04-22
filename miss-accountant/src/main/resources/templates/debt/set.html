@@ -12,16 +12,13 @@
     <form method="post">
         <input type="hidden" id="userId" name="userId">
         <input type="hidden" id="groupId" name="groupId">
+        <input type="hidden" id="name" name="name">
         <div class="form-area">
             <div class="group">
                 <label>
                     <input type="checkbox" class="select-all"/>
                     <span>All</span>
                 </label>
-                <!--                <label th:each="account:${accounts}">-->
-                <!--                    <input type="checkbox" name="userIds" th:value="${account.userId}"/>-->
-                <!--                    <span th:text="${account.name}"></span>-->
-                <!--                </label>-->
             </div>
             <div class="group">
                 <input type="number" pattern="[0-9]*" class="form-control" placeholder="每人金額" id="amount" name="amount"
@@ -29,7 +26,7 @@
                 <i class="fa fa-dollar"></i>
             </div>
             <div class="group">
-                <input type="text" class="form-control" placeholder="備註" id="note" name="note"/>
+                <input type="text" class="form-control" placeholder="項目" id="note" name="note"/>
                 <i class="fa fa-pencil-square-o"></i>
             </div>
             <button type="button" class="btn btn-default btn-block submit"><p style="padding-top: 7px">送出</p></button>
@@ -61,8 +58,13 @@
     liff.init(function (data) {
         $('#userId').val(data.context.userId);
         $('#groupId').val(data.context.groupId);
-        $('#groupId').trigger("input");
+        liff.getProfile().then(function (profile) {
+            $('#name').val(profile.displayName);
+            $('#groupId').trigger("input");
+        });
     });
+
+
 
     $(".submit").click(function () {
         $.ajax({

@@ -34,7 +34,6 @@ public class AccountService {
             account = new Account(userId, groupId, advance, TypeEnum.Advance.getId());
         }
 
-
         account.updateInfo(name);
         accountDao.save(account);
 
@@ -123,11 +122,27 @@ public class AccountService {
         return result.toString();
     }
 
-    public String getGroupUser(String groupId, String userId) {
+    public String getGroupUserExcept(String groupId, String userId, String name) {
         if (groupId.isEmpty() || userId.isEmpty()) return null;
-
+        setAccount(groupId, userId, name);
         List<Account> accountList = accountDao.findAccountInfoByGroupIdAndUserIdIsNot(groupId, userId);
 
         return JsonUtils.toJson(accountList);
+    }
+
+    public List<Account> getGroupAllUser(String groupId, String userId) {
+        if (groupId.isEmpty() || userId.isEmpty()) return null;
+        List<Account> accountList = accountDao.findAccountInfoByGroupId(groupId);
+
+        return accountList;
+    }
+
+    private void setAccount(String groupId, String userId, String name) {
+        Account account = accountDao.findAccountInfoByUserIdAndGroupId(userId, groupId);
+
+        if (account == null) account = new Account(userId, groupId);
+        account.updateInfo(name);
+
+        accountDao.save(account);
     }
 }

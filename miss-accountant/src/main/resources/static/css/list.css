@@ -1,0 +1,23 @@
+/* ================================================
+Customizal Css
+================================================ */
+
+.login-form {
+    width: 350px;
+}
+
+.panel {
+    padding: 10px;
+}
+.table>thead>tr>td,
+.table>tbody>tr>td {
+    padding: 10px;
+}
+
+.td-30 {
+    width: 30%;
+}
+
+.td-10 {
+    width: 10%;
+}

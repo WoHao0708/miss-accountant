@@ -1,5 +1,6 @@
 package com.g.miss.accountant.bean;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,6 +25,9 @@ public class Debt {
     private int amount;
     private String note;
     private Date createdTime;
+
+    @Transient
+    private String name;
 
     public Debt(String userId, String groupId, String creditor, int amount, String note) {
         this.userId = userId;
