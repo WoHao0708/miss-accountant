@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>記帳本</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/root.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/list.css">
+</head>
+<body>
+<div class="login-form list-style">
+    <form method="post">
+        <input type="hidden" id="userId" name="userId">
+        <input type="hidden" id="groupId" name="groupId">
+    </form>
+        <div class="row">
+            <!-- Start Panel -->
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-body table-responsive">
+                        <!--                        <? if($pagination):?><ul class="pagination"><?=$pagination?></ul><? endif;?>-->
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <td class="td-30">債權人</td>
+                                <td class="td-30">項目</td>
+                                <td class="td-30">金額</td>
+                                <td class="td-10">功能</td>
+                            </tr>
+                            </thead>
+                            <tbody><tr><td class="td-30">豪</td><td class="td-30">食材</td><td class="td-30">55455</td><td><button>刪除</button></td></tr>
+                            </tbody>
+                        </table>
+                        <!--                        <? if($pagination):?><ul class="pagination"><?=$pagination?></ul><? endif;?>-->
+                    </div>
+                </div>
+            </div>
+            <!-- End Panel -->
+        </div>
+</div>
+
+<script src="https://d.line-scdn.net/liff/1.0/sdk.js"></script>
+<script src="/static/js/jquery.min.js"></script>
+<script type="text/javascript">
+    var event = new Event('input');
+    $("#groupId").bind('input', function () {
+        $.ajax({
+            url: "/debt/getList",
+            type: "POST",
+            data: $("form").serialize(),
+            dataType: "json",
+            error: function (err) {
+                console.log(err);
+            },
+            success: function (result) {
+                $('#userId').val(result);
+                result.forEach(setDebtList);
+            }
+        });
+    });
+
+    liff.init(function (data) {
+        $('#userId').val(data.context.userId);
+        $('#groupId').val(data.context.groupId);
+        $('#groupId').trigger("input");
+    });
+
+    function setDebtList(item, index) {
+        $("tbody:last").append("<tr><td class='td-30'>" + item.name + "</td><td class='td-30'>" + item.note + "</td><td class='td-30'>" + item.amount + "</td></tr>")
+    }
+</script>
+</body>
+</html>
