@@ -71,7 +71,16 @@ public class DebtController {
      */
     @ResponseBody
     @PostMapping("/debt/getList")
-    public String getList( @RequestParam String userId, @RequestParam String groupId){
+    public String getList(@RequestParam String userId, @RequestParam String groupId) {
         return debtService.getDebt(groupId, userId);
+    }
+
+    /**
+     * Delete debt
+     */
+    @ResponseBody
+    @PostMapping("/debt/delete")
+    public String deleteDebt(@RequestParam String debtId) {
+        return debtService.deleteDebt(Integer.parseInt(debtId));
     }
 }

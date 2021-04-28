@@ -44,8 +44,8 @@ public class DebtService {
 
     public String getDebt(String groupId, String userId) {
 
-        List<Debt> debtList = debtDao.findDebtByGroupIdAndUserId(groupId, userId);
-        List<Debt> ownDebtList = debtDao.findDebtByGroupIdAndCreditor(groupId, userId);
+        List<Debt> debtList = debtDao.findDebtByGroupIdAndUserIdAndIsDelete(groupId, userId, 0);
+        List<Debt> ownDebtList = debtDao.findDebtByGroupIdAndCreditorAndIsDelete(groupId, userId, 0);
         List<Account> accountList = accountService.getGroupAllUser(groupId, userId);
         Map<String, String> nameMap = new HashMap<>();
 
@@ -58,10 +58,23 @@ public class DebtService {
         }
 
         for (Debt debt: ownDebtList) {
-            debt.setName(nameMap.get(debt.getCreditor()));
+            debt.setName(nameMap.get(debt.getUserId()));
+            debt.setIsOwner(1);
         }
         debtList.addAll(ownDebtList);
 
         return JsonUtils.toJson(debtList);
+    }
+
+    public String deleteDebt(int debtId){
+        AjaxResponse ajaxResponse = new AjaxResponse();
+        Debt debt = debtDao.findDebtById(debtId);
+        debt.setIsDelete(1);
+
+        debtDao.save(debt);
+
+        ajaxResponse.setStatus(1);
+
+        return ajaxResponse.toString();
     }
 }

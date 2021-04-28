@@ -25,9 +25,13 @@ public class Debt {
     private int amount;
     private String note;
     private Date createdTime;
+    @Column(name = "is_delete")
+    private Integer isDelete;
 
     @Transient
     private String name;
+    @Transient
+    private int isOwner = 0;
 
     public Debt(String userId, String groupId, String creditor, int amount, String note) {
         this.userId = userId;
