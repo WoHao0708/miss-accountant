@@ -37,7 +37,7 @@ public class DebtController {
      */
     @GetMapping("/debt")
     public String debt() {
-        return "/debt/set";
+        return "/debt/add";
     }
 
     /**

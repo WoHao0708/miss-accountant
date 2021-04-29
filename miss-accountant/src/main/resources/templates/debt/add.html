@@ -48,8 +48,6 @@
                 console.log(err);
             },
             success: function (result) {
-                console.log(result);
-                $('#userId').val(result);
                 result.forEach(setAccountButton);
             }
         });
@@ -76,9 +74,11 @@
                 console.log(err);
             },
             success: function (result) {
-                $("#note").val("");
-                $("#amount").val("");
-                $("input[type='checkbox']").prop("checked", false);
+                if (result.status === 1) {
+                    $("#note").val("");
+                    $("#amount").val("");
+                    $("input[type='checkbox']").prop("checked", false);
+                }
                 $("p").text(result.message);
                 $("p").fadeOut(2000);
                 setTimeout(setButtonText, 2000);

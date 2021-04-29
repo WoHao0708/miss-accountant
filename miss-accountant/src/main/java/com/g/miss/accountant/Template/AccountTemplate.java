@@ -18,6 +18,7 @@ package com.g.miss.accountant.Template;
 
 import com.g.miss.accountant.bean.Account;
 import com.g.miss.accountant.constants.Constants;
+import com.linecorp.bot.model.action.PostbackAction;
 import com.linecorp.bot.model.message.FlexMessage;
 import com.linecorp.bot.model.message.flex.component.*;
 import com.linecorp.bot.model.message.flex.container.Bubble;
@@ -31,16 +32,16 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 
-public class AccountantTemplate {
+public class AccountTemplate {
 
     public FlexMessage get(List<Account> accountList) {
         final Bubble receipt = Bubble.builder()
                 .body(createBody(accountList))
+                .footer(createButton())
                 .size(Bubble.BubbleSize.KILO)
                 .build();
         return new FlexMessage("<3", receipt);
     }
-
 
     private Box createBody(List<Account> accountList) {
         final Text title = Text.builder()
@@ -61,54 +62,51 @@ public class AccountantTemplate {
 
     private Box createReceiptBox(List<Account> accountList) {
         List<FlexComponent> list = new ArrayList<>();
-        int total = 0;
 
-//        for (Account account : accountList) {
-//            final Text name = Text.builder()
-//                    .text(account.getName())
-//                    .size(FlexFontSize.SM)
-//                    .color(Constants.COLOR_BLACK)
-//                    .build();
-//            final Text amount = Text.builder()
-//                    .text("$" + account.getAmount())
-//                    .size(FlexFontSize.SM)
-//                    .color(Constants.COLOR_BLACK)
-//                    .align(FlexAlign.END)
-//                    .build();
-//            final Box box = Box.builder()
-//                    .layout(FlexLayout.HORIZONTAL)
-//                    .contents(asList(name, amount))
-//                    .build();
-//            total += account.getAmount();
-//            list.add(box);
-//        }
-
-        final Separator separator = Separator.builder().build();
-
-        final Text title = Text.builder()
-                .text("總計")
-                .size(FlexFontSize.SM)
-                .color(Constants.COLOR_BLACK)
-                .build();
-        final Text text = Text.builder()
-                .text("$" + total)
-                .size(FlexFontSize.SM)
-                .color(Constants.COLOR_BLACK)
-                .align(FlexAlign.END)
-                .build();
-        final Box box = Box.builder()
-                .layout(FlexLayout.HORIZONTAL)
-                .margin(FlexMarginSize.XXL)
-                .contents(asList(title, text))
-                .build();
-        list.add(separator);
-        list.add(box);
+        for (Account account : accountList) {
+            final Text name = Text.builder()
+                    .text(account.getName())
+                    .size(FlexFontSize.SM)
+                    .color(Constants.COLOR_BLACK)
+                    .build();
+            final Text amount = Text.builder()
+                    .text("$" + account.getAmount())
+                    .size(FlexFontSize.SM)
+                    .color(Constants.COLOR_BLACK)
+                    .align(FlexAlign.END)
+                    .build();
+            final Box box = Box.builder()
+                    .layout(FlexLayout.HORIZONTAL)
+                    .contents(asList(name, amount))
+                    .build();
+            list.add(box);
+        }
 
         return Box.builder()
                 .layout(FlexLayout.VERTICAL)
                 .spacing(FlexMarginSize.SM)
                 .margin(FlexMarginSize.XXL)
                 .contents(list)
+                .build();
+    }
+
+    private Box createButton() {
+        final Button callAction = Button.builder()
+                .style(Button.ButtonStyle.PRIMARY)
+                .height(Button.ButtonHeight.SMALL)
+                .action(new PostbackAction("重新檢查", "debtCheck"))
+                .build();
+        final Button websiteAction = Button.builder()
+                .style(Button.ButtonStyle.SECONDARY)
+                .height(Button.ButtonHeight.SMALL)
+                .action(new PostbackAction("重置", "debtReset"))
+                .build();
+        return Box.builder()
+                .layout(FlexLayout.HORIZONTAL)
+                .paddingAll("3px")
+                .spacing(FlexMarginSize.SM)
+                .height("40px")
+                .contents(asList(callAction, websiteAction))
                 .build();
     }
 }

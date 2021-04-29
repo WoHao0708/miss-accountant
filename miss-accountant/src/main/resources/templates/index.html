@@ -1,13 +1,13 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LIFF init</title>
+    <title>啟用帳號</title>
 </head>
 
 <body>
-<form id="account" action="/debt" method="post">
+<form id="account" action="/" method="post">
     <input type="hidden" id="userId" name="userId" value="">
     <input type="hidden" id="groupId" name="groupId" value="">
-    <button type="submit">submit</button>
+    <input type="hidden" id="name" name="name" value="">
 </form>
 <script src="https://d.line-scdn.net/liff/1.0/sdk.js"></script>
 
@@ -20,7 +20,11 @@
     liff.init(function (data) {
         document.getElementById('userId').value = data.context.userId;
         document.getElementById('groupId').value = data.context.groupId;
-        document.getElementById('groupId').dispatchEvent(event);
+        liff.getProfile().then(function (profile) {
+            document.getElementById('name').value = profile.displayName;
+            document.getElementById('groupId').dispatchEvent(event);
+        });
+        liff.closeWindow();
     });
 </script>
 </body>

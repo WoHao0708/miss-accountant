@@ -26,9 +26,10 @@ public class DebtService {
     public String addDebt(String[] userIds, String creditor, String groupId, int amount, String note) {
         AjaxResponse ajaxResponse = new AjaxResponse();
 
-        if (userIds == null || userIds.length == 0)
+        if (userIds == null || userIds.length == 0) {
             ajaxResponse.setStatus(0);
-        else {
+            ajaxResponse.setMessage("為甚麼不選人?");
+        } else {
             List<Debt> debts = new ArrayList<>();
             for (String userid : userIds) {
                 Debt debt = new Debt(userid, groupId, creditor, amount, note);
@@ -49,15 +50,15 @@ public class DebtService {
         List<Account> accountList = accountService.getGroupAllUser(groupId, userId);
         Map<String, String> nameMap = new HashMap<>();
 
-        for (Account account: accountList) {
+        for (Account account : accountList) {
             nameMap.put(account.getUserId(), account.getName());
         }
 
-        for (Debt debt: debtList) {
+        for (Debt debt : debtList) {
             debt.setName(nameMap.get(debt.getUserId()));
         }
 
-        for (Debt debt: ownDebtList) {
+        for (Debt debt : ownDebtList) {
             debt.setName(nameMap.get(debt.getUserId()));
             debt.setIsOwner(1);
         }
@@ -66,7 +67,7 @@ public class DebtService {
         return JsonUtils.toJson(debtList);
     }
 
-    public String deleteDebt(int debtId){
+    public String deleteDebt(int debtId) {
         AjaxResponse ajaxResponse = new AjaxResponse();
         Debt debt = debtDao.findDebtById(debtId);
         debt.setIsDelete(1);
@@ -76,5 +77,16 @@ public class DebtService {
         ajaxResponse.setStatus(1);
 
         return ajaxResponse.toString();
+    }
+
+    public String deleteGroupDebt(String groupId) {
+
+        List<Debt> debtList = debtDao.findDebtByGroupIdAndIsDelete(groupId, 0);
+
+        for (Debt debt : debtList) debt.setIsDelete(1);
+
+        debtDao.saveAll(debtList);
+
+        return "重置完成";
     }
 }

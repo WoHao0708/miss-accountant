@@ -13,5 +13,7 @@ public interface DebtDao extends JpaRepository<Debt, String> {
 
     List<Debt> findDebtByGroupIdAndCreditorAndIsDelete(String groupId, String creditor, int isDelete);
 
+    List<Debt> findDebtByGroupIdAndIsDelete(String groupId, int isDelete);
+
     Debt findDebtById(int id);
 }

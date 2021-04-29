@@ -16,11 +16,19 @@
 
 package com.g.miss.accountant.controller;
 
+import com.g.miss.accountant.service.AccountService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class HomeController {
+
+    @Autowired
+    private AccountService accountService;
 
     /**
      * Home page
@@ -28,5 +36,12 @@ public class HomeController {
     @GetMapping("/")
     public String index() {
         return "/index";
+    }
+
+    @ResponseBody
+    @PostMapping("/")
+    public String postIndex(@RequestParam String userId, @RequestParam String groupId, @RequestParam String name) {
+        accountService.setAccount(groupId, userId, name);
+        return "";
     }
 }

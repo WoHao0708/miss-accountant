@@ -15,6 +15,4 @@ public interface AccountDao extends JpaRepository<Account, String> {
     List<Account> findAccountInfoByGroupId(String groupId);
 
     List<Account> findAccountInfoByGroupIdAndUserIdIsNot(String groupId, String userId);
-
-    List<Account> findAccountInfoByGroupIdAndIsAdvance(String groupId, int isAdvance);
 }

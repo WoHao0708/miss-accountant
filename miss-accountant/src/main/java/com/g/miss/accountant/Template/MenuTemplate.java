@@ -16,7 +16,6 @@
 
 package com.g.miss.accountant.Template;
 
-import com.g.miss.accountant.constants.Constants;
 import com.linecorp.bot.model.action.PostbackAction;
 import com.linecorp.bot.model.action.URIAction;
 import com.linecorp.bot.model.message.FlexMessage;
@@ -30,11 +29,8 @@ import com.linecorp.bot.model.message.flex.unit.FlexAlign;
 import com.linecorp.bot.model.message.flex.unit.FlexFontSize;
 import com.linecorp.bot.model.message.flex.unit.FlexLayout;
 import com.linecorp.bot.model.message.flex.unit.FlexMarginSize;
-import org.apache.tomcat.websocket.server.UriTemplate;
 
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.function.Supplier;
 
 import static java.util.Arrays.asList;
 
@@ -44,16 +40,12 @@ public class MenuTemplate {
                 .size(Bubble.BubbleSize.NANO)
                 .body(createAccountMenu())
                 .build();
-        final Bubble advance = Bubble.builder()
-                .size(Bubble.BubbleSize.NANO)
-                .body(createAdvanceMenu())
-                .build();
         final Bubble other = Bubble.builder()
                 .size(Bubble.BubbleSize.NANO)
                 .body(createOtherMenu(publicFund))
                 .build();
         Carousel carousel = Carousel.builder()
-                .contents(asList(account, advance, other))
+                .contents(asList(account, other))
                 .build();
         return new FlexMessage("<3", carousel);
     }
@@ -77,41 +69,20 @@ public class MenuTemplate {
                 .height(ButtonHeight.SMALL)
                 .action(new URIAction("紀錄", debtRecordUri, null))
                 .build();
-        return Box.builder()
-                .layout(FlexLayout.VERTICAL)
-                .paddingAll("3px")
-                .spacing(FlexMarginSize.SM)
-                .contents(asList(callAction, websiteAction))
-                .build();
-    }
-
-    private Box createAdvanceMenu() {
-        final Button callAction = Button.builder()
-                .style(ButtonStyle.PRIMARY)
-                .height(ButtonHeight.SMALL)
-                .action(new PostbackAction("分帳檢查", "advanceCheck"))
-                .build();
-        final Button websiteAction = Button.builder()
+        final Button resultAction = Button.builder()
                 .style(ButtonStyle.SECONDARY)
                 .height(ButtonHeight.SMALL)
-                .action(new PostbackAction("分帳開關", "advanceSwitch"))
+                .action(new PostbackAction("結算", "debtCheck"))
                 .build();
         return Box.builder()
                 .layout(FlexLayout.VERTICAL)
                 .paddingAll("3px")
                 .spacing(FlexMarginSize.SM)
-                .contents(asList(callAction, websiteAction))
+                .contents(asList(callAction, websiteAction, resultAction))
                 .build();
     }
 
     private Box createOtherMenu(String publicFund) {
-        URI uri = null;
-        try {
-            uri = new URI("https://liff.line.me/1655817867-5ylLjNv4");
-        } catch (Exception ignored) {
-
-        }
-
         final Text text = Text.builder()
                 .text(publicFund)
                 .align(FlexAlign.CENTER)
@@ -124,15 +95,15 @@ public class MenuTemplate {
                 .paddingTop("10px")
                 .contents(text)
                 .build();
-        final Button button = Button.builder()
+        final Button button2 = Button.builder()
                 .style(ButtonStyle.SECONDARY)
                 .height(ButtonHeight.SMALL)
-                .action(new URIAction("link", uri, null))
+                .action(new PostbackAction("帳號啟用", "setAccount"))
                 .build();
         return Box.builder()
                 .layout(FlexLayout.VERTICAL)
                 .paddingAll("3px")
-                .contents(asList(box, button))
+                .contents(asList(box, button2))
                 .build();
     }
 }

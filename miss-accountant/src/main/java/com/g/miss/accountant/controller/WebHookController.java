@@ -23,7 +23,9 @@ import java.util.concurrent.ExecutionException;
 
 import com.g.miss.accountant.Template.MenuTemplate;
 import com.g.miss.accountant.constants.Constants;
+import com.g.miss.accountant.dao.DebtDao;
 import com.g.miss.accountant.service.AccountService;
+import com.g.miss.accountant.service.DebtService;
 import com.g.miss.accountant.service.PublicFundService;
 import com.g.miss.accountant.service.RecordService;
 import com.g.miss.accountant.util.StringUtils;
@@ -56,7 +58,7 @@ public class WebHookController {
     @Autowired
     private PublicFundService publicFundService;
     @Autowired
-    private RecordService recordService;
+    private DebtService debtService;
 
     @EventMapping
     public void handleTextMessageEvent(MessageEvent<TextMessageContent> event) throws Exception {
@@ -83,27 +85,17 @@ public class WebHookController {
             case "help":
                 this.replyText(event.getReplyToken(), Constants.HELP_MESSAGE);
                 break;
-            case "other":
-                this.replyText(event.getReplyToken(), Constants.OTHER_MESSAGE);
-                break;
-            case "advanceCheck":
-                this.reply(event.getReplyToken(), accountInfoService.checkGroupAdvance(groupId));
-                break;
-            case "advanceSwitch":
+            case "setAccount":
                 lineMessagingClient.getGroupMemberProfile(groupId, userId).whenComplete((profile, throwable) -> {
                     String name = profile.getDisplayName();
-                    String result = accountInfoService.switchIsAdvance(userId, groupId, name);
-                    this.replyText(event.getReplyToken(), result);
+                    accountInfoService.setAccount(groupId, userId, name);
                 });
                 break;
-            case "advanceReset":
-                this.reply(event.getReplyToken(), accountInfoService.setGroupAdvanceToZero(groupId));
+            case "debtReset":
+                this.replyText(event.getReplyToken(), debtService.deleteGroupDebt(groupId));
                 break;
-            case "accountCheck":
+            case "debtCheck":
                 this.reply(event.getReplyToken(), accountInfoService.checkGroupAmount(groupId));
-                break;
-            case "accountRecord":
-                this.reply(event.getReplyToken(), recordService.getRecordBy(userId, groupId, 10));
                 break;
         }
     }
@@ -126,30 +118,7 @@ public class WebHookController {
 
         if (!(event.getSource() instanceof GroupSource)) return;
         if (suffixInt != null) {
-            if ("$".equals(prefix)) switchAccount(event, infix, suffixInt);
-
-            if ("/".equals(prefix)) switchAdvance(event, infix, suffixInt);
-
-            if ("!".equals(prefix)) switchPublicFund(event, infix, suffixInt);
-        } else {
-            final String userId = event.getSource().getUserId();
-            final String groupId = ((GroupSource) event.getSource()).getGroupId();
-
-//            if ("$$".equals(text)) {
-//                lineMessagingClient.getGroupMemberProfile(groupId, userId).whenComplete((profile, throwable) -> {
-//                    String name = profile.getDisplayName();
-//                    accountInfoService.setAmountToZero(userId, groupId, name);
-//                    this.replyText(event.getReplyToken(), name + ": 0");
-//                });
-//            }
-
-            if ("//".equals(text)) {
-                lineMessagingClient.getGroupMemberProfile(groupId, userId).whenComplete((profile, throwable) -> {
-                    String name = profile.getDisplayName();
-                    accountInfoService.setAdvanceToZero(userId, groupId, name);
-                    this.replyText(event.getReplyToken(), name + "設定預支為零");
-                });
-            }
+            if ("$".equals(prefix)) switchPublicFund(event, infix, suffixInt);
         }
 
         if ("會計小姐".equals(text) || "會計".equals(text) || "鄭家純".equals(text)) {
@@ -160,51 +129,6 @@ public class WebHookController {
         if ("婆".equals(text) || "老婆".equals(text))
             this.replyText(event.getReplyToken(), "噁男");
 
-    }
-
-
-    private void switchAccount(MessageEvent<TextMessageContent> event, String infix, Integer suffix) {
-        final String userId = event.getSource().getUserId();
-        final String groupId = ((GroupSource) event.getSource()).getGroupId();
-
-        switch (infix) {
-//            case "+": // +
-//                lineMessagingClient.getGroupMemberProfile(groupId, userId).whenComplete((profile, throwable) -> {
-//                    String name = profile.getDisplayName();
-//                    this.replyText(event.getReplyToken(), name + ": " + accountInfoService.AddOrUpdateAmount(userId, groupId, name, suffix));
-//                });
-//                break;
-//            case "-": // -
-//                lineMessagingClient.getGroupMemberProfile(groupId, userId).whenComplete((profile, throwable) -> {
-//                    String name = profile.getDisplayName();
-//                    this.replyText(event.getReplyToken(), name + ": " + accountInfoService.AddOrUpdateAmount(userId, groupId, name, -suffix));
-//                });
-//                break;
-            case "r": // r Get record.
-                this.reply(event.getReplyToken(), recordService.getRecordBy(userId, groupId, suffix));
-                break;
-        }
-    }
-
-    private void switchAdvance(MessageEvent<TextMessageContent> event, String infix, Integer suffix) {
-        final String userId = event.getSource().getUserId();
-        final String groupId = ((GroupSource) event.getSource()).getGroupId();
-
-        switch (infix) {
-            case "$": // $ + advance
-                lineMessagingClient.getGroupMemberProfile(groupId, userId).whenComplete((profile, throwable) -> {
-                    String name = profile.getDisplayName();
-                    this.replyText(event.getReplyToken(), name + "預支: " + accountInfoService.AddOrUpdateAdvance(userId, groupId, name, suffix));
-                });
-                break;
-            case "a":
-                if (suffix != null)
-                    this.replyText(event.getReplyToken(), accountInfoService.setAllUserIsAdvance(groupId, suffix));
-                break;
-            case "d":
-                this.reply(event.getReplyToken(), accountInfoService.checkGroupAdvance(groupId, suffix));
-                break;
-        }
     }
 
     private void switchPublicFund(MessageEvent<TextMessageContent> event, String infix, Integer suffix) {
