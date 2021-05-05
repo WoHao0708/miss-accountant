@@ -90,6 +90,7 @@
     function setDebtList(item, index) {
         let td = "<td class='td-30'>" + item.name + "</td><td class='td-30'>" + item.note + "</td><td class='td-30'>" + item.amount + "</td>";
         if (item.isOwner === 1) td = td + "<td><button type='button' class='btn btn-default btn-block btn-delete' id='" + item.id + "'><i class='fa fa-trash submit' ></i></button></td>"
+        else td = td + "<td></td>";
         $("tbody:last").append("<tr>" + td + "</tr>");
     }
 

@@ -42,9 +42,9 @@ public class AccountTemplate {
 
     private Box createBody(List<Account> accountList) {
         final Text title = Text.builder()
-                .text("群組結帳")
+                .text("群組結算")
                 .weight(Text.TextWeight.BOLD)
-                .size(FlexFontSize.SM)
+                .size(FlexFontSize.LG)
                 .color(Constants.COLOR_GREEN)
                 .build();
         final Separator separator = Separator.builder().build();
@@ -69,6 +69,7 @@ public class AccountTemplate {
             final Text amount = Text.builder()
                     .text("$" + account.getAmount())
                     .size(FlexFontSize.SM)
+                    .weight(Text.TextWeight.BOLD)
                     .color(Constants.COLOR_BLACK)
                     .align(FlexAlign.END)
                     .build();

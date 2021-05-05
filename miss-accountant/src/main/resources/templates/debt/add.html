@@ -62,29 +62,38 @@
         });
     });
 
+    setSubmitEvent();
 
-
-    $(".submit").click(function () {
-        $.ajax({
-            url: "/debt/add",
-            type: "POST",
-            data: $("form").serialize(),
-            dataType: "json",
-            error: function (err) {
-                console.log(err);
-            },
-            success: function (result) {
-                if (result.status === 1) {
-                    $("#note").val("");
-                    $("#amount").val("");
-                    $("input[type='checkbox']").prop("checked", false);
+    function setSubmitEvent() {
+        $(".submit").click(function () {
+            removeSubmitEvent();
+            $.ajax({
+                url: "/debt/add",
+                type: "POST",
+                data: $("form").serialize(),
+                dataType: "json",
+                error: function (err) {
+                    console.log(err);
+                    setSubmitEvent();
+                },
+                success: function (result) {
+                    if (result.status === 1) {
+                        $("#note").val("");
+                        $("#amount").val("");
+                        $("input[type='checkbox']").prop("checked", false);
+                    }
+                    $("p").text(result.message);
+                    $("p").fadeOut(2000);
+                    setTimeout(setButtonText, 2000);
+                    setSubmitEvent();
                 }
-                $("p").text(result.message);
-                $("p").fadeOut(2000);
-                setTimeout(setButtonText, 2000);
-            }
+            });
         });
-    });
+    }
+
+    function removeSubmitEvent(){
+        $(".submit").unbind("click");
+    }
 
     function setButtonText() {
         $("p").text("送出");

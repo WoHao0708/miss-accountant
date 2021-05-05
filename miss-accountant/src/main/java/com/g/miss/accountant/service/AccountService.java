@@ -28,7 +28,7 @@ public class AccountService {
     public FlexMessage checkGroupAmount(String groupId) {
         List<Account> accountList = getGroupAmount(groupId);
         if (accountList.size() == 0) return null;
-        return new AccountTemplate().get(getGroupAmount(groupId));
+        return new AccountTemplate().get(accountList);
     }
 
     // FlexMessage
@@ -51,7 +51,7 @@ public class AccountService {
                 accountList.remove(tail);
                 amount = -tail.getAmount();
             } else {
-                tail.setAmount(tail.getAmount() + tail.getAmount());
+                tail.setAmount(tail.getAmount() + head.getAmount());
                 accountList.remove(head);
                 amount = head.getAmount();
             }

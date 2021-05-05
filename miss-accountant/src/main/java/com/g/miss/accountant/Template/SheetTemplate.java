@@ -45,7 +45,7 @@ public class SheetTemplate {
         final Text title = Text.builder()
                 .text("群組分帳")
                 .weight(Text.TextWeight.BOLD)
-                .size(FlexFontSize.SM)
+                .size(FlexFontSize.LG)
                 .color(Constants.COLOR_GREEN)
                 .build();
         final Separator separator = Separator.builder().build();
@@ -66,13 +66,13 @@ public class SheetTemplate {
         for (Sheet sheet : sheets) {
 
             final Text name = Text.builder()
-                    .text(sheet.getFromName() + " to " + sheet.getToName())
-                    .size(FlexFontSize.XS)
+                    .text(sheet.getFromName() + " ➜ " + sheet.getToName())
+                    .size(FlexFontSize.SM)
                     .color(Constants.COLOR_BLACK)
                     .build();
             final Text amountText = Text.builder()
                     .text("$" + sheet.getAmount())
-                    .size(FlexFontSize.XS)
+                    .size(FlexFontSize.SM)
                     .weight(Text.TextWeight.BOLD)
                     .color(Constants.COLOR_BLACK)
                     .align(FlexAlign.END)

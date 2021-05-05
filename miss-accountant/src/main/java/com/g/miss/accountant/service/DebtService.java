@@ -56,7 +56,7 @@ public class DebtService {
         }
 
         for (Debt debt : debtList) {
-            debt.setName(nameMap.get(debt.getUserId()));
+            debt.setName(nameMap.get(debt.getCreditor()));
         }
 
         for (Debt debt : ownDebtList) {
