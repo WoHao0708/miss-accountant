@@ -23,14 +23,12 @@ import java.util.concurrent.ExecutionException;
 
 import com.g.miss.accountant.Template.MenuTemplate;
 import com.g.miss.accountant.constants.Constants;
-import com.g.miss.accountant.dao.DebtDao;
 import com.g.miss.accountant.service.AccountService;
 import com.g.miss.accountant.service.DebtService;
 import com.g.miss.accountant.service.PublicFundService;
-import com.g.miss.accountant.service.RecordService;
 import com.g.miss.accountant.util.StringUtils;
 import com.linecorp.bot.model.event.PostbackEvent;
-import org.checkerframework.checker.units.qual.A;
+import com.linecorp.bot.model.message.FlexMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.linecorp.bot.client.LineMessagingClient;
@@ -54,7 +52,7 @@ public class WebHookController {
     @Autowired
     private LineMessagingClient lineMessagingClient;
     @Autowired
-    private AccountService accountInfoService;
+    private AccountService accountService;
     @Autowired
     private PublicFundService publicFundService;
     @Autowired
@@ -80,6 +78,7 @@ public class WebHookController {
         final String userId = event.getSource().getUserId();
         final String groupId = ((GroupSource) event.getSource()).getGroupId();
         String action = event.getPostbackContent().getData();
+        FlexMessage flexMessage;
 
         switch (action) {
             case "help":
@@ -88,14 +87,21 @@ public class WebHookController {
             case "setAccount":
                 lineMessagingClient.getGroupMemberProfile(groupId, userId).whenComplete((profile, throwable) -> {
                     String name = profile.getDisplayName();
-                    accountInfoService.setAccount(groupId, userId, name);
+                    accountService.setAccount(groupId, userId, name);
                 });
                 break;
             case "debtReset":
                 this.replyText(event.getReplyToken(), debtService.deleteGroupDebt(groupId));
                 break;
             case "debtCheck":
-                this.reply(event.getReplyToken(), accountInfoService.checkGroupAmount(groupId));
+                flexMessage = accountService.checkGroupAmount(groupId);
+                if (flexMessage == null) this.replyText(event.getReplyToken(), Constants.ZERO_ERROR_MESSAGE);
+                else this.reply(event.getReplyToken(), flexMessage);
+                break;
+            case "debtAllot":
+                flexMessage = accountService.allotMoney(groupId);
+                if (flexMessage == null) this.replyText(event.getReplyToken(), Constants.ZERO_ERROR_MESSAGE);
+                else this.reply(event.getReplyToken(), flexMessage);
                 break;
         }
     }

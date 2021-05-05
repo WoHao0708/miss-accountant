@@ -22,10 +22,7 @@ import com.linecorp.bot.model.action.PostbackAction;
 import com.linecorp.bot.model.message.FlexMessage;
 import com.linecorp.bot.model.message.flex.component.*;
 import com.linecorp.bot.model.message.flex.container.Bubble;
-import com.linecorp.bot.model.message.flex.unit.FlexAlign;
-import com.linecorp.bot.model.message.flex.unit.FlexFontSize;
-import com.linecorp.bot.model.message.flex.unit.FlexLayout;
-import com.linecorp.bot.model.message.flex.unit.FlexMarginSize;
+import com.linecorp.bot.model.message.flex.unit.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +42,7 @@ public class AccountTemplate {
 
     private Box createBody(List<Account> accountList) {
         final Text title = Text.builder()
-                .text("記帳檢查結果")
+                .text("群組結帳")
                 .weight(Text.TextWeight.BOLD)
                 .size(FlexFontSize.SM)
                 .color(Constants.COLOR_GREEN)
@@ -55,7 +52,7 @@ public class AccountTemplate {
 
         return Box.builder()
                 .layout(FlexLayout.VERTICAL)
-                .paddingAll("15px")
+                .paddingBottom(FlexPaddingSize.LG)
                 .contents(asList(title, separator, receipt))
                 .build();
     }
@@ -94,7 +91,7 @@ public class AccountTemplate {
         final Button callAction = Button.builder()
                 .style(Button.ButtonStyle.PRIMARY)
                 .height(Button.ButtonHeight.SMALL)
-                .action(new PostbackAction("重新檢查", "debtCheck"))
+                .action(new PostbackAction("重新結算", "debtCheck"))
                 .build();
         final Button websiteAction = Button.builder()
                 .style(Button.ButtonStyle.SECONDARY)
@@ -105,7 +102,7 @@ public class AccountTemplate {
                 .layout(FlexLayout.HORIZONTAL)
                 .paddingAll("3px")
                 .spacing(FlexMarginSize.SM)
-                .height("40px")
+                .height("45px")
                 .contents(asList(callAction, websiteAction))
                 .build();
     }

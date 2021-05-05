@@ -3,6 +3,7 @@ package com.g.miss.accountant.service;
 import com.g.miss.accountant.bean.Account;
 import com.g.miss.accountant.bean.AjaxResponse;
 import com.g.miss.accountant.bean.Debt;
+import com.g.miss.accountant.constants.Constants;
 import com.g.miss.accountant.dao.DebtDao;
 import com.g.miss.accountant.enums.SuccessMsgEnum;
 import com.g.miss.accountant.util.JsonUtils;
@@ -87,6 +88,6 @@ public class DebtService {
 
         debtDao.saveAll(debtList);
 
-        return "重置完成";
+        return Constants.RESET_SUCCESS;
     }
 }

@@ -16,70 +16,64 @@
 
 package com.g.miss.accountant.Template;
 
-import com.g.miss.accountant.bean.Record;
+import com.g.miss.accountant.bean.Sheet;
 import com.g.miss.accountant.constants.Constants;
-import com.g.miss.accountant.util.DateUtils;
+import com.linecorp.bot.model.action.PostbackAction;
 import com.linecorp.bot.model.message.FlexMessage;
-import com.linecorp.bot.model.message.flex.component.Box;
-import com.linecorp.bot.model.message.flex.component.FlexComponent;
-import com.linecorp.bot.model.message.flex.component.Separator;
-import com.linecorp.bot.model.message.flex.component.Text;
+import com.linecorp.bot.model.message.flex.component.*;
 import com.linecorp.bot.model.message.flex.container.Bubble;
-import com.linecorp.bot.model.message.flex.unit.FlexAlign;
-import com.linecorp.bot.model.message.flex.unit.FlexFontSize;
-import com.linecorp.bot.model.message.flex.unit.FlexLayout;
-import com.linecorp.bot.model.message.flex.unit.FlexMarginSize;
+import com.linecorp.bot.model.message.flex.unit.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Arrays.asList;
 
-public class RecordTemplate {
+public class SheetTemplate {
 
-    public FlexMessage get(List<Record> recordList, String name) {
+    public FlexMessage get(List<Sheet> sheets) {
         final Bubble receipt = Bubble.builder()
-                .body(createBody(recordList, name))
+                .body(createBody(sheets))
+                .footer(createButton())
                 .size(Bubble.BubbleSize.KILO)
                 .build();
         return new FlexMessage("<3", receipt);
     }
 
 
-    private Box createBody(List<Record> recordList, String name) {
+    private Box createBody(List<Sheet> sheets) {
         final Text title = Text.builder()
-                .text(name + "的記帳紀錄")
+                .text("群組分帳")
                 .weight(Text.TextWeight.BOLD)
                 .size(FlexFontSize.SM)
                 .color(Constants.COLOR_GREEN)
                 .build();
         final Separator separator = Separator.builder().build();
-        final Box receipt = createReceiptBox(recordList);
+        final Box receipt = createReceiptBox(sheets);
 
         return Box.builder()
                 .layout(FlexLayout.VERTICAL)
-                .paddingAll("15px")
+                .paddingBottom(FlexPaddingSize.LG)
                 .contents(asList(title, separator, receipt))
                 .build();
     }
 
-    private Box createReceiptBox(List<Record> recordList) {
+    private Box createReceiptBox(List<Sheet> sheets) {
         List<FlexComponent> list = new ArrayList<>();
+        final Separator separator = Separator.builder().build();
+        String preName = sheets.get(0).getFromName();
 
-        for (Record record : recordList) {
-            String amount;
-            if (record.getAmount() < 0) amount = "" + record.getAmount();
-            else if (record.getAmount() == 0) amount = "=0";
-            else amount = "+" + record.getAmount();
+        for (Sheet sheet : sheets) {
 
             final Text name = Text.builder()
-                    .text(DateUtils.format(record.getCreatedTime(), DateUtils.DATE_FORMAT_MM_DD_HH_MM))
-                    .size(FlexFontSize.SM)
+                    .text(sheet.getFromName() + " to " + sheet.getToName())
+                    .size(FlexFontSize.XS)
                     .color(Constants.COLOR_BLACK)
                     .build();
             final Text amountText = Text.builder()
-                    .text(amount)
-                    .size(FlexFontSize.SM)
+                    .text("$" + sheet.getAmount())
+                    .size(FlexFontSize.XS)
+                    .weight(Text.TextWeight.BOLD)
                     .color(Constants.COLOR_BLACK)
                     .align(FlexAlign.END)
                     .build();
@@ -87,6 +81,12 @@ public class RecordTemplate {
                     .layout(FlexLayout.HORIZONTAL)
                     .contents(asList(name, amountText))
                     .build();
+
+            if (!sheet.getFromName().equals(preName)) { // 如果不同人就印一個分隔線
+                list.add(separator);
+                preName = sheet.getFromName();
+            }
+
             list.add(box);
         }
 
@@ -95,6 +95,26 @@ public class RecordTemplate {
                 .spacing(FlexMarginSize.SM)
                 .margin(FlexMarginSize.XXL)
                 .contents(list)
+                .build();
+    }
+
+    private Box createButton() {
+        final Button callAction = Button.builder()
+                .style(Button.ButtonStyle.PRIMARY)
+                .height(Button.ButtonHeight.SMALL)
+                .action(new PostbackAction("重新分帳", "debtAllot"))
+                .build();
+        final Button websiteAction = Button.builder()
+                .style(Button.ButtonStyle.SECONDARY)
+                .height(Button.ButtonHeight.SMALL)
+                .action(new PostbackAction("重置", "debtReset"))
+                .build();
+        return Box.builder()
+                .layout(FlexLayout.HORIZONTAL)
+                .paddingAll("3px")
+                .spacing(FlexMarginSize.SM)
+                .height("45px")
+                .contents(asList(callAction, websiteAction))
                 .build();
     }
 }

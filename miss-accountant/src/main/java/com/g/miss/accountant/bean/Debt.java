@@ -1,6 +1,5 @@
 package com.g.miss.accountant.bean;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,7 +25,7 @@ public class Debt {
     private String note;
     private Date createdTime;
     @Column(name = "is_delete")
-    private Integer isDelete;
+    private Integer isDelete = 0;
 
     @Transient
     private String name;
@@ -40,6 +39,7 @@ public class Debt {
         this.amount = amount;
         this.note = note;
         this.createdTime = new Date();
+        this.isDelete = 0;
     }
 
     public Debt() {

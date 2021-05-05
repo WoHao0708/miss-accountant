@@ -40,12 +40,16 @@ public class MenuTemplate {
                 .size(Bubble.BubbleSize.NANO)
                 .body(createAccountMenu())
                 .build();
+        final Bubble group = Bubble.builder()
+                .size(Bubble.BubbleSize.NANO)
+                .body(createGroupMenu())
+                .build();
         final Bubble other = Bubble.builder()
                 .size(Bubble.BubbleSize.NANO)
                 .body(createOtherMenu(publicFund))
                 .build();
         Carousel carousel = Carousel.builder()
-                .contents(asList(account, other))
+                .contents(asList(account, group, other))
                 .build();
         return new FlexMessage("<3", carousel);
     }
@@ -69,16 +73,31 @@ public class MenuTemplate {
                 .height(ButtonHeight.SMALL)
                 .action(new URIAction("紀錄", debtRecordUri, null))
                 .build();
+        return Box.builder()
+                .layout(FlexLayout.VERTICAL)
+                .paddingAll("3px")
+                .spacing(FlexMarginSize.SM)
+                .contents(asList(callAction, websiteAction))
+                .build();
+    }
+
+    private Box createGroupMenu() {
+
         final Button resultAction = Button.builder()
+                .style(ButtonStyle.PRIMARY)
+                .height(ButtonHeight.SMALL)
+                .action(new PostbackAction("群組結算", "debtCheck"))
+                .build();
+        final Button allotAction = Button.builder()
                 .style(ButtonStyle.SECONDARY)
                 .height(ButtonHeight.SMALL)
-                .action(new PostbackAction("結算", "debtCheck"))
+                .action(new PostbackAction("群組分帳", "debtAllot"))
                 .build();
         return Box.builder()
                 .layout(FlexLayout.VERTICAL)
                 .paddingAll("3px")
                 .spacing(FlexMarginSize.SM)
-                .contents(asList(callAction, websiteAction, resultAction))
+                .contents(asList(resultAction, allotAction))
                 .build();
     }
 
