@@ -14,10 +14,10 @@
 # under the License.
 
 line.bot:
-#  channel-token: '6VYo/by3LkIh1rwDvI1Z/1hr3e/LmrxR4D5p5YOmalwiBseCZvL+XyfYazqpX1EQNKLPW3ssBK0EnRW+ZsaFAzd0PT9h+xVTq9n8IJUMGdjKMFWGW1ZSb+BbQ5rm+4PtQTE1tG3LasHHzb+NMulh0QdB04t89/1O/w1cDnyilFU='
-#  channel-secret: 'b0a75b05ad47bbd75548741774c6a4c2'
-  channel-token: 'ChAU/BJfO1X/R42wEQ45K6ObDnzub3VQPGPIKBNjbDPb0e/Uylj/GevRm7aQdVnpNhJb95MXKeyRwS6Z7OsAo9xdUxOmKlKZiQfL5ZNQ+wrGfK92gKxYVHnRpV34yIwukm532LiYzilK+j+w/5ziZAdB04t89/1O/w1cDnyilFU='
-  channel-secret: '77d929b53c59ecc9e82fccbd9e8fe731'
+  channel-token: '6VYo/by3LkIh1rwDvI1Z/1hr3e/LmrxR4D5p5YOmalwiBseCZvL+XyfYazqpX1EQNKLPW3ssBK0EnRW+ZsaFAzd0PT9h+xVTq9n8IJUMGdjKMFWGW1ZSb+BbQ5rm+4PtQTE1tG3LasHHzb+NMulh0QdB04t89/1O/w1cDnyilFU='
+  channel-secret: 'b0a75b05ad47bbd75548741774c6a4c2'
+#  channel-token: 'ChAU/BJfO1X/R42wEQ45K6ObDnzub3VQPGPIKBNjbDPb0e/Uylj/GevRm7aQdVnpNhJb95MXKeyRwS6Z7OsAo9xdUxOmKlKZiQfL5ZNQ+wrGfK92gKxYVHnRpV34yIwukm532LiYzilK+j+w/5ziZAdB04t89/1O/w1cDnyilFU='
+#  channel-secret: '77d929b53c59ecc9e82fccbd9e8fe731'
   handler.path: /callback
 
 # To remove Client wire logs. Please comment out following lines.

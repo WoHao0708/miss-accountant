@@ -51,8 +51,10 @@ import lombok.extern.slf4j.Slf4j;
 public class WebHookController {
     @Autowired
     private LineMessagingClient lineMessagingClient;
+
     @Autowired
     private AccountService accountService;
+
     @Autowired
     private PublicFundService publicFundService;
     @Autowired
