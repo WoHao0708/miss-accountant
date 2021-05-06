@@ -6,7 +6,6 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.Date;
 
-// todo 雙主鍵
 @Getter
 @Setter
 @Entity

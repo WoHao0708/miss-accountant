@@ -90,6 +90,7 @@ public class WebHookController {
                 lineMessagingClient.getGroupMemberProfile(groupId, userId).whenComplete((profile, throwable) -> {
                     String name = profile.getDisplayName();
                     accountService.setAccount(groupId, userId, name);
+                    this.replyText(event.getReplyToken(), Constants.SET_ACCOUNT_SUCCESS);
                 });
                 break;
             case "debtReset":
