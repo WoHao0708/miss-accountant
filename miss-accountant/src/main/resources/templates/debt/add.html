@@ -54,7 +54,7 @@
     });
 
     var isInClient = liff.isInClient();
-    if (!isInClient) {alert("請用手機版Line開啟");
+    if (!isInClient) alert("請用手機版Line開啟");
 
     liff.init(function (data) {
         $('#userId').val(data.context.userId);
