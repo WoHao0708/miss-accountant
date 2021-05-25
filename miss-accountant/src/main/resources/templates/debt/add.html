@@ -53,10 +53,12 @@
         });
     });
 
+    var isInClient = liff.isInClient();
+    if (!isInClient) {alert("請用手機版Line開啟");
+
     liff.init(function (data) {
         $('#userId').val(data.context.userId);
         $('#groupId').val(data.context.groupId);
-        if ($('#userId').val().length === 0 || !$('#userId').val().trim()) alert("請用手機版Line開啟");
         liff.getProfile().then(function (profile) {
             $('#name').val(profile.displayName);
             $('#groupId').trigger("input");
