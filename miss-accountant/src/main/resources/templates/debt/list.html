@@ -67,6 +67,7 @@
     liff.init(function (data) {
         $('#userId').val(data.context.userId);
         $('#groupId').val(data.context.groupId);
+        if (data.context.userId) alert("請用手機版Line開啟");
         $('#groupId').trigger("input");
     });
 
