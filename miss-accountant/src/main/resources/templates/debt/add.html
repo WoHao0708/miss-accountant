@@ -53,8 +53,14 @@
         });
     });
 
-    var isInClient = liff.isInClient();
-    if (!isInClient) alert("請用手機版Line開啟");
+    var ua = navigator.userAgent.toLowerCase();
+    if (/msie/i.test(ua) && !/opera/.test(ua)) {  // ie
+        alert("請用手機版Line開啟");
+    } else if (/firefox/i.test(ua)) {
+        alert("請用手機版Line開啟");
+    } else if (/chrome/i.test(ua) && /webkit/i.test(ua) && /mozilla/i.test(ua)) {
+        alert("請用手機版Line開啟");
+    }
 
     liff.init(function (data) {
         $('#userId').val(data.context.userId);
@@ -94,7 +100,7 @@
         });
     }
 
-    function removeSubmitEvent(){
+    function removeSubmitEvent() {
         $(".submit").unbind("click");
     }
 
@@ -104,7 +110,7 @@
     }
 
     function setAccountButton(item, index) {
-        $("label:last").after("<label><input type='checkbox' name='userIds' value='" + item.userId + "'/><span>" +  item.name + "</span></label>")
+        $("label:last").after("<label><input type='checkbox' name='userIds' value='" + item.userId + "'/><span>" + item.name + "</span></label>")
         console.log(item);
     }
 

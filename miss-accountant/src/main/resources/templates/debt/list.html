@@ -61,12 +61,14 @@
         });
     });
 
-    // $('#userId').val('U2c7bf3adc48f992cccb81b7fb1832c16');
-    // $('#groupId').val('Ca31b28a1afa222c68b80b4f400ae9c97');
-    // $('#groupId').trigger("input");
-
-    var isInClient = liff.isInClient();
-    if (!isInClient) alert("請用手機版Line開啟");
+    var ua = navigator.userAgent.toLowerCase();
+    if (/msie/i.test(ua) && !/opera/.test(ua)) {  // ie
+        alert("請用手機版Line開啟");
+    } else if (/firefox/i.test(ua)) {
+        alert("請用手機版Line開啟");
+    } else if (/chrome/i.test(ua) && /webkit/i.test(ua) && /mozilla/i.test(ua)) {
+        alert("請用手機版Line開啟");
+    }
 
     liff.init(function (data) {
         $('#userId').val(data.context.userId);
