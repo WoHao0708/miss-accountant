@@ -35,10 +35,10 @@ import java.net.URI;
 import static java.util.Arrays.asList;
 
 public class MenuTemplate {
-    public FlexMessage get(String publicFund) {
+    public FlexMessage get(String publicFund, String groupId) {
         final Bubble account = Bubble.builder()
                 .size(Bubble.BubbleSize.NANO)
-                .body(createAccountMenu())
+                .body(createAccountMenu(groupId))
                 .build();
         final Bubble group = Bubble.builder()
                 .size(Bubble.BubbleSize.NANO)
@@ -54,12 +54,12 @@ public class MenuTemplate {
         return new FlexMessage("<3", carousel);
     }
 
-    private Box createAccountMenu() {
+    private Box createAccountMenu(String groupId) {
         URI debtUri = null;
         URI debtRecordUri = null;
         try {
-            debtUri = new URI("https://liff.line.me/1655817867-5ylLjNv4");
-            debtRecordUri = new URI("https://liff.line.me/1655817867-XmmoMNpY");
+            debtUri = new URI("https://liff.line.me/1655817867-5ylLjNv4?groupId=" + groupId);
+            debtRecordUri = new URI("https://liff.line.me/1655817867-XmmoMNpY?groupId=" + groupId);
         } catch (Exception ignored) {
         }
 

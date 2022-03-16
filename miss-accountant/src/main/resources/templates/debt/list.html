@@ -40,7 +40,7 @@
         </div>
 </div>
 
-<script src="https://d.line-scdn.net/liff/1.0/sdk.js"></script>
+<script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 <script src="/static/js/jquery.min.js"></script>
 <script type="text/javascript">
     var event = new Event('input');
@@ -61,19 +61,24 @@
         });
     });
 
-    var ua = navigator.userAgent.toLowerCase();
-    if (/msie/i.test(ua) && !/opera/.test(ua)) {  // ie
-        alert("請用手機版Line開啟");
-    } else if (/firefox/i.test(ua)) {
-        alert("請用手機版Line開啟");
-    } else if (/chrome/i.test(ua) && /webkit/i.test(ua) && /mozilla/i.test(ua)) {
-        alert("請用手機版Line開啟");
-    }
+    liff.init({
+        liffId: '1655817867-XmmoMNpY',
+    }).then(() => {
+        if (!liff.isLoggedIn()) {
+            liff.login({ redirectUri: location.href});
+        }
 
-    liff.init(function (data) {
-        $('#userId').val(data.context.userId);
-        $('#groupId').val(data.context.groupId);
-        $('#groupId').trigger("input");
+        liff.getProfile().then(function (profile) {
+            var getUrlString = location.href;
+            var url = new URL(getUrlString);
+            $('#groupId').val(url.searchParams.get('groupId'));
+            $('#name').val(profile.displayName);
+            $('#userId').val(profile.userId);
+            $('#groupId').trigger("input");
+        });
+
+    }).catch((error) => {
+        console.log(error);
     });
 
     $(".btn-delete").bind('click', function () {

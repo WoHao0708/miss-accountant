@@ -132,7 +132,7 @@ public class WebHookController {
 
         if ("會計小姐".equals(text) || "會計".equals(text) || "鄭家純".equals(text)) {
             final String groupId = ((GroupSource) event.getSource()).getGroupId();
-            this.reply(event.getReplyToken(), new MenuTemplate().get(publicFundService.addOrUpdatePublicFund(groupId, 0)));
+            this.reply(event.getReplyToken(), new MenuTemplate().get(publicFundService.addOrUpdatePublicFund(groupId, 0), groupId));
         }
 
         if ("婆".equals(text) || "老婆".equals(text))
