@@ -121,7 +121,7 @@ Twitter: [@LINE_DEV](https://twitter.com/LINE_DEV)
 This project respects semantic versioning.
 
 See http://semver.org/.
-
+Made by wohao
 
 ## Contributing
 
