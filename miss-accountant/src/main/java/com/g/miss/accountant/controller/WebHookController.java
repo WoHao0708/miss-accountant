@@ -90,7 +90,7 @@ public class WebHookController {
                 lineMessagingClient.getGroupMemberProfile(groupId, userId).whenComplete((profile, throwable) -> {
                     String name = profile.getDisplayName();
                     accountService.setAccount(groupId, userId, name);
-                    this.replyText(event.getReplyToken(), Constants.SET_ACCOUNT_SUCCESS);
+                    this.replyText(event.getReplyToken(), name + Constants.SET_ACCOUNT_SUCCESS);
                 });
                 break;
             case "debtReset":
@@ -98,12 +98,12 @@ public class WebHookController {
                 break;
             case "debtCheck":
                 flexMessage = accountService.checkGroupAmount(groupId);
-                if (flexMessage == null) this.replyText(event.getReplyToken(), Constants.ZERO_ERROR_MESSAGE);
+                if (flexMessage == null) this.replyText(event.getReplyToken(), Constants.NONE_DATA_MESSAGE);
                 else this.reply(event.getReplyToken(), flexMessage);
                 break;
             case "debtAllot":
                 flexMessage = accountService.allotMoney(groupId);
-                if (flexMessage == null) this.replyText(event.getReplyToken(), Constants.ZERO_ERROR_MESSAGE);
+                if (flexMessage == null) this.replyText(event.getReplyToken(), Constants.NONE_DATA_MESSAGE);
                 else this.reply(event.getReplyToken(), flexMessage);
                 break;
         }

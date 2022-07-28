@@ -6,7 +6,7 @@ public class Constants {
             "$+n： 增加公款\n" +
             "$-n： 減少公款";
 
-    public static String ZERO_ERROR_MESSAGE = "0";
+    public static String NONE_DATA_MESSAGE = "沒紀錄無法結算";
 
     public static String RESET_SUCCESS = "重置完成";
     public static String SET_ACCOUNT_SUCCESS = "啟用成功";
