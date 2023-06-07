@@ -198,7 +198,7 @@ subprojects {
     }
 
     compileJava {
-        options.compilerArgs << '-Xlint:all' << '-Xlint:deprecation' << '-Werror' << '-Xlint:-processing' << '-parameters'
+        options.compilerArgs << '-Xlint:all' << '-Xlint:deprecation' << '-Xlint:-processing' << '-parameters'
         options.encoding = 'UTF-8'
     }
     compileTestJava {

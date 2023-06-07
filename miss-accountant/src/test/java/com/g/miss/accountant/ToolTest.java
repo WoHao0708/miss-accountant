@@ -1,7 +1,6 @@
 package com.g.miss.accountant;
 
-import com.g.miss.accountant.dao.mp.mpPublicFundDao;
-import com.g.miss.accountant.service.PublicFundService;
+import com.g.miss.accountant.service.mp.MpPublicFundServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +19,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class ToolTest {
 
     @Autowired
-    private PublicFundService publicFundService;
-    @Autowired
-    private mpPublicFundDao publicFundDao;
+    private MpPublicFundServiceImpl mpPublicFundService;
 
     @Test
     public void mpTest() {
-        System.out.println(publicFundDao.selectList(null));
+        System.out.println(mpPublicFundService.getById("As").toString());
     }
 }

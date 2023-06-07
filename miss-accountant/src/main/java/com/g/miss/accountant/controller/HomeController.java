@@ -17,6 +17,7 @@
 package com.g.miss.accountant.controller;
 
 import com.g.miss.accountant.service.AccountService;
+import com.g.miss.accountant.service.mp.MpPublicFundServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +30,8 @@ public class HomeController {
 
     @Autowired
     private AccountService accountService;
+    @Autowired
+    private MpPublicFundServiceImpl mpPublicFundService;
 
 
     /**
@@ -44,5 +47,11 @@ public class HomeController {
     public String postIndex(@RequestParam String userId, @RequestParam String groupId, @RequestParam String name) {
         accountService.setAccount(groupId, userId, name);
         return "";
+    }
+
+    @GetMapping("/test")
+    @ResponseBody
+    public String test() {
+        return mpPublicFundService.getById("ASS").toString();
     }
 }
