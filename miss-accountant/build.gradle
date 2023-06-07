@@ -29,7 +29,8 @@ dependencies {
 
     implementation 'junit:junit:4.13.1'
     implementation 'org.springframework.boot:spring-boot-starter-test'
-//    implementation 'com.baomidou:mybatis-plus:3.5.3.1'
+    implementation 'com.baomidou:mybatis-plus-boot-starter:3.5.3.1'
+
 }
 
 bootRun{

@@ -16,14 +16,16 @@
 
 package com.g.miss.accountant;
 
+import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-
 @SpringBootApplication
+@MapperScan("com.g.miss.accountant.dao.mp")
 public class AccountantApplication {
     static Path downloadedContentDir;
 

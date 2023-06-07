@@ -1,5 +1,6 @@
 package com.g.miss.accountant;
 
+import com.g.miss.accountant.dao.mp.mpPublicFundDao;
 import com.g.miss.accountant.service.PublicFundService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,10 +21,11 @@ public class ToolTest {
 
     @Autowired
     private PublicFundService publicFundService;
+    @Autowired
+    private mpPublicFundDao publicFundDao;
 
     @Test
     public void mpTest() {
-        System.out.println(publicFundService.addOrUpdatePublicFund("Ca31b28a1afa222c68b80b4f400ae9c9", 12));
-        System.out.println(publicFundService.addOrUpdatePublicFund("ASS", 12));
+        System.out.println(publicFundDao.selectList(null));
     }
 }
