@@ -2,7 +2,10 @@ package com.g.miss.accountant.dao.mp;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.g.miss.accountant.entity.Debt;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * @author G
@@ -10,5 +13,8 @@ import org.springframework.stereotype.Repository;
  * @date 2023/6/8 12:20 PM
  */
 @Repository
-public interface mpDebtDao extends BaseMapper<Debt> {
+public interface MpDebtDao extends BaseMapper<Debt> {
+
+    List<Debt> listDebtByGroupId(@Param("groupId") String groupId, @Param("isDelete") int isDelete);
+
 }

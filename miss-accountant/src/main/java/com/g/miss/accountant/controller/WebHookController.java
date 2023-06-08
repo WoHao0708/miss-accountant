@@ -16,49 +16,45 @@
 
 package com.g.miss.accountant.controller;
 
-import static java.util.Collections.singletonList;
-
-import java.util.List;
-import java.util.concurrent.ExecutionException;
-
 import com.g.miss.accountant.Template.MenuTemplate;
 import com.g.miss.accountant.constants.Constants;
-import com.g.miss.accountant.service.AccountService;
 import com.g.miss.accountant.service.DebtService;
 import com.g.miss.accountant.service.PublicFundService;
+import com.g.miss.accountant.service.mp.MpAccountServiceImpl;
 import com.g.miss.accountant.util.StringUtils;
-import com.linecorp.bot.model.event.PostbackEvent;
-import com.linecorp.bot.model.message.FlexMessage;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.linecorp.bot.client.LineMessagingClient;
 import com.linecorp.bot.model.ReplyMessage;
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
+import com.linecorp.bot.model.event.PostbackEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
 import com.linecorp.bot.model.event.source.GroupSource;
+import com.linecorp.bot.model.message.FlexMessage;
 import com.linecorp.bot.model.message.Message;
 import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.model.response.BotApiResponse;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
-
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+
+import static java.util.Collections.singletonList;
 
 @Slf4j
 @LineMessageHandler
 public class WebHookController {
     @Autowired
     private LineMessagingClient lineMessagingClient;
-
-    @Autowired
-    private AccountService accountService;
-
     @Autowired
     private PublicFundService publicFundService;
     @Autowired
     private DebtService debtService;
+    @Autowired
+    private MpAccountServiceImpl mpAccountService;
 
     @EventMapping
     public void handleTextMessageEvent(MessageEvent<TextMessageContent> event) throws Exception {
@@ -89,7 +85,7 @@ public class WebHookController {
             case "setAccount":
                 lineMessagingClient.getGroupMemberProfile(groupId, userId).whenComplete((profile, throwable) -> {
                     String name = profile.getDisplayName();
-                    accountService.setAccount(groupId, userId, name);
+                    mpAccountService.updateInfo(groupId, userId, name);
                     this.replyText(event.getReplyToken(), name + Constants.SET_ACCOUNT_SUCCESS);
                 });
                 break;
@@ -97,12 +93,12 @@ public class WebHookController {
                 this.replyText(event.getReplyToken(), debtService.deleteGroupDebt(groupId));
                 break;
             case "debtCheck":
-                flexMessage = accountService.checkGroupAmount(groupId);
+                flexMessage = mpAccountService.getGroupAmountFlexMessage(groupId);
                 if (flexMessage == null) this.replyText(event.getReplyToken(), Constants.NONE_DATA_MESSAGE);
                 else this.reply(event.getReplyToken(), flexMessage);
                 break;
             case "debtAllot":
-                flexMessage = accountService.allotMoney(groupId);
+                flexMessage = mpAccountService.getAllotFlexMessage(groupId);
                 if (flexMessage == null) this.replyText(event.getReplyToken(), Constants.NONE_DATA_MESSAGE);
                 else this.reply(event.getReplyToken(), flexMessage);
                 break;

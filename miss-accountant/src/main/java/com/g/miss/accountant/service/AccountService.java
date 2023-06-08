@@ -1,12 +1,12 @@
 package com.g.miss.accountant.service;
 
+import com.g.miss.accountant.Template.AccountTemplate;
 import com.g.miss.accountant.Template.SheetTemplate;
 import com.g.miss.accountant.bean.Account;
 import com.g.miss.accountant.bean.Debt;
 import com.g.miss.accountant.bean.Sheet;
 import com.g.miss.accountant.dao.AccountDao;
 import com.g.miss.accountant.dao.DebtDao;
-import com.g.miss.accountant.Template.AccountTemplate;
 import com.g.miss.accountant.util.JsonUtils;
 import com.linecorp.bot.model.message.FlexMessage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ public class AccountService {
     public FlexMessage checkGroupAmount(String groupId) {
         List<Account> accountList = getGroupAmount(groupId);
         if (accountList.size() == 0) return null;
-        return new AccountTemplate().get(accountList);
+        return new AccountTemplate().get(null);
     }
 
     // FlexMessage

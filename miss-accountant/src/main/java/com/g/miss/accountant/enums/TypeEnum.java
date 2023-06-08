@@ -1,8 +1,10 @@
 package com.g.miss.accountant.enums;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
+@AllArgsConstructor
 public enum TypeEnum {
 
     Amount(1, "Amount", "記帳"),
@@ -11,10 +13,4 @@ public enum TypeEnum {
     private int id;
     private String en;
     private String cn;
-
-    TypeEnum(int id, String en, String cn) {
-        this.id = id;
-        this.en = en;
-        this.cn = cn;
-    }
 }

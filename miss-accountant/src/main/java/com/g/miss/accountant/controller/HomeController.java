@@ -16,8 +16,7 @@
 
 package com.g.miss.accountant.controller;
 
-import com.g.miss.accountant.service.AccountService;
-import com.g.miss.accountant.service.mp.MpPublicFundServiceImpl;
+import com.g.miss.accountant.service.mp.MpAccountServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,9 +28,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class HomeController {
 
     @Autowired
-    private AccountService accountService;
-    @Autowired
-    private MpPublicFundServiceImpl mpPublicFundService;
+    private MpAccountServiceImpl mpAccountService;
 
 
     /**
@@ -42,16 +39,17 @@ public class HomeController {
         return "/index";
     }
 
+    /**
+     * 更新帳號資訊
+     *
+     * @param userId  帳號id
+     * @param groupId 使用者id
+     * @param name    名稱
+     * @return 成功或失敗
+     */
     @ResponseBody
     @PostMapping("/")
     public String postIndex(@RequestParam String userId, @RequestParam String groupId, @RequestParam String name) {
-        accountService.setAccount(groupId, userId, name);
-        return "";
-    }
-
-    @GetMapping("/test")
-    @ResponseBody
-    public String test() {
-        return mpPublicFundService.getById("ASS").toString();
+        return String.valueOf(mpAccountService.updateInfo(groupId, userId, name));
     }
 }

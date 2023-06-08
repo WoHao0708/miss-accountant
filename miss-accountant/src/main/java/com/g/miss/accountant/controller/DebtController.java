@@ -16,8 +16,8 @@
 
 package com.g.miss.accountant.controller;
 
-import com.g.miss.accountant.service.AccountService;
 import com.g.miss.accountant.service.DebtService;
+import com.g.miss.accountant.service.mp.MpAccountServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,9 +28,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class DebtController {
     @Autowired
-    AccountService accountService;
-    @Autowired
     DebtService debtService;
+    @Autowired
+    MpAccountServiceImpl mpAccountService;
 
     /**
      * 記帳頁
@@ -53,9 +53,10 @@ public class DebtController {
      */
     @ResponseBody
     @PostMapping("/debt/getAccount")
-    public String getAccount(@RequestParam String userId, @RequestParam String groupId, @RequestParam String name) {
-        return accountService.getGroupUserExcept(groupId, userId, name);
+    public String getAccount(@RequestParam String groupId, @RequestParam String userId, @RequestParam String name) {
+        return mpAccountService.listGroupUserExceptItself(groupId, userId, name);
     }
+
 
     /**
      * 記帳

@@ -1,9 +1,10 @@
 package com.g.miss.accountant.entity;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Transient;
 import java.time.LocalDateTime;
@@ -13,6 +14,12 @@ import java.time.LocalDateTime;
  * @description 債權
  * @date 2023/6/8 11:48 AM
  */
+
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@TableName("debt")
 public class Debt {
 
     /**
@@ -41,7 +48,7 @@ public class Debt {
      */
     private String note;
     /**
-     * 刪除標記
+     * 是否刪除 0否 1是
      */
     private final int isDelete = 0;
 

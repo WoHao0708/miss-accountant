@@ -1,10 +1,12 @@
 package com.g.miss.accountant.enums;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.util.Random;
 
 @Getter
+@AllArgsConstructor
 public enum SuccessMsgEnum {
     Success(1, "Success~"),
     Ok(2, "Ok~"),
@@ -14,11 +16,6 @@ public enum SuccessMsgEnum {
 
     private int id;
     private String msg;
-
-    SuccessMsgEnum(int id, String msg) {
-        this.id = id;
-        this.msg = msg;
-    }
 
     public static String getRandomMsg() {
         Random r = new Random();

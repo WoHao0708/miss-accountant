@@ -16,8 +16,8 @@
 
 package com.g.miss.accountant.Template;
 
-import com.g.miss.accountant.bean.Account;
 import com.g.miss.accountant.constants.Constants;
+import com.g.miss.accountant.entity.Account;
 import com.linecorp.bot.model.action.PostbackAction;
 import com.linecorp.bot.model.message.FlexMessage;
 import com.linecorp.bot.model.message.flex.component.*;

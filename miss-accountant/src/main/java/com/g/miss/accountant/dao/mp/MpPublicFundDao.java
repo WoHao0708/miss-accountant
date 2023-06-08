@@ -11,5 +11,5 @@ import org.springframework.stereotype.Repository;
  */
 
 @Repository
-public interface mpPublicFundDao extends BaseMapper<PublicFund> {
+public interface MpPublicFundDao extends BaseMapper<PublicFund> {
 }
