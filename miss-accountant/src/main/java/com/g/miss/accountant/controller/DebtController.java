@@ -16,8 +16,8 @@
 
 package com.g.miss.accountant.controller;
 
-import com.g.miss.accountant.service.DebtService;
 import com.g.miss.accountant.service.mp.MpAccountServiceImpl;
+import com.g.miss.accountant.service.mp.MpDebtServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class DebtController {
     @Autowired
-    DebtService debtService;
+    MpDebtServiceImpl mpDebtService;
     @Autowired
     MpAccountServiceImpl mpAccountService;
 
@@ -64,7 +64,7 @@ public class DebtController {
     @ResponseBody
     @PostMapping("/debt/add")
     public String addDebt(String[] userIds, @RequestParam int amount, @RequestParam String userId, @RequestParam String groupId, String note) {
-        return debtService.addDebt(userIds, userId, groupId, amount, note);
+        return mpDebtService.addDebt(userIds, userId, groupId, amount, note);
     }
 
     /**
@@ -73,7 +73,7 @@ public class DebtController {
     @ResponseBody
     @PostMapping("/debt/getList")
     public String getList(@RequestParam String userId, @RequestParam String groupId) {
-        return debtService.getDebt(groupId, userId);
+        return mpDebtService.listDebt(groupId, userId);
     }
 
     /**
@@ -82,6 +82,6 @@ public class DebtController {
     @ResponseBody
     @PostMapping("/debt/delete")
     public String deleteDebt(@RequestParam String debtId) {
-        return debtService.deleteDebt(Integer.parseInt(debtId));
+        return mpDebtService.deleteDebt(Integer.parseInt(debtId));
     }
 }

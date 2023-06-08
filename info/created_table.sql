@@ -14,7 +14,7 @@ CREATE TABLE `tb_debt` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
   `user_id` varchar(100) NOT NULL COMMENT 'User id get by line event.',
   `group_id` varchar(100) NOT NULL DEFAULT '' COMMENT 'Group id get by line event.',
-  `creditor` varchar(100) NOT NULL COMMENT '債權人',
+  `creditorId` varchar(100) NOT NULL COMMENT '債權人id',
   `amount` int(11) DEFAULT '0' COMMENT '金額',
   `note` varchar(100) DEFAULT '' COMMENT '描述',
   `created_time` datetime DEFAULT NULL COMMENT '建立時間',

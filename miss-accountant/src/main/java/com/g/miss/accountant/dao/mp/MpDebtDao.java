@@ -17,4 +17,8 @@ public interface MpDebtDao extends BaseMapper<Debt> {
 
     List<Debt> listDebtByGroupId(@Param("groupId") String groupId, @Param("isDelete") int isDelete);
 
+    List<Debt> listDebtByGroupIdAndUserId(@Param("groupId") String groupId, @Param("userId") String userId, @Param("isDelete") int isDelete);
+
+    List<Debt> listDebtByGroupIdAndCreditorId(@Param("groupId") String groupId, @Param("creditorId") String creditorId, @Param("isDelete") int isDelete);
+
 }

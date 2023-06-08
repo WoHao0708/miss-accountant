@@ -38,7 +38,7 @@ public class Debt {
     /**
      * 債權人id
      */
-    private String creditor;
+    private String creditorId;
     /**
      * 金額
      */
@@ -60,5 +60,5 @@ public class Debt {
     @Transient
     private String name;
     @Transient
-    private final int isOwner = 0;
+    private int isOwner = 0;
 }

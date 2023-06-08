@@ -128,7 +128,7 @@ public class MpAccountServiceImpl extends ServiceImpl<MpAccountDao, Account> imp
                     .findAny().orElse(null);
             account.addAmount(-debt.getAmount());
             account = accountList.stream()
-                    .filter(a -> debt.getCreditor().equals(a.getUserId()))
+                    .filter(a -> debt.getCreditorId().equals(a.getUserId()))
                     .findAny().orElse(null);
             account.addAmount(debt.getAmount());
         }
