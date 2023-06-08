@@ -24,7 +24,7 @@ CREATE TABLE `tb_debt` (
 
 CREATE TABLE `tb_public_fund` (
   `group_id` varchar(100) NOT NULL DEFAULT '' COMMENT 'Group id get by line event.',
-  `amount` int(11) DEFAULT '0' COMMENT '金額',
+  `balance` int(11) DEFAULT '0' COMMENT '餘額',
   `update_time` datetime DEFAULT NULL COMMENT '建立時間',
   PRIMARY KEY (`group_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8

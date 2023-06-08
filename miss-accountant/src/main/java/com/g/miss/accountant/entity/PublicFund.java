@@ -33,11 +33,21 @@ public class PublicFund {
     /**
      * 餘額
      */
-    private int amount;
+    private int balance;
 
     /**
      * 更新時間
      */
     @TableField(fill = FieldFill.UPDATE)
     private LocalDateTime updateTime;
+
+    /**
+     * 調整餘額
+     *
+     * @param amount 調整金額
+     * @return 結果
+     */
+    public int addBalance(int amount) {
+        return this.balance += amount;
+    }
 }

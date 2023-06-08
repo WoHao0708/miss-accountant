@@ -50,7 +50,7 @@ public class Debt {
     /**
      * 是否刪除 0否 1是
      */
-    private final int isDelete = 0;
+    private int isDelete = 0;
 
     /**
      * 新增時間

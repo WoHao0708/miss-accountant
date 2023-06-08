@@ -30,7 +30,7 @@ public class ToolTest {
     public void mpTest() {
         PublicFund publicFund = new PublicFund();
         publicFund.setGroupId("13213");
-        publicFund.setAmount(publicFund.getAmount() + 1);
+        publicFund.setBalance(publicFund.getBalance() + 1);
         System.out.println(mpPublicFundService.saveOrUpdate(publicFund));
         System.out.println(mpPublicFundService.getById("13213").toString());
     }

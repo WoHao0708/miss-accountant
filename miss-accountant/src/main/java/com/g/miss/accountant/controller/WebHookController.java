@@ -18,9 +18,9 @@ package com.g.miss.accountant.controller;
 
 import com.g.miss.accountant.Template.MenuTemplate;
 import com.g.miss.accountant.constants.Constants;
-import com.g.miss.accountant.service.DebtService;
-import com.g.miss.accountant.service.PublicFundService;
 import com.g.miss.accountant.service.mp.MpAccountServiceImpl;
+import com.g.miss.accountant.service.mp.MpDebtServiceImpl;
+import com.g.miss.accountant.service.mp.MpPublicFundServiceImpl;
 import com.g.miss.accountant.util.StringUtils;
 import com.linecorp.bot.client.LineMessagingClient;
 import com.linecorp.bot.model.ReplyMessage;
@@ -50,9 +50,9 @@ public class WebHookController {
     @Autowired
     private LineMessagingClient lineMessagingClient;
     @Autowired
-    private PublicFundService publicFundService;
+    private MpPublicFundServiceImpl mpPublicFundService;
     @Autowired
-    private DebtService debtService;
+    private MpDebtServiceImpl mpDebtService;
     @Autowired
     private MpAccountServiceImpl mpAccountService;
 
@@ -90,7 +90,7 @@ public class WebHookController {
                 });
                 break;
             case "debtReset":
-                this.replyText(event.getReplyToken(), debtService.deleteGroupDebt(groupId));
+                this.replyText(event.getReplyToken(), mpDebtService.deleteGroupDebt(groupId));
                 break;
             case "debtCheck":
                 flexMessage = mpAccountService.getGroupAmountFlexMessage(groupId);
@@ -128,7 +128,7 @@ public class WebHookController {
 
         if ("會計小姐".equals(text) || "會計".equals(text)) {
             final String groupId = ((GroupSource) event.getSource()).getGroupId();
-            this.reply(event.getReplyToken(), new MenuTemplate().get(publicFundService.addOrUpdatePublicFund(groupId, 0), groupId));
+            this.reply(event.getReplyToken(), new MenuTemplate().get(mpPublicFundService.updateBalance(groupId, 0), groupId));
         }
 
         if ("婆".equals(text) || "老婆".equals(text))
@@ -141,10 +141,10 @@ public class WebHookController {
 
         switch (infix) {
             case "+": // +
-                this.replyText(event.getReplyToken(), publicFundService.addOrUpdatePublicFund(groupId, suffix));
+                this.replyText(event.getReplyToken(), mpPublicFundService.updateBalance(groupId, suffix));
                 break;
             case "-": // -
-                this.replyText(event.getReplyToken(), publicFundService.addOrUpdatePublicFund(groupId, -suffix));
+                this.replyText(event.getReplyToken(), mpPublicFundService.updateBalance(groupId, -suffix));
                 break;
         }
     }
