@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Transient;
 import java.time.LocalDateTime;
 
 /**
@@ -54,7 +53,7 @@ public class Account {
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createdTime;
 
-    @Transient
+    @TableField(exist = false)
     private Integer amount = 0;
 
     public void addAmount(int amount) {

@@ -1,11 +1,15 @@
 package com.g.miss.accountant.dao;
 
-import com.g.miss.accountant.bean.PublicFund;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.g.miss.accountant.entity.PublicFund;
 import org.springframework.stereotype.Repository;
 
-@Repository
-public interface PublicFundDao extends JpaRepository<PublicFund, String> {
+/**
+ * @author G
+ * @description 公款
+ * @date 2023/6/7 4:37 PM
+ */
 
-    PublicFund findByGroupId(String groupId);
+@Repository
+public interface PublicFundDao extends BaseMapper<PublicFund> {
 }

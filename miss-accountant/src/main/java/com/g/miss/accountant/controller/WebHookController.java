@@ -18,9 +18,9 @@ package com.g.miss.accountant.controller;
 
 import com.g.miss.accountant.Template.MenuTemplate;
 import com.g.miss.accountant.constants.Constants;
-import com.g.miss.accountant.service.mp.MpAccountServiceImpl;
-import com.g.miss.accountant.service.mp.MpDebtServiceImpl;
-import com.g.miss.accountant.service.mp.MpPublicFundServiceImpl;
+import com.g.miss.accountant.service.Impl.AccountServiceImpl;
+import com.g.miss.accountant.service.Impl.DebtServiceImpl;
+import com.g.miss.accountant.service.Impl.PublicFundServiceImpl;
 import com.g.miss.accountant.util.StringUtils;
 import com.linecorp.bot.client.LineMessagingClient;
 import com.linecorp.bot.model.ReplyMessage;
@@ -50,11 +50,11 @@ public class WebHookController {
     @Autowired
     private LineMessagingClient lineMessagingClient;
     @Autowired
-    private MpPublicFundServiceImpl mpPublicFundService;
+    private PublicFundServiceImpl mpPublicFundService;
     @Autowired
-    private MpDebtServiceImpl mpDebtService;
+    private DebtServiceImpl mpDebtService;
     @Autowired
-    private MpAccountServiceImpl mpAccountService;
+    private AccountServiceImpl mpAccountService;
 
     @EventMapping
     public void handleTextMessageEvent(MessageEvent<TextMessageContent> event) throws Exception {

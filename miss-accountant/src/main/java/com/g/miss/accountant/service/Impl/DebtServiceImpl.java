@@ -1,13 +1,14 @@
-package com.g.miss.accountant.service.mp;
+package com.g.miss.accountant.service.Impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.g.miss.accountant.bean.AjaxResponse;
 import com.g.miss.accountant.constants.Constants;
-import com.g.miss.accountant.dao.mp.MpAccountDao;
-import com.g.miss.accountant.dao.mp.MpDebtDao;
+import com.g.miss.accountant.dao.AccountDao;
+import com.g.miss.accountant.dao.DebtDao;
 import com.g.miss.accountant.entity.Account;
 import com.g.miss.accountant.entity.Debt;
 import com.g.miss.accountant.enums.SuccessMsgEnum;
+import com.g.miss.accountant.service.DebtService;
 import com.g.miss.accountant.util.JsonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,12 +24,12 @@ import java.util.Map;
  * @date 2023/6/8 12:35 PM
  */
 @Service
-public class MpDebtServiceImpl extends ServiceImpl<MpDebtDao, Debt> implements MpDebtService {
+public class DebtServiceImpl extends ServiceImpl<DebtDao, Debt> implements DebtService {
 
     @Autowired
-    MpDebtDao mpDebtDao;
+    DebtDao debtDao;
     @Autowired
-    MpAccountDao mpAccountDao;
+    AccountDao accountDao;
 
 
     @Override
@@ -55,9 +56,9 @@ public class MpDebtServiceImpl extends ServiceImpl<MpDebtDao, Debt> implements M
     @Override
     public String listDebt(String groupId, String userId) {
 
-        List<Debt> debtList = mpDebtDao.listDebtByGroupIdAndUserId(groupId, userId, 0);
-        List<Debt> ownDebtList = mpDebtDao.listDebtByGroupIdAndCreditorId(groupId, userId, 0);
-        List<Account> accountList = mpAccountDao.listAccountByGroupId(groupId);
+        List<Debt> debtList = debtDao.listDebtByGroupIdAndUserId(groupId, userId, 0);
+        List<Debt> ownDebtList = debtDao.listDebtByGroupIdAndCreditorId(groupId, userId, 0);
+        List<Account> accountList = accountDao.listAccountByGroupId(groupId);
         Map<String, String> nameMap = new HashMap<>();
 
         for (Account account : accountList) { //todo 整理
@@ -80,9 +81,9 @@ public class MpDebtServiceImpl extends ServiceImpl<MpDebtDao, Debt> implements M
     @Override
     public String deleteDebt(int debtId) {
         AjaxResponse ajaxResponse = new AjaxResponse();
-        Debt debt = mpDebtDao.selectById(debtId);
+        Debt debt = debtDao.selectById(debtId);
         debt.setIsDelete(1);
-        mpDebtDao.updateById(debt);
+        debtDao.updateById(debt);
 
         ajaxResponse.setStatus(1);
 
@@ -92,7 +93,7 @@ public class MpDebtServiceImpl extends ServiceImpl<MpDebtDao, Debt> implements M
     @Override
     public String deleteGroupDebt(String groupId) {
 
-        List<Debt> debtList = mpDebtDao.listDebtByGroupId(groupId, 0);
+        List<Debt> debtList = debtDao.listDebtByGroupId(groupId, 0);
 
         for (Debt debt : debtList) debt.setIsDelete(1);
 

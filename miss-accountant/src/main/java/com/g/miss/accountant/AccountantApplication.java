@@ -25,7 +25,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 @SpringBootApplication
-@MapperScan("com.g.miss.accountant.dao.mp")
+@MapperScan("com.g.miss.accountant.dao")
 public class AccountantApplication {
     static Path downloadedContentDir;
 

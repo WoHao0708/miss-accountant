@@ -1,8 +1,9 @@
-package com.g.miss.accountant.service.mp;
+package com.g.miss.accountant.service.Impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.g.miss.accountant.dao.mp.MpPublicFundDao;
+import com.g.miss.accountant.dao.PublicFundDao;
 import com.g.miss.accountant.entity.PublicFund;
+import com.g.miss.accountant.service.PublicFundService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,13 +13,13 @@ import org.springframework.stereotype.Service;
  * @date 2023/6/7 4:40 PM
  */
 @Service
-public class MpPublicFundServiceImpl extends ServiceImpl<MpPublicFundDao, PublicFund> implements MpPublicFundService {
+public class PublicFundServiceImpl extends ServiceImpl<PublicFundDao, PublicFund> implements PublicFundService {
     @Autowired
-    MpPublicFundDao mpPublicFundDao;
+    PublicFundDao publicFundDao;
 
     @Override
     public String updateBalance(String groupId, int amount) {
-        PublicFund publicFund = mpPublicFundDao.selectById(groupId);
+        PublicFund publicFund = publicFundDao.selectById(groupId);
 
         if (publicFund == null) publicFund = PublicFund.builder().groupId(groupId).balance(0).build();
         publicFund.addBalance(amount);

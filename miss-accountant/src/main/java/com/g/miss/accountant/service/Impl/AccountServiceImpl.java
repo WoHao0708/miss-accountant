@@ -1,14 +1,15 @@
-package com.g.miss.accountant.service.mp;
+package com.g.miss.accountant.service.Impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.g.miss.accountant.Template.AccountTemplate;
 import com.g.miss.accountant.Template.SheetTemplate;
 import com.g.miss.accountant.bean.Sheet;
-import com.g.miss.accountant.dao.mp.MpAccountDao;
-import com.g.miss.accountant.dao.mp.MpDebtDao;
+import com.g.miss.accountant.dao.AccountDao;
+import com.g.miss.accountant.dao.DebtDao;
 import com.g.miss.accountant.entity.Account;
 import com.g.miss.accountant.entity.Debt;
+import com.g.miss.accountant.service.AccountService;
 import com.g.miss.accountant.util.JsonUtils;
 import com.linecorp.bot.model.message.FlexMessage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,12 +26,12 @@ import java.util.stream.Collectors;
  * @date 2023/6/8 12:18 PM
  */
 @Service
-public class MpAccountServiceImpl extends ServiceImpl<MpAccountDao, Account> implements MpAccountService {
+public class AccountServiceImpl extends ServiceImpl<AccountDao, Account> implements AccountService {
 
     @Autowired
-    private MpAccountDao mpAccountDao;
+    private AccountDao accountDao;
     @Autowired
-    private MpDebtDao mpDebtDao;
+    private DebtDao debtDao;
 
     /**
      * 更新帳號資訊
@@ -46,7 +47,7 @@ public class MpAccountServiceImpl extends ServiceImpl<MpAccountDao, Account> imp
 //                .select(Account::getId, Account::getGroupId, Account::getUserId, Account::getName)
 //                .eq(Account::getGroupId, groupId).eq(Account::getUserId, userId)
 //                .last("Limit 1"));
-        Account account = mpAccountDao.getAccountByGroupIdAndUserId(groupId, userId);
+        Account account = accountDao.getAccountByGroupIdAndUserId(groupId, userId);
         if (account == null) {
             account = Account.builder().groupId(groupId).userId(userId).build();
         }
@@ -65,7 +66,7 @@ public class MpAccountServiceImpl extends ServiceImpl<MpAccountDao, Account> imp
     @Override
     public String listGroupUserExceptItself(String groupId, String userId, String name) {
         updateInfo(groupId, userId, name);
-        List<Account> accountList = mpAccountDao.selectList(new LambdaQueryWrapper<Account>()
+        List<Account> accountList = accountDao.selectList(new LambdaQueryWrapper<Account>()
                 .select(Account::getId, Account::getGroupId, Account::getUserId, Account::getName)
                 .eq(Account::getGroupId, groupId).ne(Account::getUserId, userId));
         return JsonUtils.toJson(accountList);
@@ -119,8 +120,8 @@ public class MpAccountServiceImpl extends ServiceImpl<MpAccountDao, Account> imp
      */
     private List<Account> statGroupAmount(String groupId) {
 
-        List<Account> accountList = mpAccountDao.listAccountByGroupId(groupId);
-        List<Debt> debtList = mpDebtDao.listDebtByGroupId(groupId, 0);
+        List<Account> accountList = accountDao.listAccountByGroupId(groupId);
+        List<Debt> debtList = debtDao.listDebtByGroupId(groupId, 0);
 
         for (Debt debt : debtList) { // todo 整理
             Account account = accountList.stream()

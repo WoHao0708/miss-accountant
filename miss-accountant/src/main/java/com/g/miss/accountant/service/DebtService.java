@@ -1,93 +1,51 @@
 package com.g.miss.accountant.service;
 
-import com.g.miss.accountant.bean.Account;
-import com.g.miss.accountant.bean.AjaxResponse;
-import com.g.miss.accountant.bean.Debt;
-import com.g.miss.accountant.constants.Constants;
-import com.g.miss.accountant.dao.DebtDao;
-import com.g.miss.accountant.enums.SuccessMsgEnum;
-import com.g.miss.accountant.util.JsonUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.g.miss.accountant.entity.Debt;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+/**
+ * @author G
+ * @description 債權
+ * @date 2023/6/8 12:34 PM
+ */
+public interface DebtService extends IService<Debt> {
+
+    /**
+     * 刪除群組所有債權
+     *
+     * @param groupId 群組id
+     * @return 結果
+     */
+    String deleteGroupDebt(String groupId);
+
+    /**
+     * 批次新增債權
+     *
+     * @param userIds  用戶id列表
+     * @param creditor 債權人
+     * @param groupId  群組id
+     * @param amount   金額
+     * @param note     筆記
+     * @return 結果
+     */
+    String addDebt(String[] userIds, String creditor, String groupId, int amount, String note);
+
+    /**
+     * 取得債權列表
+     *
+     * @param groupId 群組id
+     * @param userId  使用者id
+     * @return 結果
+     */
+    String listDebt(String groupId, String userId);
+
+    /**
+     * 刪除債權
+     *
+     * @param debtId 債權id
+     * @return 結果
+     */
+    String deleteDebt(int debtId);
 
 
-@Service
-public class DebtService {
-
-    @Autowired
-    DebtDao debtDao;
-    @Autowired
-    AccountService accountService;
-
-    public String addDebt(String[] userIds, String creditor, String groupId, int amount, String note) {
-        AjaxResponse ajaxResponse = new AjaxResponse();
-
-        if (userIds == null || userIds.length == 0) {
-            ajaxResponse.setStatus(0);
-            ajaxResponse.setMessage("為甚麼不選人?");
-        } else {
-            List<Debt> debts = new ArrayList<>();
-            for (String userid : userIds) {
-                Debt debt = new Debt(userid, groupId, creditor, amount, note);
-                debts.add(debt);
-            }
-            debtDao.saveAll(debts);
-            ajaxResponse.setStatus(1);
-            ajaxResponse.setMessage(SuccessMsgEnum.getRandomMsg());
-        }
-
-        return ajaxResponse.toString();
-    }
-
-    public String getDebt(String groupId, String userId) {
-
-        List<Debt> debtList = debtDao.findDebtByGroupIdAndUserIdAndIsDelete(groupId, userId, 0);
-        List<Debt> ownDebtList = debtDao.findDebtByGroupIdAndCreditorAndIsDelete(groupId, userId, 0);
-        List<Account> accountList = accountService.getGroupAllUser(groupId, userId);
-        Map<String, String> nameMap = new HashMap<>();
-
-        for (Account account : accountList) {
-            nameMap.put(account.getUserId(), account.getName());
-        }
-
-        for (Debt debt : debtList) {
-            debt.setName(nameMap.get(debt.getCreditor()));
-        }
-
-        for (Debt debt : ownDebtList) {
-            debt.setName(nameMap.get(debt.getUserId()));
-            debt.setIsOwner(1);
-        }
-        debtList.addAll(ownDebtList);
-
-        return JsonUtils.toJson(debtList);
-    }
-
-    public String deleteDebt(int debtId) {
-        AjaxResponse ajaxResponse = new AjaxResponse();
-        Debt debt = debtDao.findDebtById(debtId);
-        debt.setIsDelete(1);
-
-        debtDao.save(debt);
-
-        ajaxResponse.setStatus(1);
-
-        return ajaxResponse.toString();
-    }
-
-    public String deleteGroupDebt(String groupId) {
-
-        List<Debt> debtList = debtDao.findDebtByGroupIdAndIsDelete(groupId, 0);
-
-        for (Debt debt : debtList) debt.setIsDelete(1);
-
-        debtDao.saveAll(debtList);
-
-        return Constants.RESET_SUCCESS;
-    }
 }

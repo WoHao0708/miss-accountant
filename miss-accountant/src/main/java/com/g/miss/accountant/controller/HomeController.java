@@ -16,7 +16,7 @@
 
 package com.g.miss.accountant.controller;
 
-import com.g.miss.accountant.service.mp.MpAccountServiceImpl;
+import com.g.miss.accountant.service.Impl.AccountServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class HomeController {
 
     @Autowired
-    private MpAccountServiceImpl mpAccountService;
+    private AccountServiceImpl mpAccountService;
 
 
     /**

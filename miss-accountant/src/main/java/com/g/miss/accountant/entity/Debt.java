@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Transient;
 import java.time.LocalDateTime;
 
 /**
@@ -57,8 +56,8 @@ public class Debt {
      */
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createdTime;
-    @Transient
+    @TableField(exist = false)
     private String name;
-    @Transient
+    @TableField(exist = false)
     private int isOwner = 0;
 }

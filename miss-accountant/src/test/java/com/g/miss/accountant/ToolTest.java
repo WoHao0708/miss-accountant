@@ -2,8 +2,8 @@ package com.g.miss.accountant;
 
 import com.g.miss.accountant.entity.Account;
 import com.g.miss.accountant.entity.PublicFund;
-import com.g.miss.accountant.service.mp.MpAccountServiceImpl;
-import com.g.miss.accountant.service.mp.MpPublicFundServiceImpl;
+import com.g.miss.accountant.service.Impl.AccountServiceImpl;
+import com.g.miss.accountant.service.Impl.PublicFundServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +22,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class ToolTest {
 
     @Autowired
-    private MpPublicFundServiceImpl mpPublicFundService;
+    private PublicFundServiceImpl mpPublicFundService;
     @Autowired
-    private MpAccountServiceImpl mpAccountService;
+    private AccountServiceImpl mpAccountService;
 
     @Test
     public void mpTest() {

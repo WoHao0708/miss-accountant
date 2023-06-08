@@ -1,19 +1,24 @@
 package com.g.miss.accountant.dao;
 
-import com.g.miss.accountant.bean.Debt;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.g.miss.accountant.entity.Debt;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * @author G
+ * @description 債權
+ * @date 2023/6/8 12:20 PM
+ */
 @Repository
-public interface DebtDao extends JpaRepository<Debt, String> {
+public interface DebtDao extends BaseMapper<Debt> {
 
-    List<Debt> findDebtByGroupIdAndUserIdAndIsDelete(String groupId, String userId, int isDelete);
+    List<Debt> listDebtByGroupId(@Param("groupId") String groupId, @Param("isDelete") int isDelete);
 
-    List<Debt> findDebtByGroupIdAndCreditorAndIsDelete(String groupId, String creditor, int isDelete);
+    List<Debt> listDebtByGroupIdAndUserId(@Param("groupId") String groupId, @Param("userId") String userId, @Param("isDelete") int isDelete);
 
-    List<Debt> findDebtByGroupIdAndIsDelete(String groupId, int isDelete);
+    List<Debt> listDebtByGroupIdAndCreditorId(@Param("groupId") String groupId, @Param("creditorId") String creditorId, @Param("isDelete") int isDelete);
 
-    Debt findDebtById(int id);
 }
