@@ -33,14 +33,6 @@ public class AccountServiceImpl extends ServiceImpl<AccountDao, Account> impleme
     @Autowired
     private DebtDao debtDao;
 
-    /**
-     * 更新帳號資訊
-     *
-     * @param groupId 群組id
-     * @param userId  使用者id
-     * @param name    名稱
-     * @return 成功或失敗
-     */
     @Override
     public boolean updateInfo(String groupId, String userId, String name) {
 //        Account account = mpAccountDao.selectOne(new LambdaQueryWrapper<Account>()
@@ -55,14 +47,6 @@ public class AccountServiceImpl extends ServiceImpl<AccountDao, Account> impleme
         return this.saveOrUpdate(account);
     }
 
-    /**
-     * 取得群組內自己以外的其他人帳號
-     *
-     * @param groupId 群組id
-     * @param userId  使用者id
-     * @param name    名稱
-     * @return 帳號列表
-     */
     @Override
     public String listGroupUserExceptItself(String groupId, String userId, String name) {
         updateInfo(groupId, userId, name);
@@ -72,6 +56,7 @@ public class AccountServiceImpl extends ServiceImpl<AccountDao, Account> impleme
         return JsonUtils.toJson(accountList);
     }
 
+    @Override
     public FlexMessage getAllotFlexMessage(String groupId) { // 分帳演算法
         List<Account> accountList = statGroupAmount(groupId);
         List<Sheet> sheets = new ArrayList<>();
@@ -106,6 +91,7 @@ public class AccountServiceImpl extends ServiceImpl<AccountDao, Account> impleme
         return new SheetTemplate().get(sheets);
     }
 
+    @Override
     public FlexMessage getGroupAmountFlexMessage(String groupId) {
         List<Account> accountList = statGroupAmount(groupId);
         if (accountList.size() == 0) return null;
