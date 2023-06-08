@@ -1,5 +1,6 @@
 package com.g.miss.accountant;
 
+import com.g.miss.accountant.entity.PublicFund;
 import com.g.miss.accountant.service.mp.MpPublicFundServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,6 +24,10 @@ public class ToolTest {
 
     @Test
     public void mpTest() {
-        System.out.println(mpPublicFundService.getById("As").toString());
+        PublicFund publicFund = new PublicFund();
+        publicFund.setGroupId("13213");
+        publicFund.setAmount(publicFund.getAmount() + 1);
+        System.out.println(mpPublicFundService.saveOrUpdate(publicFund));
+        System.out.println(mpPublicFundService.getById("13213").toString());
     }
 }

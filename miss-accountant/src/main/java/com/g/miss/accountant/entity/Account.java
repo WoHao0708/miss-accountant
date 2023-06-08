@@ -13,16 +13,22 @@ import java.time.LocalDateTime;
 
 /**
  * @author G
- * @description 公款
- * @date 2023/6/7 4:08 PM
+ * @description 帳號
+ * @date 2023/6/7 6:30 PM
  */
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@TableName("public_fund")
-public class PublicFund {
+@TableName("account")
+public class Account {
+
+    /**
+     * 使用者id
+     */
+    @TableId
+    private String userId;
 
     /**
      * 群組id
@@ -31,13 +37,19 @@ public class PublicFund {
     private String groupId;
 
     /**
-     * 餘額
+     * 名稱
      */
-    private int amount;
+    private String name;
 
     /**
      * 更新時間
      */
     @TableField(fill = FieldFill.UPDATE)
     private LocalDateTime updateTime;
+
+    /**
+     * 新增時間
+     */
+    @TableField(fill = FieldFill.INSERT)
+    private LocalDateTime createdTime;
 }

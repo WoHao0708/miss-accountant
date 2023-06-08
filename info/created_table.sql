@@ -13,11 +13,11 @@ CREATE TABLE `debt` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
   `user_id` varchar(100) NOT NULL COMMENT 'User id get by line event.',
   `group_id` varchar(100) NOT NULL DEFAULT '' COMMENT 'Group id get by line event.',
-  `creditor` varchar(100) NOT NULL,
+  `creditor` varchar(100) NOT NULL COMMENT '債權人',
   `amount` int(11) DEFAULT '0' COMMENT '金額',
-  `note` varchar(100) DEFAULT '',
+  `note` varchar(100) DEFAULT '' COMMENT '描述',
   `created_time` datetime DEFAULT NULL COMMENT '建立時間',
-  `is_delete` int(11) DEFAULT '0',
+  `is_delete` int(11) DEFAULT '0' COMMENT '刪除標記',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8
 
