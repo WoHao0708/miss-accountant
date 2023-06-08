@@ -1,6 +1,7 @@
 package com.g.miss.accountant.entity;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 
@@ -14,13 +15,11 @@ import java.time.LocalDateTime;
  */
 public class Debt {
 
-    @Transient
-    private final int isOwner = 0;
     /**
      * Id
      */
-    @TableId
-    private int id;
+    @TableId(type = IdType.AUTO)
+    private Integer id;
     /**
      * 欠債人id
      */
@@ -45,6 +44,7 @@ public class Debt {
      * 刪除標記
      */
     private final int isDelete = 0;
+
     /**
      * 新增時間
      */
@@ -52,4 +52,6 @@ public class Debt {
     private LocalDateTime createdTime;
     @Transient
     private String name;
+    @Transient
+    private final int isOwner = 0;
 }

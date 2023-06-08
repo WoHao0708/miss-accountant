@@ -1,9 +1,6 @@
 package com.g.miss.accountant.entity;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,15 +22,18 @@ import java.time.LocalDateTime;
 public class Account {
 
     /**
+     * Id
+     */
+    @TableId(type = IdType.AUTO)
+    private Integer id;
+    /**
      * 使用者id
      */
-    @TableId
     private String userId;
 
     /**
      * 群組id
      */
-    @TableId
     private String groupId;
 
     /**

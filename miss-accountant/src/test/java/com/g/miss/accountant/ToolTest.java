@@ -1,6 +1,8 @@
 package com.g.miss.accountant;
 
+import com.g.miss.accountant.entity.Account;
 import com.g.miss.accountant.entity.PublicFund;
+import com.g.miss.accountant.service.mp.MpAccountServiceImpl;
 import com.g.miss.accountant.service.mp.MpPublicFundServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,6 +23,8 @@ public class ToolTest {
 
     @Autowired
     private MpPublicFundServiceImpl mpPublicFundService;
+    @Autowired
+    private MpAccountServiceImpl mpAccountService;
 
     @Test
     public void mpTest() {
@@ -29,5 +33,14 @@ public class ToolTest {
         publicFund.setAmount(publicFund.getAmount() + 1);
         System.out.println(mpPublicFundService.saveOrUpdate(publicFund));
         System.out.println(mpPublicFundService.getById("13213").toString());
+    }
+
+    @Test
+    public void accountTest() {
+        Account account = new Account();
+        account.setGroupId("1");
+        account.setUserId("1");
+        account.setName("test");
+        System.out.println(mpAccountService.saveOrUpdate(account));
     }
 }

@@ -1,12 +1,13 @@
 CREATE DATABASE `miss_accountant` /*!40100 DEFAULT CHARACTER SET utf8 */;
 
 CREATE TABLE `account` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
   `user_id` varchar(100) NOT NULL COMMENT 'User id get by line event.',
   `group_id` varchar(100) NOT NULL DEFAULT '' COMMENT 'Group id get by line event.',
   `name` varchar(50) NOT NULL COMMENT '名稱',
   `update_time` datetime DEFAULT NULL COMMENT '更新時間',
   `created_time` datetime DEFAULT NULL COMMENT '建立時間',
-  PRIMARY KEY (`user_id`,`group_id`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8
 
 CREATE TABLE `debt` (
