@@ -18,6 +18,7 @@ package com.g.miss.accountant.controller;
 
 import com.g.miss.accountant.service.Impl.AccountServiceImpl;
 import com.g.miss.accountant.service.Impl.DebtServiceImpl;
+import com.g.miss.accountant.util.JsonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,9 +29,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class DebtController {
     @Autowired
-    DebtServiceImpl mpDebtService;
+    DebtServiceImpl debtService;
     @Autowired
-    AccountServiceImpl mpAccountService;
+    AccountServiceImpl accountService;
 
     /**
      * 記帳頁
@@ -54,7 +55,7 @@ public class DebtController {
     @ResponseBody
     @PostMapping("/debt/getAccount")
     public String getAccount(@RequestParam String groupId, @RequestParam String userId, @RequestParam String name) {
-        return mpAccountService.listGroupUserExceptItself(groupId, userId, name);
+        return JsonUtils.toJson(accountService.listGroupUserExceptItself(groupId, userId, name));
     }
 
 
@@ -64,7 +65,7 @@ public class DebtController {
     @ResponseBody
     @PostMapping("/debt/add")
     public String addDebt(String[] userIds, @RequestParam int amount, @RequestParam String userId, @RequestParam String groupId, String note) {
-        return mpDebtService.addDebt(userIds, userId, groupId, amount, note);
+        return debtService.addDebt(groupId, userIds, userId, amount, note);
     }
 
     /**
@@ -73,7 +74,7 @@ public class DebtController {
     @ResponseBody
     @PostMapping("/debt/getList")
     public String getList(@RequestParam String userId, @RequestParam String groupId) {
-        return mpDebtService.listDebt(groupId, userId);
+        return debtService.listDebt(groupId, userId);
     }
 
     /**
@@ -82,6 +83,6 @@ public class DebtController {
     @ResponseBody
     @PostMapping("/debt/delete")
     public String deleteDebt(@RequestParam String debtId) {
-        return mpDebtService.deleteDebt(Integer.parseInt(debtId));
+        return debtService.deleteDebt(Integer.parseInt(debtId));
     }
 }

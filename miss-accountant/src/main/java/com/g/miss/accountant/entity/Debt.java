@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@TableName("debt")
+@TableName("tb_debt")
 public class Debt {
 
     /**
@@ -27,13 +27,13 @@ public class Debt {
     @TableId(type = IdType.AUTO)
     private Integer id;
     /**
-     * 欠債人id
-     */
-    private String userId;
-    /**
      * 群組id
      */
     private String groupId;
+    /**
+     * 欠債人id
+     */
+    private String userId;
     /**
      * 債權人id
      */

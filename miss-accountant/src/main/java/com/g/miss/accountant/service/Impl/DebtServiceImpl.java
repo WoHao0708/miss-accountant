@@ -1,9 +1,9 @@
 package com.g.miss.accountant.service.Impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.g.miss.accountant.bean.AjaxResponse;
 import com.g.miss.accountant.constants.Constants;
-import com.g.miss.accountant.dao.AccountDao;
 import com.g.miss.accountant.dao.DebtDao;
 import com.g.miss.accountant.entity.Account;
 import com.g.miss.accountant.entity.Debt;
@@ -29,11 +29,31 @@ public class DebtServiceImpl extends ServiceImpl<DebtDao, Debt> implements DebtS
     @Autowired
     DebtDao debtDao;
     @Autowired
-    AccountDao accountDao;
-
+    AccountServiceImpl accountService;
 
     @Override
-    public String addDebt(String[] userIds, String creditor, String groupId, int amount, String note) {
+    public List<Debt> listDebtByGroupId(String groupId) {
+        return debtDao.selectList(new LambdaQueryWrapper<Debt>()
+                .select(Debt::getId, Debt::getGroupId, Debt::getUserId, Debt::getCreditorId, Debt::getAmount, Debt::getNote, Debt::getIsDelete)
+                .eq(Debt::getGroupId, groupId).eq(Debt::getIsDelete, 0));
+    }
+
+    @Override
+    public List<Debt> listDebtByGroupIdAndUserId(String groupId, String userId) {
+        return debtDao.selectList(new LambdaQueryWrapper<Debt>()
+                .select(Debt::getId, Debt::getGroupId, Debt::getUserId, Debt::getCreditorId, Debt::getAmount, Debt::getNote, Debt::getIsDelete)
+                .eq(Debt::getGroupId, groupId).eq(Debt::getUserId, userId).eq(Debt::getIsDelete, 0));
+    }
+
+    @Override
+    public List<Debt> listDebtByGroupIdAndCreditorId(String groupId, String creditorId) {
+        return debtDao.selectList(new LambdaQueryWrapper<Debt>()
+                .select(Debt::getId, Debt::getGroupId, Debt::getUserId, Debt::getCreditorId, Debt::getAmount, Debt::getNote, Debt::getIsDelete)
+                .eq(Debt::getGroupId, groupId).eq(Debt::getCreditorId, creditorId).eq(Debt::getIsDelete, 0));
+    }
+
+    @Override
+    public String addDebt(String groupId, String[] userIds, String creditor, int amount, String note) {
         AjaxResponse ajaxResponse = new AjaxResponse();
 
         if (userIds == null || userIds.length == 0) {
@@ -56,9 +76,9 @@ public class DebtServiceImpl extends ServiceImpl<DebtDao, Debt> implements DebtS
     @Override
     public String listDebt(String groupId, String userId) {
 
-        List<Debt> debtList = debtDao.listDebtByGroupIdAndUserId(groupId, userId, 0);
-        List<Debt> ownDebtList = debtDao.listDebtByGroupIdAndCreditorId(groupId, userId, 0);
-        List<Account> accountList = accountDao.listAccountByGroupId(groupId);
+        List<Debt> debtList = this.listDebtByGroupIdAndUserId(groupId, userId);
+        List<Debt> ownDebtList = this.listDebtByGroupIdAndCreditorId(groupId, userId);
+        List<Account> accountList = accountService.listAccountByGroupId(groupId);
         Map<String, String> nameMap = new HashMap<>();
 
         for (Account account : accountList) { //todo 整理
@@ -93,7 +113,7 @@ public class DebtServiceImpl extends ServiceImpl<DebtDao, Debt> implements DebtS
     @Override
     public String deleteGroupDebt(String groupId) {
 
-        List<Debt> debtList = debtDao.listDebtByGroupId(groupId, 0);
+        List<Debt> debtList = this.listDebtByGroupId(groupId);
 
         for (Debt debt : debtList) debt.setIsDelete(1);
 

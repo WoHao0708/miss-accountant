@@ -26,7 +26,8 @@ dependencies {
     runtimeOnly 'mysql:mysql-connector-java:5.1.49'
     implementation 'com.google.guava:guava'
 
-    implementation 'junit:junit:4.13.1'
+//    implementation 'junit:junit:4.13.1'
+    implementation 'org.junit.jupiter:junit-jupiter-api:5.9.3'
     implementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'com.baomidou:mybatis-plus-boot-starter:3.5.3.1'
 }

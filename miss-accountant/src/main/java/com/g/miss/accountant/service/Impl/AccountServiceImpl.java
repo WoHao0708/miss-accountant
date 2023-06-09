@@ -6,11 +6,9 @@ import com.g.miss.accountant.Template.AccountTemplate;
 import com.g.miss.accountant.Template.SheetTemplate;
 import com.g.miss.accountant.bean.Sheet;
 import com.g.miss.accountant.dao.AccountDao;
-import com.g.miss.accountant.dao.DebtDao;
 import com.g.miss.accountant.entity.Account;
 import com.g.miss.accountant.entity.Debt;
 import com.g.miss.accountant.service.AccountService;
-import com.g.miss.accountant.util.JsonUtils;
 import com.linecorp.bot.model.message.FlexMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,15 +29,11 @@ public class AccountServiceImpl extends ServiceImpl<AccountDao, Account> impleme
     @Autowired
     private AccountDao accountDao;
     @Autowired
-    private DebtDao debtDao;
+    private DebtServiceImpl debtService;
 
     @Override
     public boolean updateInfo(String groupId, String userId, String name) {
-//        Account account = mpAccountDao.selectOne(new LambdaQueryWrapper<Account>()
-//                .select(Account::getId, Account::getGroupId, Account::getUserId, Account::getName)
-//                .eq(Account::getGroupId, groupId).eq(Account::getUserId, userId)
-//                .last("Limit 1"));
-        Account account = accountDao.getAccountByGroupIdAndUserId(groupId, userId);
+        Account account = this.getAccountByGroupIdAndUserId(groupId, userId);
         if (account == null) {
             account = Account.builder().groupId(groupId).userId(userId).build();
         }
@@ -48,12 +42,11 @@ public class AccountServiceImpl extends ServiceImpl<AccountDao, Account> impleme
     }
 
     @Override
-    public String listGroupUserExceptItself(String groupId, String userId, String name) {
+    public List<Account> listGroupUserExceptItself(String groupId, String userId, String name) {
         updateInfo(groupId, userId, name);
-        List<Account> accountList = accountDao.selectList(new LambdaQueryWrapper<Account>()
+        return accountDao.selectList(new LambdaQueryWrapper<Account>()
                 .select(Account::getId, Account::getGroupId, Account::getUserId, Account::getName)
                 .eq(Account::getGroupId, groupId).ne(Account::getUserId, userId));
-        return JsonUtils.toJson(accountList);
     }
 
     @Override
@@ -98,6 +91,21 @@ public class AccountServiceImpl extends ServiceImpl<AccountDao, Account> impleme
         return new AccountTemplate().get(accountList);
     }
 
+    @Override
+    public Account getAccountByGroupIdAndUserId(String groupId, String userId) {
+        return accountDao.selectOne(new LambdaQueryWrapper<Account>()
+                .select(Account::getId, Account::getGroupId, Account::getUserId, Account::getName)
+                .eq(Account::getGroupId, groupId).eq(Account::getUserId, userId)
+                .last("Limit 1"));
+    }
+
+    @Override
+    public List<Account> listAccountByGroupId(String groupId) {
+        return accountDao.selectList(new LambdaQueryWrapper<Account>()
+                .select(Account::getId, Account::getGroupId, Account::getUserId, Account::getName)
+                .eq(Account::getGroupId, groupId));
+    }
+
     /**
      * 計算群組各用戶總計
      *
@@ -106,8 +114,8 @@ public class AccountServiceImpl extends ServiceImpl<AccountDao, Account> impleme
      */
     private List<Account> statGroupAmount(String groupId) {
 
-        List<Account> accountList = accountDao.listAccountByGroupId(groupId);
-        List<Debt> debtList = debtDao.listDebtByGroupId(groupId, 0);
+        List<Account> accountList = this.listAccountByGroupId(groupId);
+        List<Debt> debtList = debtService.listDebtByGroupId(groupId);
 
         for (Debt debt : debtList) { // todo 整理
             Account account = accountList.stream()

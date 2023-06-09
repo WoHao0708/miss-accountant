@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.g.miss.accountant.entity.Account;
 import com.linecorp.bot.model.message.FlexMessage;
 
+import java.util.List;
+
 /**
  * @author G
  * @description 帳號
@@ -21,6 +23,22 @@ public interface AccountService extends IService<Account> {
      */
     boolean updateInfo(String groupId, String userId, String name);
 
+    /**
+     * 依照群組id跟使用者id取得帳號
+     *
+     * @param groupId 群組id
+     * @param userId  使用者id
+     * @return 帳號
+     */
+    Account getAccountByGroupIdAndUserId(String groupId, String userId);
+
+    /**
+     * 取得群組內的帳號列表
+     *
+     * @param groupId 群組id
+     * @return 帳號列表
+     */
+    List<Account> listAccountByGroupId(String groupId);
 
     /**
      * 取得群組內自己以外的其他人帳號
@@ -30,7 +48,7 @@ public interface AccountService extends IService<Account> {
      * @param name    名稱
      * @return 帳號列表
      */
-    String listGroupUserExceptItself(String groupId, String userId, String name);
+    List<Account> listGroupUserExceptItself(String groupId, String userId, String name);
 
     /**
      * 取得分帳結果訊息

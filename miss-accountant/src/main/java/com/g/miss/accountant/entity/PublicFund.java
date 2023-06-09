@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@TableName("public_fund")
+@TableName("tb_public_fund")
 public class PublicFund {
 
     /**

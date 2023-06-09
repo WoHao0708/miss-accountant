@@ -5,21 +5,15 @@ import com.g.miss.accountant.entity.PublicFund;
 import com.g.miss.accountant.service.Impl.AccountServiceImpl;
 import com.g.miss.accountant.service.Impl.PublicFundServiceImpl;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
 
 /**
  * @author G
  * @description
  * @date 2023/5/15 4:46 PM
  */
-@PropertySource(value = "classpath:application.properties")
-@SpringBootTest(classes = {AccountantApplication.class}, webEnvironment = SpringBootTest.WebEnvironment.NONE)
-@RunWith(SpringRunner.class)
-public class ToolTest {
+
+public class ToolTest extends TestBase {
 
     @Autowired
     private PublicFundServiceImpl mpPublicFundService;
@@ -43,4 +37,5 @@ public class ToolTest {
         account.setName("test");
         System.out.println(mpAccountService.saveOrUpdate(account));
     }
+
 }
