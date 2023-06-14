@@ -5,7 +5,7 @@ import lombok.Getter;
 
 /**
  * @author G
- * @description 時區
+ * @description 時區列舉
  * @date 2023/6/8 11:07 AM
  */
 @Getter

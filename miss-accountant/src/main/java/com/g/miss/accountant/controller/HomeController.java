@@ -17,6 +17,7 @@
 package com.g.miss.accountant.controller;
 
 import com.g.miss.accountant.service.Impl.AccountServiceImpl;
+import com.g.miss.accountant.vo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,8 +29,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class HomeController {
 
     @Autowired
-    private AccountServiceImpl mpAccountService;
-
+    private AccountServiceImpl accountService;
 
     /**
      * Home page
@@ -49,7 +49,7 @@ public class HomeController {
      */
     @ResponseBody
     @PostMapping("/")
-    public String postIndex(@RequestParam String userId, @RequestParam String groupId, @RequestParam String name) {
-        return String.valueOf(mpAccountService.updateInfo(groupId, userId, name));
+    public Result<?> postIndex(@RequestParam String userId, @RequestParam String groupId, @RequestParam String name) {
+        return Result.ok(accountService.updateInfo(groupId, userId, name));
     }
 }

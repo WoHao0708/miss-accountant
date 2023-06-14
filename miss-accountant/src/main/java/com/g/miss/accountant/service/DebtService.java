@@ -65,7 +65,7 @@ public interface DebtService extends IService<Debt> {
      * @param userId  使用者id
      * @return 結果
      */
-    String listDebt(String groupId, String userId);
+    List<Debt> listDebt(String groupId, String userId);
 
     /**
      * 刪除債權

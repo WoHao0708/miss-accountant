@@ -50,11 +50,11 @@ public class WebHookController {
     @Autowired
     private LineMessagingClient lineMessagingClient;
     @Autowired
-    private PublicFundServiceImpl mpPublicFundService;
+    private PublicFundServiceImpl publicFundService;
     @Autowired
-    private DebtServiceImpl mpDebtService;
+    private DebtServiceImpl debtService;
     @Autowired
-    private AccountServiceImpl mpAccountService;
+    private AccountServiceImpl accountService;
 
     @EventMapping
     public void handleTextMessageEvent(MessageEvent<TextMessageContent> event) throws Exception {
@@ -85,20 +85,20 @@ public class WebHookController {
             case "setAccount":
                 lineMessagingClient.getGroupMemberProfile(groupId, userId).whenComplete((profile, throwable) -> {
                     String name = profile.getDisplayName();
-                    mpAccountService.updateInfo(groupId, userId, name);
+                    accountService.updateInfo(groupId, userId, name);
                     this.replyText(event.getReplyToken(), name + Constants.SET_ACCOUNT_SUCCESS);
                 });
                 break;
             case "debtReset":
-                this.replyText(event.getReplyToken(), mpDebtService.deleteGroupDebt(groupId));
+                this.replyText(event.getReplyToken(), debtService.deleteGroupDebt(groupId));
                 break;
             case "debtCheck":
-                flexMessage = mpAccountService.getGroupAmountFlexMessage(groupId);
+                flexMessage = accountService.getGroupAmountFlexMessage(groupId);
                 if (flexMessage == null) this.replyText(event.getReplyToken(), Constants.NONE_DATA_MESSAGE);
                 else this.reply(event.getReplyToken(), flexMessage);
                 break;
             case "debtAllot":
-                flexMessage = mpAccountService.getAllotFlexMessage(groupId);
+                flexMessage = accountService.getAllotFlexMessage(groupId);
                 if (flexMessage == null) this.replyText(event.getReplyToken(), Constants.NONE_DATA_MESSAGE);
                 else this.reply(event.getReplyToken(), flexMessage);
                 break;
@@ -128,7 +128,7 @@ public class WebHookController {
 
         if ("會計小姐".equals(text) || "會計".equals(text)) {
             final String groupId = ((GroupSource) event.getSource()).getGroupId();
-            this.reply(event.getReplyToken(), new MenuTemplate().get(mpPublicFundService.updateBalance(groupId, 0), groupId));
+            this.reply(event.getReplyToken(), new MenuTemplate().get(publicFundService.updateBalance(groupId, 0), groupId));
         }
 
         if ("婆".equals(text) || "老婆".equals(text))
@@ -141,10 +141,10 @@ public class WebHookController {
 
         switch (infix) {
             case "+": // +
-                this.replyText(event.getReplyToken(), mpPublicFundService.updateBalance(groupId, suffix));
+                this.replyText(event.getReplyToken(), publicFundService.updateBalance(groupId, suffix));
                 break;
             case "-": // -
-                this.replyText(event.getReplyToken(), mpPublicFundService.updateBalance(groupId, -suffix));
+                this.replyText(event.getReplyToken(), publicFundService.updateBalance(groupId, -suffix));
                 break;
         }
     }
