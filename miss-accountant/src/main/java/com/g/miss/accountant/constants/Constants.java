@@ -1,10 +1,15 @@
 package com.g.miss.accountant.constants;
 
+/**
+ * @author G
+ * @description 常數
+ * @date 2023/6/8 12:19 PM
+ */
 public class Constants {
 
     public static String HELP_MESSAGE =
             "$+n： 增加公款\n" +
-            "$-n： 減少公款";
+                    "$-n： 減少公款";
 
     public static String NONE_DATA_MESSAGE = "沒紀錄無法結算";
 

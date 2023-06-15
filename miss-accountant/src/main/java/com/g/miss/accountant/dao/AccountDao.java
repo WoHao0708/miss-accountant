@@ -9,8 +9,7 @@ import org.springframework.stereotype.Repository;
  * @description 帳號
  * @date 2023/6/8 12:19 PM
  */
-
 @Repository
 public interface AccountDao extends BaseMapper<Account> {
-    
+
 }

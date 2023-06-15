@@ -11,7 +11,17 @@ import com.linecorp.bot.model.event.message.TextMessageContent;
  */
 public interface MessageService {
 
+    /**
+     * 處理訊息內容
+     *
+     * @param event event
+     */
     void handleTextContent(MessageEvent<TextMessageContent> event);
 
+    /**
+     * 處理按鈕功能
+     *
+     * @param event event
+     */
     void handlePostBack(PostbackEvent event);
 }

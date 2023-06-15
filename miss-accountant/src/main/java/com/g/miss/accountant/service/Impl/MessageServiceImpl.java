@@ -42,9 +42,6 @@ public class MessageServiceImpl implements MessageService {
     @Autowired
     private DebtServiceImpl debtService;
 
-    /**
-     * 處理訊息內容
-     */
     @Override
     public void handleTextContent(MessageEvent<TextMessageContent> event) {
         String prefix = "";
@@ -89,9 +86,6 @@ public class MessageServiceImpl implements MessageService {
             this.replyText(event.getReplyToken(), "噁男");
     }
 
-    /**
-     * 處理按鈕功能
-     */
     @Override
     public void handlePostBack(PostbackEvent event) {
         final String userId = event.getSource().getUserId();

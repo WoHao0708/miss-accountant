@@ -57,7 +57,8 @@ public class AccountServiceImpl extends ServiceImpl<AccountDao, Account> impleme
     public FlexMessage getAllotFlexMessage(String groupId) { // 分帳演算法
         List<Account> accountList = statGroupAmount(groupId);
         List<Sheet> sheets = new ArrayList<>();
-        while (accountList.size() != 0) {
+
+        while (accountList.size() != 0) { // 排序->取出最前跟最後的抵銷->循環
             accountList = accountList.stream().sorted(Comparator.comparing(Account::getAmount).reversed()).collect(Collectors.toList());
 
             Account head = accountList.get(0);
@@ -121,18 +122,18 @@ public class AccountServiceImpl extends ServiceImpl<AccountDao, Account> impleme
         List<Account> accountList = this.listAccountByGroupId(groupId);
         List<Debt> debtList = debtService.listDebtByGroupId(groupId);
 
-        for (Debt debt : debtList) { // todo 整理
+        for (Debt debt : debtList) {
             Account account = accountList.stream()
                     .filter(a -> debt.getUserId().equals(a.getUserId()))
                     .findAny().orElse(null);
-            account.addAmount(-debt.getAmount());
+            account.addAmount(-debt.getAmount()); // 欠債人加上負債
             account = accountList.stream()
                     .filter(a -> debt.getCreditorId().equals(a.getUserId()))
                     .findAny().orElse(null);
-            account.addAmount(debt.getAmount());
+            account.addAmount(debt.getAmount()); // 債權人加上金額
         }
 
-        // 先排除0的帳號
+        // 排除0的帳號
         accountList = accountList.stream()
                 .filter(a -> a.getAmount() != 0)
                 .collect(Collectors.toList());

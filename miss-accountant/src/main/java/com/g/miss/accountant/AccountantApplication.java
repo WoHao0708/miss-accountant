@@ -29,5 +29,4 @@ public class AccountantApplication {
     public static void main(String[] args) throws IOException {
         SpringApplication.run(AccountantApplication.class, args);
     }
-
 }

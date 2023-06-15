@@ -15,7 +15,6 @@ import static com.g.miss.accountant.enums.TimeZoneEnum.SHANGHAI;
  * @description
  * @date 2023/6/8 11:04 AM
  */
-
 @Log4j2
 @Component
 public class MyMetaObjectHandler implements MetaObjectHandler {
