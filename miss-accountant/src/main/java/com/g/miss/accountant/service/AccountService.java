@@ -21,7 +21,7 @@ public interface AccountService extends IService<Account> {
      * @param name    名稱
      * @return 成功或失敗
      */
-    boolean updateInfo(String groupId, String userId, String name);
+    String updateInfo(String groupId, String userId, String name);
 
     /**
      * 依照群組id跟使用者id取得帳號

@@ -18,6 +18,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.g.miss.accountant.constants.Constants.SET_ACCOUNT_SUCCESS;
+
 /**
  * @author G
  * @description 帳號
@@ -32,13 +34,15 @@ public class AccountServiceImpl extends ServiceImpl<AccountDao, Account> impleme
     private DebtServiceImpl debtService;
 
     @Override
-    public boolean updateInfo(String groupId, String userId, String name) {
+    public String updateInfo(String groupId, String userId, String name) {
         Account account = this.getAccountByGroupIdAndUserId(groupId, userId);
         if (account == null) {
             account = Account.builder().groupId(groupId).userId(userId).build();
         }
         account.setName(name);
-        return this.saveOrUpdate(account);
+        this.saveOrUpdate(account);
+
+        return SET_ACCOUNT_SUCCESS;
     }
 
     @Override

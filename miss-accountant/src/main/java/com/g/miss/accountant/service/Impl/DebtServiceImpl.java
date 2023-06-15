@@ -2,7 +2,6 @@ package com.g.miss.accountant.service.Impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.g.miss.accountant.constants.Constants;
 import com.g.miss.accountant.dao.DebtDao;
 import com.g.miss.accountant.entity.Account;
 import com.g.miss.accountant.entity.Debt;
@@ -16,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.g.miss.accountant.constants.Constants.RESET_SUCCESS;
 import static com.g.miss.accountant.enums.StatusCodeEnum.NONE_CHOICE_ERROR;
 import static com.g.miss.accountant.enums.StatusCodeEnum.SUCCESS;
 
@@ -112,6 +112,6 @@ public class DebtServiceImpl extends ServiceImpl<DebtDao, Debt> implements DebtS
 
         this.saveBatch(debtList);
 
-        return Constants.RESET_SUCCESS;
+        return RESET_SUCCESS;
     }
 }
