@@ -7,6 +7,7 @@ import com.g.miss.accountant.entity.Account;
 import com.g.miss.accountant.entity.Debt;
 import com.g.miss.accountant.enums.SuccessMsgEnum;
 import com.g.miss.accountant.service.DebtService;
+import com.g.miss.accountant.vo.DebtVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,6 @@ import java.util.List;
 import java.util.Map;
 
 import static com.g.miss.accountant.constants.Constants.RESET_SUCCESS;
-import static com.g.miss.accountant.enums.StatusCodeEnum.NONE_CHOICE_ERROR;
 import static com.g.miss.accountant.enums.StatusCodeEnum.SUCCESS;
 
 /**
@@ -54,19 +54,15 @@ public class DebtServiceImpl extends ServiceImpl<DebtDao, Debt> implements DebtS
     }
 
     @Override
-    public String addDebt(String groupId, String[] userIds, String creditor, int amount, String note) {
+    public String addDebt(DebtVO debtVO) {
 
-        if (userIds != null && userIds.length != 0) { // 沒選使用者返回錯誤
-            List<Debt> debts = new ArrayList<>();
-            for (String userid : userIds) {
-                Debt debt = Debt.builder().groupId(groupId).userId(userid).creditorId(creditor).amount(amount).note(note).build();
-                debts.add(debt);
-            }
-            this.saveBatch(debts);
-            return SuccessMsgEnum.getRandomMsg();
+        List<Debt> debts = new ArrayList<>();
+        for (String userid : debtVO.getUserIds()) {
+            Debt debt = Debt.builder().groupId(debtVO.getGroupId()).userId(userid).creditorId(debtVO.getUserId()).amount(debtVO.getAmount()).note(debtVO.getNote()).build();
+            debts.add(debt);
         }
-
-        return NONE_CHOICE_ERROR.getDesc();
+        this.saveBatch(debts);
+        return SuccessMsgEnum.getRandomMsg();
     }
 
     @Override

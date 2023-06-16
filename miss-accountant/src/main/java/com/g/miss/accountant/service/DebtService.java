@@ -2,6 +2,7 @@ package com.g.miss.accountant.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.g.miss.accountant.entity.Debt;
+import com.g.miss.accountant.vo.DebtVO;
 
 import java.util.List;
 
@@ -49,14 +50,10 @@ public interface DebtService extends IService<Debt> {
     /**
      * 批次新增債權
      *
-     * @param userIds  用戶id列表
-     * @param creditor 債權人
-     * @param groupId  群組id
-     * @param amount   金額
-     * @param note     筆記
+     * @param debtVO 債權
      * @return 結果
      */
-    String addDebt(String groupId, String[] userIds, String creditor, int amount, String note);
+    String addDebt(DebtVO debtVO);
 
     /**
      * 取得債權列表

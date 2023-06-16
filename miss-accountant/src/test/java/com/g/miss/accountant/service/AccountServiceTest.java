@@ -3,6 +3,7 @@ package com.g.miss.accountant.service;
 import com.g.miss.accountant.TestBase;
 import com.g.miss.accountant.entity.Account;
 import com.g.miss.accountant.service.Impl.AccountServiceImpl;
+import com.g.miss.accountant.vo.AccountVO;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,6 +26,8 @@ public class AccountServiceTest extends TestBase {
     private final String groupId = "1";
     private final String userId = "1";
     private final String name = String.valueOf(new Random().nextInt(10000));
+    private final AccountVO accountVO = new AccountVO(groupId, userId, name);
+
 
     @Before
     public void initializeAccount() {
@@ -40,7 +43,7 @@ public class AccountServiceTest extends TestBase {
     @Test
     public void testUpdateInfo() {
 
-        accountService.updateInfo(groupId, userId, name);
+        accountService.updateInfo(accountVO);
 
         String actual = accountService.getAccountByGroupIdAndUserId(groupId, userId).getName();
 
@@ -51,7 +54,7 @@ public class AccountServiceTest extends TestBase {
     public void testListGroupUserExceptItself() {
         int expectedSize = 8;
 
-        List<Account> accountList = accountService.listGroupUserExceptItself(groupId, userId, name);
+        List<Account> accountList = accountService.listGroupUserExceptItself(accountVO);
 
         accountList.forEach(account -> Assert.assertNotEquals(userId, account.getUserId())); // assert userId not in list
         Assert.assertEquals(expectedSize, accountList.size());

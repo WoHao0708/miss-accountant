@@ -9,6 +9,7 @@ import com.g.miss.accountant.dao.AccountDao;
 import com.g.miss.accountant.entity.Account;
 import com.g.miss.accountant.entity.Debt;
 import com.g.miss.accountant.service.AccountService;
+import com.g.miss.accountant.vo.AccountVO;
 import com.linecorp.bot.model.message.FlexMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,23 +35,23 @@ public class AccountServiceImpl extends ServiceImpl<AccountDao, Account> impleme
     private DebtServiceImpl debtService;
 
     @Override
-    public String updateInfo(String groupId, String userId, String name) {
-        Account account = this.getAccountByGroupIdAndUserId(groupId, userId);
+    public String updateInfo(AccountVO accountVO) {
+        Account account = this.getAccountByGroupIdAndUserId(accountVO.getGroupId(), accountVO.getUserId());
         if (account == null) {
-            account = Account.builder().groupId(groupId).userId(userId).build();
+            account = Account.builder().groupId(accountVO.getGroupId()).userId(accountVO.getUserId()).build();
         }
-        account.setName(name);
+        account.setName(accountVO.getName());
         this.saveOrUpdate(account);
 
         return SET_ACCOUNT_SUCCESS;
     }
 
     @Override
-    public List<Account> listGroupUserExceptItself(String groupId, String userId, String name) {
-        updateInfo(groupId, userId, name);
+    public List<Account> listGroupUserExceptItself(AccountVO accountVO) {
+        updateInfo(accountVO);
         return accountDao.selectList(new LambdaQueryWrapper<Account>()
                 .select(Account::getId, Account::getGroupId, Account::getUserId, Account::getName)
-                .eq(Account::getGroupId, groupId).ne(Account::getUserId, userId));
+                .eq(Account::getGroupId, accountVO.getGroupId()).ne(Account::getUserId, accountVO.getUserId()));
     }
 
     @Override

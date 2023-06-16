@@ -4,6 +4,7 @@ import com.g.miss.accountant.Template.MenuTemplate;
 import com.g.miss.accountant.constants.Constants;
 import com.g.miss.accountant.service.MessageService;
 import com.g.miss.accountant.util.StringUtils;
+import com.g.miss.accountant.vo.AccountVO;
 import com.linecorp.bot.client.LineMessagingClient;
 import com.linecorp.bot.model.ReplyMessage;
 import com.linecorp.bot.model.event.MessageEvent;
@@ -100,7 +101,8 @@ public class MessageServiceImpl implements MessageService {
             case "setAccount": // 啟用帳號
                 lineMessagingClient.getGroupMemberProfile(groupId, userId).whenComplete((profile, throwable) -> {
                     String name = profile.getDisplayName();
-                    this.replyText(event.getReplyToken(), name + accountService.updateInfo(groupId, userId, name));
+                    AccountVO accountVO = new AccountVO(groupId, userId, name);
+                    this.replyText(event.getReplyToken(), name + accountService.updateInfo(accountVO));
                 });
                 break;
             case "debtReset": // 清除賬本

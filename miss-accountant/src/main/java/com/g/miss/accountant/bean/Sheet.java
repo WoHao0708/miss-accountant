@@ -1,6 +1,8 @@
 package com.g.miss.accountant.bean;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @author G
@@ -8,6 +10,8 @@ import lombok.Data;
  * @date 2023/6/8 12:19 PM
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Sheet {
 
     /**
@@ -22,10 +26,4 @@ public class Sheet {
      * 金額
      */
     private int amount;
-
-    public Sheet(String fromName, String toName, int amount) {
-        this.fromName = fromName;
-        this.toName = toName;
-        this.amount = amount;
-    }
 }

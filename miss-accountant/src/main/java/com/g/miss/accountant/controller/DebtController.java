@@ -2,14 +2,13 @@ package com.g.miss.accountant.controller;
 
 import com.g.miss.accountant.entity.Debt;
 import com.g.miss.accountant.service.Impl.DebtServiceImpl;
+import com.g.miss.accountant.vo.DebtVO;
 import com.g.miss.accountant.vo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -50,8 +49,8 @@ public class DebtController {
      */
     @ResponseBody
     @PostMapping("/debt/add")
-    public Result<?> addDebt(String[] userIds, @RequestParam int amount, @RequestParam String userId, @RequestParam String groupId, String note) {
-        return Result.ok(debtService.addDebt(groupId, userIds, userId, amount, note));
+    public Result<?> addDebt(@Valid @RequestBody DebtVO debtVO) {
+        return Result.ok(debtService.addDebt(debtVO));
     }
 
     /**

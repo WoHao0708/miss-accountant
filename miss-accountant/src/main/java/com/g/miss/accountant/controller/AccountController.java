@@ -2,14 +2,17 @@ package com.g.miss.accountant.controller;
 
 import com.g.miss.accountant.entity.Account;
 import com.g.miss.accountant.service.Impl.AccountServiceImpl;
+import com.g.miss.accountant.vo.AccountVO;
 import com.g.miss.accountant.vo.Result;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -34,28 +37,25 @@ public class AccountController {
     /**
      * 更新帳號資訊
      *
-     * @param userId  帳號id
-     * @param groupId 使用者id
-     * @param name    名稱
+     * @param accountVO 帳號
      * @return 成功或失敗
      */
     @ResponseBody
+    @ApiOperation(value = "更新使用者資訊")
     @PostMapping("/account/update")
-    public Result<?> postIndex(@RequestParam String userId, @RequestParam String groupId, @RequestParam String name) {
-        return Result.ok(accountService.updateInfo(groupId, userId, name));
+    public Result<?> update(@Valid @RequestBody AccountVO accountVO) {
+        return Result.ok(accountService.updateInfo(accountVO));
     }
 
     /**
      * 取得群組內的user
      *
-     * @param groupId 群組id
-     * @param userId  使用者id
-     * @param name    使用者名稱
+     * @param accountVO 帳號
      * @return 群組內帳號
      */
     @ResponseBody
     @PostMapping("/account/group")
-    public Result<List<Account>> getAccount(@RequestParam String groupId, @RequestParam String userId, @RequestParam String name) {
-        return Result.ok(accountService.listGroupUserExceptItself(groupId, userId, name));
+    public Result<List<Account>> group(@Valid @RequestBody AccountVO accountVO) {
+        return Result.ok(accountService.listGroupUserExceptItself(accountVO));
     }
 }
