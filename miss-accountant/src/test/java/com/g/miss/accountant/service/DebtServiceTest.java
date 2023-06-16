@@ -65,7 +65,6 @@ public class DebtServiceTest extends TestBase {
         Assert.assertEquals(expect, debtList.size());
     }
 
-    // todo modify this
     @Test
     public void addDebt() {
 //        String[] userId = {"1", "3", "4", "5", "6", "9"};

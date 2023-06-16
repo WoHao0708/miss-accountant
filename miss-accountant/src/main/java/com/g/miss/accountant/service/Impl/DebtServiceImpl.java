@@ -10,6 +10,7 @@ import com.g.miss.accountant.service.DebtService;
 import com.g.miss.accountant.vo.DebtVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,6 +54,7 @@ public class DebtServiceImpl extends ServiceImpl<DebtDao, Debt> implements DebtS
                 .eq(Debt::getGroupId, groupId).eq(Debt::getCreditorId, creditorId).eq(Debt::getIsDelete, 0));
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public String addDebt(DebtVO debtVO) {
 
@@ -73,7 +75,7 @@ public class DebtServiceImpl extends ServiceImpl<DebtDao, Debt> implements DebtS
         List<Account> accountList = accountService.listAccountByGroupId(groupId);
         Map<String, String> nameMap = new HashMap<>();
 
-        for (Account account : accountList) { //todo 整理
+        for (Account account : accountList) {
             nameMap.put(account.getUserId(), account.getName());
         }
 
@@ -99,6 +101,7 @@ public class DebtServiceImpl extends ServiceImpl<DebtDao, Debt> implements DebtS
         return SUCCESS.getDesc();
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public String deleteGroupDebt(String groupId) {
 

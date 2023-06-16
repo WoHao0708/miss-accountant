@@ -13,6 +13,7 @@ import com.g.miss.accountant.vo.AccountVO;
 import com.linecorp.bot.model.message.FlexMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -34,6 +35,7 @@ public class AccountServiceImpl extends ServiceImpl<AccountDao, Account> impleme
     @Autowired
     private DebtServiceImpl debtService;
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public String updateInfo(AccountVO accountVO) {
         Account account = this.getAccountByGroupIdAndUserId(accountVO.getGroupId(), accountVO.getUserId());
@@ -46,6 +48,7 @@ public class AccountServiceImpl extends ServiceImpl<AccountDao, Account> impleme
         return SET_ACCOUNT_SUCCESS;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public List<Account> listGroupUserExceptItself(AccountVO accountVO) {
         updateInfo(accountVO);

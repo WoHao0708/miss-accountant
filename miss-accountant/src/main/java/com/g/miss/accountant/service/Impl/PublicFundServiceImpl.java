@@ -6,6 +6,7 @@ import com.g.miss.accountant.entity.PublicFund;
 import com.g.miss.accountant.service.PublicFundService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author G
@@ -17,6 +18,7 @@ public class PublicFundServiceImpl extends ServiceImpl<PublicFundDao, PublicFund
     @Autowired
     PublicFundDao publicFundDao;
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public String updateBalance(String groupId, int amount) {
         PublicFund publicFund = publicFundDao.selectById(groupId);
