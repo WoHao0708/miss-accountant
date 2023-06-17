@@ -6,13 +6,8 @@ import com.g.miss.accountant.vo.AccountVO;
 import com.g.miss.accountant.vo.Result;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -20,7 +15,7 @@ import java.util.List;
  * @description 帳號
  * @date 2023/6/8 12:19 PM
  */
-@Controller
+@RestController
 public class AccountController {
 
     @Autowired
@@ -37,25 +32,32 @@ public class AccountController {
     /**
      * 更新帳號資訊
      *
-     * @param accountVO 帳號
+     * @param userId  帳號id
+     * @param groupId 使用者id
+     * @param name    名稱
      * @return 成功或失敗
      */
     @ResponseBody
     @ApiOperation(value = "更新使用者資訊")
     @PostMapping("/account/update")
-    public Result<?> update(@Valid @RequestBody AccountVO accountVO) {
+    public Result<?> update(@RequestParam String groupId, @RequestParam String userId, @RequestParam String name) {
+        AccountVO accountVO = new AccountVO(groupId, userId, name);
         return Result.ok(accountService.updateInfo(accountVO));
     }
 
     /**
      * 取得群組內的user
      *
-     * @param accountVO 帳號
+     * @param userId  帳號id
+     * @param groupId 使用者id
+     * @param name    名稱
      * @return 群組內帳號
      */
     @ResponseBody
     @PostMapping("/account/group")
-    public Result<List<Account>> group(@Valid @RequestBody AccountVO accountVO) {
+    public Result<List<Account>> group(@RequestParam String groupId, @RequestParam String userId, @RequestParam String name) {
+        name = null;
+        AccountVO accountVO = new AccountVO(groupId, userId, name);
         return Result.ok(accountService.listGroupUserExceptItself(accountVO));
     }
 }

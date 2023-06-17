@@ -12,15 +12,14 @@
 # WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 # License for the specific language governing permissions and limitations
 # under the License.
-#todo chang taken
 line.bot:
 #  production
-  channel-token: '6VYo/by3LkIh1rwDvI1Z/1hr3e/LmrxR4D5p5YOmalwiBseCZvL+XyfYazqpX1EQNKLPW3ssBK0EnRW+ZsaFAzd0PT9h+xVTq9n8IJUMGdjKMFWGW1ZSb+BbQ5rm+4PtQTE1tG3LasHHzb+NMulh0QdB04t89/1O/w1cDnyilFU='
-  channel-secret: 'b0a75b05ad47bbd75548741774c6a4c2'
+  #  channel-token: 'z4g65a7BbL1x1E2t99Yiv2hFiIu849L6NG2nzS4SSvNrm68pDugYzpaCgAXneLk9NKLPW3ssBK0EnRW+ZsaFAzd0PT9h+xVTq9n8IJUMGdgRp7iGC351GJ29jzOslA25nBFb9Manqt6CF7eyPL2JTAdB04t89/1O/w1cDnyilFU='
+  #  channel-secret: 'ab16a4a21dbf15f32a3576e7db81347f'
 
-#  test
-#  channel-token: 'ChAU/BJfO1X/R42wEQ45K6ObDnzub3VQPGPIKBNjbDPb0e/Uylj/GevRm7aQdVnpNhJb95MXKeyRwS6Z7OsAo9xdUxOmKlKZiQfL5ZNQ+wrGfK92gKxYVHnRpV34yIwukm532LiYzilK+j+w/5ziZAdB04t89/1O/w1cDnyilFU='
-#  channel-secret: '77d929b53c59ecc9e82fccbd9e8fe731'
+  #  test
+  channel-token: 'ycewNc2fVBXyT07xQJ0Vly/8xpckOLHCRGR96v+7Zh57HYlkE+q+zaS5ZdS0sBh6NhJb95MXKeyRwS6Z7OsAo9xdUxOmKlKZiQfL5ZNQ+wr1LZCe9W3VWkcjBHJLjqyzWpsVaHQyWD6mwXn3J9JeFgdB04t89/1O/w1cDnyilFU='
+  channel-secret: 'c42e1cef4470be5e5ed1a3ed06d952fe'
   handler.path: /callback
 
 # To remove Client wire logs. Please comment out following lines.

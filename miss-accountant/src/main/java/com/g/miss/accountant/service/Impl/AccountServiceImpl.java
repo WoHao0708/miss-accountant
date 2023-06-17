@@ -9,6 +9,7 @@ import com.g.miss.accountant.dao.AccountDao;
 import com.g.miss.accountant.entity.Account;
 import com.g.miss.accountant.entity.Debt;
 import com.g.miss.accountant.service.AccountService;
+import com.g.miss.accountant.util.ValidationUtils;
 import com.g.miss.accountant.vo.AccountVO;
 import com.linecorp.bot.model.message.FlexMessage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,8 @@ public class AccountServiceImpl extends ServiceImpl<AccountDao, Account> impleme
     @Transactional(rollbackFor = Exception.class)
     @Override
     public String updateInfo(AccountVO accountVO) {
+        ValidationUtils.validate(accountVO);
+
         Account account = this.getAccountByGroupIdAndUserId(accountVO.getGroupId(), accountVO.getUserId());
         if (account == null) {
             account = Account.builder().groupId(accountVO.getGroupId()).userId(accountVO.getUserId()).build();

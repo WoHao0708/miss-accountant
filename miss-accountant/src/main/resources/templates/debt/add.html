@@ -44,11 +44,13 @@
             type: "POST",
             data: $("form").serialize(),
             dataType: "json",
+            contentType: 'application/x-www-form-urlencoded; charset=utf-8', // 要送到server的資料型態
             error: function (err) {
                 console.log(err);
             },
             success: function (result) {
-                result.forEach(setAccountButton);
+                if (result.flag === true) result.data.forEach(setAccountButton);
+                else alert(result.message);
             }
         });
     });

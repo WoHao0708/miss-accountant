@@ -38,13 +38,9 @@ public class DebtController {
     }
 
     /**
-     * 記帳
+     * 記賬
      *
-     * @param userIds 負債人ids
-     * @param amount  金額
-     * @param userId  債權人id
-     * @param groupId 群組id
-     * @param note    筆記
+     * @param debtVO 記賬
      * @return 結果
      */
     @ResponseBody

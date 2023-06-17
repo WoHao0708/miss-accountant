@@ -32,7 +32,7 @@ public class Result<T> {
     /**
      * 返回數據
      */
-    private T date;
+    private T data;
 
     public static <T> Result<T> ok() {
         return restResult(true, null, SUCCESS.getCode(), SUCCESS.getDesc());
@@ -54,10 +54,26 @@ public class Result<T> {
         return restResult(false, null, FAIL.getCode(), FAIL.getDesc());
     }
 
+    public static <T> Result<T> fail(String message) {
+        return restResult(false, message);
+    }
+
+    public static <T> Result<T> fail(Integer code, String message) {
+        return restResult(false, null, code, message);
+    }
+
+    private static <T> Result<T> restResult(Boolean flag, String message) {
+        Result<T> apiResult = new Result<>();
+        apiResult.setFlag(flag);
+        apiResult.setCode(flag ? SUCCESS.getCode() : FAIL.getCode());
+        apiResult.setMessage(message);
+        return apiResult;
+    }
+
     private static <T> Result<T> restResult(Boolean flag, T data, Integer code, String message) {
         Result<T> apiResult = new Result<>();
         apiResult.setFlag(flag);
-        apiResult.setDate(data);
+        apiResult.setData(data);
         apiResult.setCode(code);
         apiResult.setMessage(message);
         return apiResult;
