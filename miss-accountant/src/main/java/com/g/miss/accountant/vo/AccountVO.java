@@ -1,7 +1,6 @@
 package com.g.miss.accountant.vo;
 
 import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,14 +21,11 @@ import javax.validation.constraints.NotNull;
 public class AccountVO {
 
     @NotNull(message = "群組Id為必填")
-    @ApiModelProperty(name = "groupId", value = "群組ID", dataType = "String")
     private String groupId;
 
     @NotNull(message = "使用者Id為必填")
-    @ApiModelProperty(name = "userId", value = "使用者ID", dataType = "String")
     private String userId;
 
     @NotNull(message = "使用者名稱為必填")
-    @ApiModelProperty(name = "name", value = "使用者名稱", dataType = "String")
     private String name;
 }

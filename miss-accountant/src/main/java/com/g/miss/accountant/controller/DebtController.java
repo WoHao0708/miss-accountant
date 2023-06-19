@@ -1,44 +1,27 @@
 package com.g.miss.accountant.controller;
 
-import com.g.miss.accountant.entity.Debt;
-import com.g.miss.accountant.service.Impl.DebtServiceImpl;
+import com.g.miss.accountant.dto.DebtDTO;
+import com.g.miss.accountant.service.DebtService;
 import com.g.miss.accountant.util.ValidationUtils;
 import com.g.miss.accountant.vo.DebtVO;
 import com.g.miss.accountant.vo.Result;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 /**
  * @author G
- * @description 債權
+ * @description 債權功能
  * @date 2023/6/8 12:19 PM
  */
-@Controller
+@Api(tags = "債權功能")
+@RestController
 public class DebtController {
     @Autowired
-    DebtServiceImpl debtService;
-
-    /**
-     * 記帳頁
-     */
-    @GetMapping("/debt")
-    public String debt() {
-        return "/debt/add";
-    }
-
-    /**
-     * 個人明細頁
-     */
-    @GetMapping("/debt/list")
-    public String list() {
-        return "/debt/list";
-    }
+    DebtService debtService;
 
     /**
      * 記賬
@@ -50,8 +33,8 @@ public class DebtController {
      * @param note    筆記
      * @return 結果
      */
-    @ResponseBody
     @PostMapping("/debt/add")
+    @ApiOperation(value = "記帳")
     public Result<?> addDebt(String groupId, String userId, String[] userIds, Integer amount, String note) {
         DebtVO debtVO = new DebtVO(groupId, userId, userIds, amount, note);
         ValidationUtils.validate(debtVO);
@@ -65,11 +48,10 @@ public class DebtController {
      * @param groupId 群組id
      * @return 與使用者相關的債權
      */
-    @ResponseBody
-    @PostMapping("/debt/list")
-    public Result<List<Debt>> getList(@RequestParam String userId, @RequestParam String groupId) {
-        throw new RuntimeException("ddsd");
-//        return Result.ok(debtService.listDebt(groupId, userId));
+    @GetMapping("/debt/list")
+    @ApiOperation(value = "取得與使用者相關的債權")
+    public Result<List<DebtDTO>> getList(@RequestParam String userId, @RequestParam String groupId) {
+        return Result.ok(debtService.listDebt(groupId, userId));
     }
 
     /**
@@ -78,8 +60,8 @@ public class DebtController {
      * @param debtId 債權id
      * @return 結果
      */
-    @ResponseBody
-    @PostMapping("/debt/delete")
+    @DeleteMapping("/debt/delete")
+    @ApiOperation(value = "刪除單筆債權")
     public Result<?> deleteDebt(@RequestParam String debtId) {
         return Result.ok(debtService.deleteDebt(Integer.parseInt(debtId)));
     }

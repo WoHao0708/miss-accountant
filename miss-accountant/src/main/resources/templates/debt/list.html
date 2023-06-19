@@ -47,7 +47,7 @@
     $("#groupId").bind('input', function () {
         $.ajax({
             url: "/debt/list",
-            type: "POST",
+            type: "GET",
             data: $("form").serialize(),
             dataType: "json",
             error: function (err) {
@@ -89,7 +89,7 @@
 
         $.ajax({
             url: "/debt/delete",
-            type: "POST",
+            type: "DELETE",
             data: $("form").serialize(),
             dataType: "json",
             error: function (err) {
@@ -119,7 +119,7 @@
 
             $.ajax({
                 url: "/debt/delete",
-                type: "POST",
+                type: "DELETE",
                 data: $("form").serialize(),
                 dataType: "json",
                 error: function (err) {

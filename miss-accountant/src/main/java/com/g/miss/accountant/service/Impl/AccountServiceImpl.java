@@ -6,9 +6,11 @@ import com.g.miss.accountant.Template.AccountTemplate;
 import com.g.miss.accountant.Template.SheetTemplate;
 import com.g.miss.accountant.bean.Sheet;
 import com.g.miss.accountant.dao.AccountDao;
+import com.g.miss.accountant.dto.AccountDTO;
 import com.g.miss.accountant.entity.Account;
 import com.g.miss.accountant.entity.Debt;
 import com.g.miss.accountant.service.AccountService;
+import com.g.miss.accountant.util.BeanCopyUtils;
 import com.g.miss.accountant.vo.AccountVO;
 import com.linecorp.bot.model.message.FlexMessage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,11 +53,12 @@ public class AccountServiceImpl extends ServiceImpl<AccountDao, Account> impleme
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public List<Account> listGroupUserExceptItself(AccountVO accountVO) {
+    public List<AccountDTO> listGroupUserExceptItself(AccountVO accountVO) {
         updateInfo(accountVO);
-        return accountDao.selectList(new LambdaQueryWrapper<Account>()
+        List<Account> accountList = accountDao.selectList(new LambdaQueryWrapper<Account>()
                 .select(Account::getId, Account::getGroupId, Account::getUserId, Account::getName)
                 .eq(Account::getGroupId, accountVO.getGroupId()).ne(Account::getUserId, accountVO.getUserId()));
+        return BeanCopyUtils.copyList(accountList, AccountDTO.class);
     }
 
     @Override
