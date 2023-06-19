@@ -2,13 +2,16 @@ package com.g.miss.accountant.controller;
 
 import com.g.miss.accountant.entity.Debt;
 import com.g.miss.accountant.service.Impl.DebtServiceImpl;
+import com.g.miss.accountant.util.ValidationUtils;
 import com.g.miss.accountant.vo.DebtVO;
 import com.g.miss.accountant.vo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -40,12 +43,18 @@ public class DebtController {
     /**
      * 記賬
      *
-     * @param debtVO 記賬
+     * @param groupId 群組id
+     * @param userId  債權人id
+     * @param userIds 負債人ids
+     * @param amount  金額
+     * @param note    筆記
      * @return 結果
      */
     @ResponseBody
     @PostMapping("/debt/add")
-    public Result<?> addDebt(@Valid @RequestBody DebtVO debtVO) {
+    public Result<?> addDebt(String groupId, String userId, String[] userIds, Integer amount, String note) {
+        DebtVO debtVO = new DebtVO(groupId, userId, userIds, amount, note);
+        ValidationUtils.validate(debtVO);
         return Result.ok(debtService.addDebt(debtVO));
     }
 
@@ -59,7 +68,8 @@ public class DebtController {
     @ResponseBody
     @PostMapping("/debt/list")
     public Result<List<Debt>> getList(@RequestParam String userId, @RequestParam String groupId) {
-        return Result.ok(debtService.listDebt(groupId, userId));
+        throw new RuntimeException("ddsd");
+//        return Result.ok(debtService.listDebt(groupId, userId));
     }
 
     /**

@@ -54,9 +54,12 @@
                 console.log(err);
             },
             success: function (result) {
-                $('#userId').val(result);
-                result.forEach(setDebtList);
-                bindDeleteClick();
+                if (result.flag === true) {
+                    result.data.forEach(setDebtList);
+                    bindDeleteClick();
+                } else {
+                    alert(result.message);
+                }
             }
         });
     });
@@ -93,7 +96,11 @@
                 console.log(err);
             },
             success: function (result) {
-                console.log(result);
+                if (result.flag === true) {
+                    $("#" + id).parent().parent().fadeOut(500);
+                } else {
+                    alert(result.message);
+                }
             }
         });
     });
@@ -119,7 +126,11 @@
                     console.log(err);
                 },
                 success: function (result) {
-                    $("#" + id).parent().parent().fadeOut(500);
+                    if (result.flag === true) {
+                        $("#" + id).parent().parent().fadeOut(500);
+                    } else {
+                        alert(result.message);
+                    }
                 }
             });
         });

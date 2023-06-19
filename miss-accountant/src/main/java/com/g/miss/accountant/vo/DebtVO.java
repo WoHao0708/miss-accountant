@@ -22,6 +22,13 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @ApiModel(description = "債權")
 public class DebtVO {
+    @NotNull(message = "群組Id不能為空")
+    @ApiModelProperty(name = "groupId", value = "群組Id", dataType = "String")
+    String groupId;
+
+    @NotNull(message = "群組Id不能為空")
+    @ApiModelProperty(name = "userId", value = "使用者Id", dataType = "String")
+    String userId;
 
     @NotNull(message = "為甚麼不選人?")
     @NotEmpty(message = "為甚麼不選人?")
@@ -32,14 +39,6 @@ public class DebtVO {
     @NotNull(message = "為什麼不輸入金額?")
     @ApiModelProperty(name = "amount", value = "群組Id", dataType = "Integer")
     Integer amount;
-
-    @NotNull(message = "群組Id不能為空")
-    @ApiModelProperty(name = "userId", value = "使用者Id", dataType = "String")
-    String userId;
-
-    @NotNull(message = "群組Id不能為空")
-    @ApiModelProperty(name = "groupId", value = "群組Id", dataType = "String")
-    String groupId;
 
     @ApiModelProperty(name = "note", value = "描述", dataType = "String")
     String note;

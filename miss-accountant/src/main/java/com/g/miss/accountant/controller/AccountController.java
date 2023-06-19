@@ -2,6 +2,7 @@ package com.g.miss.accountant.controller;
 
 import com.g.miss.accountant.entity.Account;
 import com.g.miss.accountant.service.Impl.AccountServiceImpl;
+import com.g.miss.accountant.util.ValidationUtils;
 import com.g.miss.accountant.vo.AccountVO;
 import com.g.miss.accountant.vo.Result;
 import io.swagger.annotations.Api;
@@ -47,6 +48,7 @@ public class AccountController {
     @PostMapping("/account/update")
     public Result<?> update(String groupId, String userId, String name) {
         AccountVO accountVO = new AccountVO(groupId, userId, name);
+        ValidationUtils.validate(accountVO);
         return Result.ok(accountService.updateInfo(accountVO));
     }
 
@@ -62,6 +64,7 @@ public class AccountController {
     @PostMapping("/account/group")
     public Result<List<Account>> group(String groupId, String userId, String name) {
         AccountVO accountVO = new AccountVO(groupId, userId, name);
+        ValidationUtils.validate(accountVO);
         return Result.ok(accountService.listGroupUserExceptItself(accountVO));
     }
 }

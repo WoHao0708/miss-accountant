@@ -44,7 +44,6 @@
             type: "POST",
             data: $("form").serialize(),
             dataType: "json",
-            contentType: 'application/x-www-form-urlencoded; charset=utf-8', // 要送到server的資料型態
             error: function (err) {
                 console.log(err);
             },
@@ -90,7 +89,7 @@
                     setSubmitEvent();
                 },
                 success: function (result) {
-                    if (result.status === 1) {
+                    if (result.flag === true) {
                         $("#note").val("");
                         $("#amount").val("");
                         $("input[type='checkbox']").prop("checked", false);
