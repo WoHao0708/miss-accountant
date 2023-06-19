@@ -1,7 +1,6 @@
 package com.g.miss.accountant.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.g.miss.accountant.dto.DebtDTO;
 import com.g.miss.accountant.entity.Debt;
 import com.g.miss.accountant.vo.DebtVO;
 
@@ -63,7 +62,7 @@ public interface DebtService extends IService<Debt> {
      * @param userId  使用者id
      * @return 結果
      */
-    List<DebtDTO> listDebt(String groupId, String userId);
+    List<Debt> listDebt(String groupId, String userId);
 
     /**
      * 刪除債權

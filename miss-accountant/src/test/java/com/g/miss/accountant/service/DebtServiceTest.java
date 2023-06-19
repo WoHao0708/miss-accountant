@@ -2,6 +2,7 @@ package com.g.miss.accountant.service;
 
 import com.g.miss.accountant.TestBase;
 import com.g.miss.accountant.entity.Debt;
+import com.g.miss.accountant.service.Impl.DebtServiceImpl;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,7 +18,7 @@ import java.util.List;
 public class DebtServiceTest extends TestBase {
 
     @Autowired
-    DebtService debtService;
+    DebtServiceImpl debtService;
 
     @Before
     public void setUp() throws Exception {

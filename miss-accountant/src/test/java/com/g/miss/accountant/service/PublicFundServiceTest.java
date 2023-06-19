@@ -1,6 +1,7 @@
 package com.g.miss.accountant.service;
 
 import com.g.miss.accountant.TestBase;
+import com.g.miss.accountant.service.Impl.PublicFundServiceImpl;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -15,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class PublicFundServiceTest extends TestBase {
 
     @Autowired
-    PublicFundService publicFundService;
+    PublicFundServiceImpl publicFundService;
 
     @Test
     public void testUpdateBalance() {

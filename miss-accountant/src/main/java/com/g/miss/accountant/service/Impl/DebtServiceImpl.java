@@ -3,12 +3,10 @@ package com.g.miss.accountant.service.Impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.g.miss.accountant.dao.DebtDao;
-import com.g.miss.accountant.dto.DebtDTO;
 import com.g.miss.accountant.entity.Account;
 import com.g.miss.accountant.entity.Debt;
 import com.g.miss.accountant.enums.SuccessMsgEnum;
 import com.g.miss.accountant.service.DebtService;
-import com.g.miss.accountant.util.BeanCopyUtils;
 import com.g.miss.accountant.vo.DebtVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -70,7 +68,7 @@ public class DebtServiceImpl extends ServiceImpl<DebtDao, Debt> implements DebtS
     }
 
     @Override
-    public List<DebtDTO> listDebt(String groupId, String userId) {
+    public List<Debt> listDebt(String groupId, String userId) {
 
         List<Debt> debtList = this.listDebtByGroupIdAndUserId(groupId, userId);
         List<Debt> ownDebtList = this.listDebtByGroupIdAndCreditorId(groupId, userId);
@@ -91,7 +89,7 @@ public class DebtServiceImpl extends ServiceImpl<DebtDao, Debt> implements DebtS
         }
         debtList.addAll(ownDebtList);
 
-        return BeanCopyUtils.copyList(debtList, DebtDTO.class);
+        return debtList;
     }
 
     @Override

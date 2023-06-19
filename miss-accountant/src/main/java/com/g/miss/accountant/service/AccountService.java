@@ -1,7 +1,6 @@
 package com.g.miss.accountant.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.g.miss.accountant.dto.AccountDTO;
 import com.g.miss.accountant.entity.Account;
 import com.g.miss.accountant.vo.AccountVO;
 import com.linecorp.bot.model.message.FlexMessage;
@@ -47,7 +46,7 @@ public interface AccountService extends IService<Account> {
      * @param accountVO 帳號
      * @return 帳號列表
      */
-    List<AccountDTO> listGroupUserExceptItself(AccountVO accountVO);
+    List<Account> listGroupUserExceptItself(AccountVO accountVO);
 
     /**
      * 取得分帳結果訊息

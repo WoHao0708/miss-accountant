@@ -41,7 +41,7 @@
     $("#groupId").bind('input', function () {
         $.ajax({
             url: "/account/group",
-            type: "GET",
+            type: "POST",
             data: $("form").serialize(),
             dataType: "json",
             error: function (err) {
