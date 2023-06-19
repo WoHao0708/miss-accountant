@@ -3,7 +3,6 @@ package com.g.miss.accountant.handler;
 import com.g.miss.accountant.exception.BizException;
 import com.g.miss.accountant.vo.Result;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -40,8 +39,8 @@ public class ControllerAdviceHandler {
      * @return 異常訊息
      */
     @ExceptionHandler(IllegalArgumentException.class)
-    public Result<?> errorHandler(MethodArgumentNotValidException e) {
-        return Result.fail(VALID_ERROR.getCode(), Objects.requireNonNull(e.getBindingResult().getFieldError()).getDefaultMessage());
+    public Result<?> errorHandler(IllegalArgumentException e) {
+        return Result.fail(VALID_ERROR.getCode(), Objects.requireNonNull(e.getMessage()));
     }
 
     /**

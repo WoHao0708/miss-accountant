@@ -21,15 +21,15 @@ import javax.validation.constraints.NotNull;
 @ApiModel(description = "帳號")
 public class AccountVO {
 
-    @NotNull(message = "群組Id不能為空")
+    @NotNull(message = "群組Id為必填")
     @ApiModelProperty(name = "groupId", value = "群組ID", dataType = "String")
     private String groupId;
 
-    @NotNull(message = "使用者Id不能為空")
+    @NotNull(message = "使用者Id為必填")
     @ApiModelProperty(name = "userId", value = "使用者ID", dataType = "String")
     private String userId;
 
-    @NotNull(message = "使用者名稱不能為空")
+    @NotNull(message = "使用者名稱為必填")
     @ApiModelProperty(name = "name", value = "使用者名稱", dataType = "String")
     private String name;
 }

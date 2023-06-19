@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import static com.g.miss.accountant.constants.Constants.*;
 import static java.util.Collections.singletonList;
 
 /**
@@ -78,13 +79,13 @@ public class MessageServiceImpl implements MessageService {
             }
         }
 
-        if ("會計小姐".equals(text) || "會計".equals(text)) {
+        if (ACCOUNTANT.equals(text)) { // 會計
             final String groupId = ((GroupSource) event.getSource()).getGroupId();
             this.reply(event.getReplyToken(), new MenuTemplate().get(publicFundService.updateBalance(groupId, 0), groupId));
         }
 
-        if ("我婆".equals(text) || "老婆".equals(text))
-            this.replyText(event.getReplyToken(), "噁男");
+        if (text.contains(MY_WIFE)) // 我婆 噁男
+            this.replyText(event.getReplyToken(), ERRRRR_MAN);
     }
 
     @Override

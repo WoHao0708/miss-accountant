@@ -4,9 +4,13 @@ import com.g.miss.accountant.entity.Account;
 import com.g.miss.accountant.service.Impl.AccountServiceImpl;
 import com.g.miss.accountant.vo.AccountVO;
 import com.g.miss.accountant.vo.Result;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -15,7 +19,8 @@ import java.util.List;
  * @description 帳號
  * @date 2023/6/8 12:19 PM
  */
-@RestController
+@Api(tags = "帳號模組")
+@Controller
 public class AccountController {
 
     @Autowired
@@ -40,7 +45,7 @@ public class AccountController {
     @ResponseBody
     @ApiOperation(value = "更新使用者資訊")
     @PostMapping("/account/update")
-    public Result<?> update(@RequestParam String groupId, @RequestParam String userId, @RequestParam String name) {
+    public Result<?> update(String groupId, String userId, String name) {
         AccountVO accountVO = new AccountVO(groupId, userId, name);
         return Result.ok(accountService.updateInfo(accountVO));
     }
@@ -55,8 +60,7 @@ public class AccountController {
      */
     @ResponseBody
     @PostMapping("/account/group")
-    public Result<List<Account>> group(@RequestParam String groupId, @RequestParam String userId, @RequestParam String name) {
-        name = null;
+    public Result<List<Account>> group(String groupId, String userId, String name) {
         AccountVO accountVO = new AccountVO(groupId, userId, name);
         return Result.ok(accountService.listGroupUserExceptItself(accountVO));
     }

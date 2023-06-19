@@ -5,6 +5,7 @@ import org.springframework.util.CollectionUtils;
 import javax.validation.ConstraintViolation;
 import javax.validation.Valid;
 import javax.validation.Validation;
+import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -18,11 +19,15 @@ public class ValidationUtils {
                 .getValidator()
                 .validate(user);
         if (!CollectionUtils.isEmpty(validateSet)) {
-            String messages = validateSet.stream()
-                    .map(ConstraintViolation::getMessage)
-                    .reduce((m1, m2) -> m1 + "；" + m2)
-                    .orElse("參數輸入有誤！");
-            throw new IllegalArgumentException(messages);
+            // 只顯示一個錯誤
+            Iterator<ConstraintViolation<@Valid Object>> it = validateSet.iterator();
+//            顯示全部錯誤
+//            String messages = validateSet.stream()
+//                    .map(ConstraintViolation::getMessage)
+//                    .reduce((m1, m2) -> m1 + ";" + m2)
+//                    .orElse("參數輸入有誤！");
+
+            throw new IllegalArgumentException(it.next().getMessage());
         }
     }
 }

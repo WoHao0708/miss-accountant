@@ -15,6 +15,9 @@ public class Constants {
 
     public static String RESET_SUCCESS = "重置完成";
     public static String SET_ACCOUNT_SUCCESS = "啟用成功";
+    public static String ERRRRR_MAN = "噁男";
+    public static String ACCOUNTANT = "會計";
+    public static String MY_WIFE = "我婆";
 
     public static String COLOR_GREEN = "#1DB446";
     public static String COLOR_BLACK = "#555555";
