@@ -2,7 +2,6 @@ package com.g.miss.accountant.service;
 
 import com.g.miss.accountant.TestBase;
 import com.g.miss.accountant.entity.Account;
-import com.g.miss.accountant.service.Impl.AccountServiceImpl;
 import com.g.miss.accountant.vo.AccountVO;
 import org.junit.Assert;
 import org.junit.Before;
@@ -22,7 +21,7 @@ public class AccountServiceTest extends TestBase {
 
 
     @Autowired
-    private AccountServiceImpl accountService;
+    private AccountService accountService;
     private final String groupId = "1";
     private final String userId = "1";
     private final String name = String.valueOf(new Random().nextInt(10000));
