@@ -55,3 +55,5 @@ local.properties
 .buildpath
 integration_test_settings.yml
 .github/
+application.yml
+miss-accountant/src/main/resources/application.yml
